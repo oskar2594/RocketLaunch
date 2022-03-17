@@ -15,6 +15,7 @@ public class RocketLauncher extends ApplicationAdapter {
 	private Rectangle bucket;
 
 	private Texture bucketImage;
+	final static int FPS = 60;
 
 	@Override
 	public void create() {
