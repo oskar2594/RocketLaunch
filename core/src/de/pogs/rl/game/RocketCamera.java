@@ -6,8 +6,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
  * RocketCamera
  */
 public class RocketCamera extends OrthographicCamera {
-    
-    public RocketCamera() {
+    final Game game;
+
+    public RocketCamera(final Game game) {
+        this.game = game; 
+        
+    }
+
+    public void update() {
 
     }
 }

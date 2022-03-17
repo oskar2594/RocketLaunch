@@ -8,12 +8,12 @@ import de.pogs.rl.game.entities.Player;
 
 public class Game implements Screen {
     final RocketLauncher game;
-    final RocketCamera cam = new RocketCamera();
+    final RocketCamera cam = new RocketCamera(this);
     private Player player;
 
     public Game(final RocketLauncher game) {
         this.game = game;
-        this.player = new Player();
+        this.player = new Player(this);
     }
 
 	@Override
