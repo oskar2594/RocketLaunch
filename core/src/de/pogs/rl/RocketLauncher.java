@@ -9,26 +9,27 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import de.pogs.rl.entities.Rocket;
+
 public class RocketLauncher extends ApplicationAdapter {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Rectangle bucket;
 
 	private Texture bucketImage;
+	private Rocket rocket;
 	final static int FPS = 60;
 
 	@Override
 	public void create() {
-		bucketImage = new Texture(Gdx.files.internal("bucket.png"));
+		bucketImage = new Texture(Gdx.files.internal("rakete.jpg"));
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);	 
 		batch = new SpriteBatch();
 
-		bucket = new Rectangle();
-		bucket.x = 800 / 2 - 64 / 2;
-		bucket.y = 20;
-		bucket.width = 64;
-		bucket.height = 64;
+		rocket = new Rocket(bucketImage, 0, 0);
+
+
 	}
 
 	@Override
@@ -38,15 +39,16 @@ public class RocketLauncher extends ApplicationAdapter {
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		batch.draw(bucketImage, bucket.x, bucket.y);
+		rocket.draw(batch);
 		batch.end();
 
 		if(Gdx.input.isTouched()) {
 			Vector3 touchPos = new Vector3();
 			touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			camera.unproject(touchPos);
-			bucket.x = touchPos.x - 64 / 2;
+			rocket.input((int) touchPos.x, (int) touchPos.y);
 		 }
+		 rocket.step(Gdx.graphics.getDeltaTime());
 	  
 	}
 
