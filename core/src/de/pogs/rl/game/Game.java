@@ -1,61 +1,64 @@
 package de.pogs.rl.game;
 
-import com.badlogic.gdx.Screen;
+import java.beans.Encoder;
 
-import de.pogs.rl.RocketLauncher;
-import de.pogs.rl.game.RocketCamera;
+import com.badlogic.ashley.core.Engine;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import de.pogs.rl.game.entities.Player;
 
-public class Game implements Screen {
-    final RocketLauncher game;
-    final RocketCamera cam = new RocketCamera(this);
-    private Player player;
+public class Game extends ScreenAdapter {
+	public static Game INSTANCE;
 
-    public Game(final RocketLauncher game) {
-        this.game = game;
-        this.player = new Player(this);
-    }
+	private SpriteBatch batch;
 
-	@Override
-	public void show() {
-		// TODO Auto-generated method stub
-		
+
+	private Engine engine;
+	private RocketCamera camera;
+	private Player player;
+
+	public Game() {
+		INSTANCE = this;
+		batch = new SpriteBatch();
+		camera = new RocketCamera();
+		engine = new Engine();
+		//Entites
+		player = new Player();
+		engine.addEntity(player);
 	}
 
 	@Override
 	public void render(float delta) {
-		// TODO Auto-generated method stub
-		
-	}
+		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+			Gdx.app.exit();
+		}
+		batch.begin();
+		batch.setProjectionMatrix(camera.combined);
+		// DRAW
 
-	@Override
-	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-		
-	}
+		player.render(delta, batch);
 
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
+		//
+		camera.update();
+		batch.end();
 	}
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
-		
+		this.dispose();
+
 	}
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-		
+		this.dispose();
 	}
-    
+
+
 }
