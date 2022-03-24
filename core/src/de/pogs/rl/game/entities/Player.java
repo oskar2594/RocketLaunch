@@ -3,7 +3,6 @@ package de.pogs.rl.game.entities;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
-import org.w3c.dom.Text;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -16,6 +15,7 @@ public class Player extends AbstractEntity {
 
     private float angle = 0;
     private float aimedAngle = 0;
+    private float angle_response = 1;
 
     public Vector2 position = new Vector2(0, 0);
 
@@ -33,9 +33,9 @@ public class Player extends AbstractEntity {
     @Override
     public void update(float delta, Input input) {
         updateAimedAngle();
-
+        updateAngle(delta);
         sprite.setPosition(position.x - (texture.getWidth() / 2), position.y + texture.getHeight() * sprite.getScaleY() / 2);
-        sprite.setRotation(aimedAngle);
+        sprite.setRotation(angle);
         // if (input.isKeyPressed(Keys.LEFT)) sprite.setPosition(sprite.getX() - speed *
         // delta, sprite.getY());
 
@@ -51,4 +51,7 @@ public class Player extends AbstractEntity {
         }
     }
 
+    private void updateAngle(float delta) {
+        angle = angle + (aimedAngle - angle) * delta * angle_response;
+    }
 }
