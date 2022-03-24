@@ -7,11 +7,16 @@ import de.pogs.rl.screens.Menu;
 
 public class RocketLauncher extends Game {
 	private SpriteBatch batch;
+	public static RocketLauncher INSTANCE;
+
+	public RocketLauncher() {
+		INSTANCE = this;
+	}
 
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		this.setScreen(new Menu(this));
+		this.setScreen(new Menu());
 	}
 
 
