@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.pogs.rl.RocketLauncher;
+import de.pogs.rl.game.entities.Player;
 
 public class GameScreen extends ScreenAdapter {
 	public static GameScreen INSTANCE;
@@ -15,13 +16,15 @@ public class GameScreen extends ScreenAdapter {
 
 	private RocketCamera camera;
 	private Texture text;
-
+	private Player player;
+	private LinkedList<Entity> entities;
 	public GameScreen() {
 		INSTANCE = this;
 		batch = RocketLauncher.INSTANCE.batch;
 
 		text = new Texture(Gdx.files.internal("rakete.png"));
 		camera = new RocketCamera();
+		entities.add(new Player());
 	}
 	@Override
 	public void render(float delta) {
@@ -33,8 +36,9 @@ public class GameScreen extends ScreenAdapter {
 		batch.begin();
 		// DRAW
 
-		batch.draw(text, 10, 10);
-
+		for(Entity entity : entities) {
+			entity.render(delta, batch);
+		}
 		//
 		batch.end();
 	}

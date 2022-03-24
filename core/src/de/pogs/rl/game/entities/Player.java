@@ -15,21 +15,17 @@ public class Player extends Entity {
     private Sprite sprite;
     private Texture texture;
     private ShapeRenderer shape;
-    public Player() {
-        sprite = new Sprite();
-        texture = new Texture(Gdx.files.internal("rakete.png"));
-        sprite.setTexture(texture);
+    public Player(Texture texture) {
+        sprite = new Sprite(texture);
+        this.texture = texture;
         shape = new ShapeRenderer();
+        sprite.setPosition(20, 20);
     }   
     
     public void render(float delta, SpriteBatch batch) {
         sprite.draw(batch);
-        sprite.setPosition(0, 0);
-        RocketLauncher.INSTANCE.batch.draw(texture, 64, 64);
-        shape.begin(ShapeType.Line);
-		shape.line(0,0,50,50);
-		shape.end();
+        // batch.draw(texture, 20, 20);
 
-        System.out.println(texture.toString());
+
     }
 }
