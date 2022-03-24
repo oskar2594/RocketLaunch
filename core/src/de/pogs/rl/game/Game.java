@@ -1,7 +1,5 @@
 package de.pogs.rl.game;
 
-import java.beans.Encoder;
-
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -24,11 +22,7 @@ public class Game extends ScreenAdapter {
 	public Game() {
 		INSTANCE = this;
 		batch = new SpriteBatch();
-<<<<<<< HEAD
-		// camera = new RocketCamera();
-=======
 		camera = new RocketCamera();
->>>>>>> 7950266ea8f76af4ccd1e34a70556819c54f1164
 		engine = new Engine();
 		//Entites
 		player = new Player();
@@ -42,23 +36,14 @@ public class Game extends ScreenAdapter {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 			Gdx.app.exit();
 		}
-<<<<<<< HEAD
-		// batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-=======
-		batch.begin();
 		batch.setProjectionMatrix(camera.combined);
->>>>>>> 7950266ea8f76af4ccd1e34a70556819c54f1164
+		camera.update();
+		batch.begin();
 		// DRAW
 
 		player.render(delta, batch);
 
 		//
-<<<<<<< HEAD
-		// camera.update();
-=======
-		camera.update();
->>>>>>> 7950266ea8f76af4ccd1e34a70556819c54f1164
 		batch.end();
 	}
 
