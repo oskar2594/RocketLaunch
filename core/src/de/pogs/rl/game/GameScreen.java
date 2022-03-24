@@ -18,17 +18,15 @@ public class GameScreen extends ScreenAdapter {
     private SpriteBatch batch;
 
     private RocketCamera camera;
-    private Texture text;
-    private Player player;
+    public Player player;
     private LinkedList<AbstractEntity> entities = new LinkedList<AbstractEntity>();
 
     public GameScreen() {
         INSTANCE = this;
         batch = RocketLauncher.INSTANCE.batch;
 
-        text = new Texture(Gdx.files.internal("rakete.png"));
         camera = new RocketCamera();
-        player = new Player(text);
+        player = new Player();
         entities.add(player);
     }
 
@@ -39,7 +37,7 @@ public class GameScreen extends ScreenAdapter {
         }
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        camera.move();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
