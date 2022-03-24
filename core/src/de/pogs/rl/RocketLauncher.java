@@ -3,7 +3,6 @@ package de.pogs.rl;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import de.pogs.rl.screens.Menu;
 
 public class RocketLauncher extends Game {
 	public SpriteBatch batch;
