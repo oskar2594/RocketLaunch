@@ -11,8 +11,9 @@ public class Player extends AbstractEntity {
         sprite = new Sprite(texture);
         sprite.setPosition(20, 20);
     }   
-    
-    public void render(float delta, SpriteBatch batch) {
+    @Override
+    public void render(SpriteBatch batch) {
         sprite.draw(batch);
     }
+
 }
