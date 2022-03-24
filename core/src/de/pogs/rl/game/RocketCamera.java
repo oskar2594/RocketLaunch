@@ -12,7 +12,4 @@ public class RocketCamera extends OrthographicCamera {
         super(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
-    public void update() {
-
-    }
 }

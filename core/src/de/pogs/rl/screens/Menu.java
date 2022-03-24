@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 
 import de.pogs.rl.RocketLauncher;
-import de.pogs.rl.game.Game;
+import de.pogs.rl.game.GameScreen;
 
 public class Menu extends ScreenAdapter {
 
@@ -19,7 +19,7 @@ public class Menu extends ScreenAdapter {
 	@Override
 	public void render(float delta) {
 		if (Gdx.input.isTouched()) {
-			RocketLauncher.INSTANCE.setScreen(new Game());
+			RocketLauncher.INSTANCE.setScreen(new GameScreen());
 			dispose();
 		}
 	}

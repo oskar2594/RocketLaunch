@@ -1,51 +1,41 @@
 package de.pogs.rl.game;
 
-import java.beans.Encoder;
-
-import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import de.pogs.rl.game.entities.Player;
+import de.pogs.rl.RocketLauncher;
 
-public class Game extends ScreenAdapter {
-	public static Game INSTANCE;
+public class GameScreen extends ScreenAdapter {
+	public static GameScreen INSTANCE;
 
 	private SpriteBatch batch;
 
-
-	private Engine engine;
 	private RocketCamera camera;
-	private Player player;
+	private Texture text;
 
-	public Game() {
+	public GameScreen() {
 		INSTANCE = this;
-		batch = new SpriteBatch();
-		camera = new RocketCamera();
-		engine = new Engine();
-		//Entites
-		player = new Player();
-		engine.addEntity(player);
-	}
+		batch = RocketLauncher.INSTANCE.batch;
 
+		text = new Texture(Gdx.files.internal("rakete.png"));
+		camera = new RocketCamera();
+	}
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-			Gdx.app.exit();
-		}
-		batch.begin();
+
+		camera.update();
 		batch.setProjectionMatrix(camera.combined);
+		batch.begin();
 		// DRAW
 
-		player.render(delta, batch);
+		batch.draw(text, 10, 10);
 
 		//
-		camera.update();
 		batch.end();
 	}
 
@@ -59,6 +49,5 @@ public class Game extends ScreenAdapter {
 	public void dispose() {
 		this.dispose();
 	}
-
 
 }

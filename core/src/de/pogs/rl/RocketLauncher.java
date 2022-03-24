@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.pogs.rl.screens.Menu;
 
 public class RocketLauncher extends Game {
-	private SpriteBatch batch;
+	public SpriteBatch batch;
 	public static RocketLauncher INSTANCE;
 
 	public RocketLauncher() {
@@ -16,7 +16,7 @@ public class RocketLauncher extends Game {
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		this.setScreen(new Menu());
+		this.setScreen(new de.pogs.rl.game.GameScreen());
 	}
 
 
