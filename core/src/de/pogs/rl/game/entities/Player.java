@@ -24,7 +24,6 @@ public class Player extends Entity {
     
     public void render(float delta, SpriteBatch batch) {
         sprite.draw(batch);
-<<<<<<< HEAD
         sprite.setPosition(0, 0);
         RocketLauncher.INSTANCE.batch.draw(texture, 64, 64);
         shape.begin(ShapeType.Line);
@@ -32,8 +31,5 @@ public class Player extends Entity {
 		shape.end();
 
         System.out.println(texture.toString());
-=======
-        System.out.println("RENDER");
->>>>>>> ed2dbbed0bba947b4c7ec3ab83a82cdf0a1df0c0
     }
 }
