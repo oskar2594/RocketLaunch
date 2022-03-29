@@ -14,7 +14,7 @@ public class RocketCamera extends OrthographicCamera {
 
     public void move() {
         this.position.x = GameScreen.INSTANCE.player.position.x;
-        this.position.y = Gdx.graphics.getHeight() - GameScreen.INSTANCE.player.position.y;
+        this.position.y = GameScreen.INSTANCE.player.position.y;
     }
 
 }
