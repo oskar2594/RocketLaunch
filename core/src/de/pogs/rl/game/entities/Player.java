@@ -58,9 +58,6 @@ public class Player extends AbstractEntity {
             if (mouseXfromPlayer() < 0 && mouseYfromPlayer() > 0) {
                 aimedAngle = 180 + aimedAngle;
             }
-            System.out.println(aimedAngle);
-            System.out.println(mouseXfromPlayer());
-            System.out.println(mouseYfromPlayer());
 
         }
     }
@@ -74,7 +71,16 @@ public class Player extends AbstractEntity {
     }
 
     private void updateAngle(float delta) {
-        angle = angle + (aimedAngle - angle) * delta * angle_response;
+        angle = angle + (angleDifferenceSmaller(aimedAngle, angle)) * delta * angle_response;
+    }
+
+    private float angleDifferenceSmaller(float angle1, float angle2) {
+        float diff1 = angle1 - angle2;
+        float diff2 = diff1 - 360;
+        if (Math.abs(diff1) > Math.abs(diff2)) {
+            return diff2;
+        }
+        return diff1;
     }
 
     private void updatePosition(float delta) {
