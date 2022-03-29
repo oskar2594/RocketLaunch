@@ -3,7 +3,6 @@ package de.pogs.rl.game.entities;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
@@ -34,7 +33,8 @@ public class Player extends AbstractEntity {
     public void update(float delta, Input input) {
         updateAimedAngle();
         updateAngle(delta);
-        sprite.setPosition(position.x - (texture.getWidth() / 2), position.y + texture.getHeight() * sprite.getScaleY() / 2);
+        sprite.setPosition(position.x - (texture.getWidth() / 2),
+                position.y + texture.getHeight() * sprite.getScaleY() / 2);
         sprite.setRotation(angle);
         // if (input.isKeyPressed(Keys.LEFT)) sprite.setPosition(sprite.getX() - speed *
         // delta, sprite.getY());
@@ -44,11 +44,11 @@ public class Player extends AbstractEntity {
     }
 
     private void updateAimedAngle() {
-        if (Gdx.input.isTouched()) {
-            aimedAngle = (float) Math.toDegrees((float) (Math.atan((Gdx.input.getX() - (float) (Gdx.graphics.getWidth() / 2))
-                    / (float) (Gdx.input.getY() - Gdx.graphics.getHeight()))));
 
-        }
+        aimedAngle = (float) Math
+                .toDegrees((float) (Math.atan((Gdx.input.getX() - (float) (Gdx.graphics.getWidth() / 2))
+                        / (float) (Gdx.input.getY() - Gdx.graphics.getHeight()))));
+
     }
 
     private void updateAngle(float delta) {
