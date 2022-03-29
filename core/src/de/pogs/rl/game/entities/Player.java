@@ -16,6 +16,8 @@ public class Player extends AbstractEntity {
     private float aimedAngle = 0;
     private float angle_response = 1;
 
+    private float speed = 1;
+
     public Vector2 position = new Vector2(0, 0);
 
     public Player() {
@@ -33,6 +35,7 @@ public class Player extends AbstractEntity {
     public void update(float delta, Input input) {
         updateAimedAngle();
         updateAngle(delta);
+        updatePosition(delta);
         sprite.setPosition(position.x - (texture.getWidth() / 2),
                 position.y + texture.getHeight() * sprite.getScaleY() / 2);
         sprite.setRotation(angle);
@@ -44,14 +47,38 @@ public class Player extends AbstractEntity {
     }
 
     private void updateAimedAngle() {
+        if (Gdx.input.isTouched()) {
 
-        aimedAngle = (float) Math
-                .toDegrees((float) (Math.atan((Gdx.input.getX() - (float) (Gdx.graphics.getWidth() / 2))
-                        / (float) (Gdx.input.getY() - Gdx.graphics.getHeight()))));
+            aimedAngle = (float) Math
+                    .toDegrees((float) (Math.atan(mouseXfromPlayer()
+                            / mouseYfromPlayer())));
+            if (mouseXfromPlayer() > 0 && mouseYfromPlayer() > 0) {
+                aimedAngle = -180 + aimedAngle;
+            }
+            if (mouseXfromPlayer() < 0 && mouseYfromPlayer() > 0) {
+                aimedAngle = 180 + aimedAngle;
+            }
+            System.out.println(aimedAngle);
+            System.out.println(mouseXfromPlayer());
+            System.out.println(mouseYfromPlayer());
 
+        }
+    }
+
+    private float mouseXfromPlayer() {
+        return Gdx.input.getX() - (float) (Gdx.graphics.getWidth() / 2);
+    }
+
+    private float mouseYfromPlayer() {
+        return (float) (Gdx.input.getY() - (float) (Gdx.graphics.getHeight() / 2));
     }
 
     private void updateAngle(float delta) {
         angle = angle + (aimedAngle - angle) * delta * angle_response;
+    }
+
+    private void updatePosition(float delta) {
+        // position = position.add(((float) Math.cos(angle)) * delta, ((float)
+        // Math.sin(angle)) * delta);
     }
 }
