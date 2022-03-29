@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter.SpriteMode;
 import com.badlogic.gdx.math.Vector2;
 
-import org.w3c.dom.Text;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
@@ -19,6 +17,7 @@ public class Player extends AbstractEntity {
 
     private float angle = 0;
     private float aimedAngle = 0;
+    private float angle_response = 1;
 
     public Vector2 position = new Vector2(0, 0);
 
@@ -44,11 +43,14 @@ public class Player extends AbstractEntity {
     }
 
     private void updateAimedAngle() {
-        if (Gdx.input.isTouched()) {
-            aimedAngle = (float) Math.toDegrees((float) (Math.atan((Gdx.input.getX() - (float) (Gdx.graphics.getWidth() / 2))
-                    / (float) (Gdx.input.getY() - Gdx.graphics.getHeight()))));
 
-        }
+        aimedAngle = (float) Math
+                .toDegrees((float) (Math.atan((Gdx.input.getX() - (float) (Gdx.graphics.getWidth() / 2))
+                        / (float) (Gdx.input.getY() - Gdx.graphics.getHeight()))));
+
     }
 
+    private void updateAngle(float delta) {
+        angle = angle + (aimedAngle - angle) * delta * angle_response;
+    }
 }
