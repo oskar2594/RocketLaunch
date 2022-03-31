@@ -18,7 +18,7 @@ public class Player extends AbstractEntity {
     private float aimedAngle = 0;
     private float angle_response = 1;
 
-    private float speed = 1;
+    private float speed = 100;
 
     public Vector2 position = new Vector2(0, 0);
 
@@ -35,7 +35,7 @@ public class Player extends AbstractEntity {
     }
 
     @Override
-    public void update(float delta, Input input) {
+    public void update(float delta) {
         updateAimedAngle();
         updateAngle(delta);
         updatePosition(delta);
@@ -44,7 +44,6 @@ public class Player extends AbstractEntity {
 
         // if (input.isKeyPressed(Keys.RIGHT)) sprite.setPosition(sprite.getX() + speed
         // * delta, sprite.getY());
-        System.out.println( sprite.getWidth());
         sprite.setPosition(position.x - (sprite.getWidth() / 2), position.y - sprite.getHeight() / 2);
         sprite.setRotation(angle);
 
@@ -75,12 +74,26 @@ public class Player extends AbstractEntity {
     }
 
     private void updateAngle(float delta) {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         angle = angle + (angleDifferenceSmaller(aimedAngle, angle)) * delta * angle_response;
+        angle = (angle + 180) % 360 - 180;
     }
 
     private float angleDifferenceSmaller(float angle1, float angle2) {
+        angle1 = angle1 + 180;
+        angle2 = angle2 + 180;
         float diff1 = angle1 - angle2;
-        float diff2 = diff1 - 360;
+        float diff2 = 0;
+        if (diff1 < 0) {
+            diff2 = 360 - diff1;
+        } else {
+            diff2 = diff1 - 360;
+        }
+        diff1 %= 360;
+        diff2 %= 360;
+        System.out.println(diff1);
+        System.out.println(diff2);
         if (Math.abs(diff1) > Math.abs(diff2)) {
             return diff2;
         }
@@ -88,7 +101,8 @@ public class Player extends AbstractEntity {
     }
 
     private void updatePosition(float delta) {
-        position = position.add(((float) Math.cos(angle)) * delta * speed, ((float)
-        Math.sin(angle)) * delta * speed);
+        position = position.add(((float) Math.cos((angle + 90) * Math.PI / 180)) * delta * speed,
+                ((float) Math.sin((angle + 90) * (Math.PI / 180))) * delta * speed);
+        // System.out.println(position.x);
     }
 }
