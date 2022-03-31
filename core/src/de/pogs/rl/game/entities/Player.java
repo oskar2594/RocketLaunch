@@ -88,7 +88,7 @@ public class Player extends AbstractEntity {
     }
 
     private void updatePosition(float delta) {
-        // position = position.add(((float) Math.cos(angle)) * delta, ((float)
-        // Math.sin(angle)) * delta);
+        position = position.add(((float) Math.cos(angle)) * delta * speed, ((float)
+        Math.sin(angle)) * delta * speed);
     }
 }
