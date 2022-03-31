@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.entities.AbstractEntity;
+import de.pogs.rl.game.entities.Enemy;
 import de.pogs.rl.game.entities.Player;
 
 public class GameScreen extends ScreenAdapter {
@@ -28,12 +29,13 @@ public class GameScreen extends ScreenAdapter {
         camera = new RocketCamera();
         player = new Player();
         entities.add(player);
+        entities.add(new Enemy(20, 20));
     }
 
     @Override
     public void render(float delta) {
         for (AbstractEntity entity : entities) {
-            entity.update(delta, Gdx.input);
+            entity.update(delta);
         }
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
