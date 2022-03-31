@@ -18,7 +18,7 @@ public class Player extends AbstractEntity {
     private float aimedAngle = 0;
     private float angle_response = 1;
 
-    private float speed = 100;
+    private float speed = 15;
 
     public Vector2 position = new Vector2(0, 0);
 
@@ -74,8 +74,7 @@ public class Player extends AbstractEntity {
     }
 
     private void updateAngle(float delta) {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+
         angle = angle + (angleDifferenceSmaller(aimedAngle, angle)) * delta * angle_response;
         angle = (angle + 180) % 360 - 180;
     }
