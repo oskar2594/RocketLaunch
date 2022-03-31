@@ -18,7 +18,7 @@ public class Player extends AbstractEntity {
     private float aimedAngle = 0;
     private float angle_response = 1;
 
-    private float speed = 1;
+    private float speed = 10;
 
     public Vector2 position = new Vector2(0, 0);
 
@@ -44,7 +44,7 @@ public class Player extends AbstractEntity {
 
         // if (input.isKeyPressed(Keys.RIGHT)) sprite.setPosition(sprite.getX() + speed
         // * delta, sprite.getY());
-        System.out.println( sprite.getWidth());
+        // System.out.println( sprite.getWidth());
         sprite.setPosition(position.x - (sprite.getWidth() / 2), position.y - sprite.getHeight() / 2);
         sprite.setRotation(angle);
 

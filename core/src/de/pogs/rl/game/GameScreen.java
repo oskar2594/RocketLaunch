@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.pogs.rl.RocketLauncher;
+import de.pogs.rl.game.background.BackgroundLayer;
 import de.pogs.rl.game.entities.AbstractEntity;
 import de.pogs.rl.game.entities.Player;
 
@@ -17,7 +18,8 @@ public class GameScreen extends ScreenAdapter {
 
     private SpriteBatch batch;
 
-    private RocketCamera camera;
+    private BackgroundLayer background;
+    public RocketCamera camera;
     public Player player;
     private LinkedList<AbstractEntity> entities = new LinkedList<AbstractEntity>();
 
@@ -27,6 +29,7 @@ public class GameScreen extends ScreenAdapter {
 
         camera = new RocketCamera();
         player = new Player();
+        background = new BackgroundLayer();
         entities.add(player);
     }
 
@@ -42,6 +45,7 @@ public class GameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         // DRAW
+        background.render(delta, batch);
         for (AbstractEntity entity : entities) {
             entity.render(batch);
         }
