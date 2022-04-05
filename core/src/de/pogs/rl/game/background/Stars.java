@@ -1,11 +1,12 @@
 package de.pogs.rl.game.background;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+
+import java.awt.Color;
 
 import de.pogs.rl.utils.PerlinNoiseGenerator;
 
@@ -16,13 +17,16 @@ public class Stars {
 
     private Color starColor;
 
-    private double minStar = 0.2,
-    minLight = 0.04;
+    private int radius;
 
-    private int minVal = 0, maxVal = 5;
-    private double scale = 20;
+    private double minStar = 0.6,
+    minLight = 0.02;
+
+    private int minVal = 0, maxVal = 1;
+    private double scale = 50;
 
     public Stars(int radius, double starSeed, Color starColor) {
+        this.radius = radius;
         this.starColor = starColor;
         // starSeed = new Random().nextGaussian() * 255;
         starNoise = new PerlinNoiseGenerator(starSeed);
@@ -30,20 +34,24 @@ public class Stars {
         BackgroundLayer.INSTANCE.starSprite = new Sprite(stars);
     }
 
+    public void update(Vector2 start) {
+        stars = generateLightTexture(radius, radius, start);
+        BackgroundLayer.INSTANCE.starSprite = new Sprite(stars);
+    }
+
     public Texture generateLightTexture(int width, int height, Vector2 start) {
-        return new Texture(generateStarPixmap(width, height, start, minVal, maxVal, scale));
+        return new Texture(generateStarPixmap(width, height, start, maxVal, minVal, scale));
     }
 
     public Pixmap generateStarPixmap(int width, int height, Vector2 start, double max, double min, double scale) {
         byte[] bytes = generateStarBytes(width, height, start, max, min, scale);
         Pixmap pixmap = new Pixmap(width, height, Format.RGBA8888);
-        System.out.println(starColor.r);
         int idx = 0;
         for (int i = 1; i < bytes.length; i++) {
             byte val = bytes[i];
-            pixmap.getPixels().put(idx++, (byte) 255);
-            pixmap.getPixels().put(idx++, (byte) 255);
-            pixmap.getPixels().put(idx++, (byte) 255);
+            pixmap.getPixels().put(idx++, (byte) starColor.getRed());
+            pixmap.getPixels().put(idx++, (byte) starColor.getGreen());
+            pixmap.getPixels().put(idx++, (byte) starColor.getBlue());
             pixmap.getPixels().put(idx++, (byte) val);
         }
         return pixmap;
@@ -55,11 +63,11 @@ public class Stars {
         double scaleL = 0.2;
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                double starValue = starNoise.noise((double) x * scale, (double) y * scale);
-                double lightValue = BackgroundLayer.INSTANCE.light.lightNoise.noise((double) x * scaleL,
-                        (double) y * scaleL);
-                if (starValue > minStar && lightValue > minLight) {
-                    bytes[idx++] = (byte) 255;
+                double starValue = starNoise.noise((double) (x + start.x) * scale, (double) (y + start.y) * scale);
+                double lightValue = BackgroundLayer.INSTANCE.light.lightNoise.noise((double) (x + start.x) * scaleL,
+                        (double) (y + start.y) * scaleL);
+                if ((starValue + lightValue) > 0.7  && starValue > 0.4) {
+                    bytes[idx++] = (byte) ((starValue + lightValue - (minStar + minLight)) * 255);
                 } else {
                     bytes[idx++] = (byte) 0;
                 }

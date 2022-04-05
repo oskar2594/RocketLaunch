@@ -21,7 +21,7 @@ public class Player extends AbstractEntity {
     private float aimedAngle = 0;
     private float angle_response = 1;
 
-    private float speed = 100;
+    private float speed = 15;
 
     public Vector2 position = new Vector2(0, 0);
 
