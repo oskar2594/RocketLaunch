@@ -84,8 +84,8 @@ public class Player extends AbstractEntity {
     }
 
     private void updatePosition(float delta) {
-        position = position.add(((float) Math.cos((angle + 90) * Math.PI / 180)) * delta * speed,
-                ((float) Math.sin((angle + 90) * (Math.PI / 180))) * delta * speed);
-        // System.out.println(position.x);
+        position = position.add(SpecialMath.angleToVector(delta).scl(delta * speed));
     }
+
+    
 }

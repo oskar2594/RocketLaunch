@@ -1,5 +1,7 @@
 package de.pogs.rl.utils;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class SpecialMath {
     public static float modulus(float x, float n) {
         float r = x % n;
@@ -24,5 +26,9 @@ public class SpecialMath {
             return diff2;
         }
         return diff1;
+    }
+    public static Vector2 angleToVector(float angle) {
+        return new Vector2(((float) Math.cos((angle + 90) * Math.PI / 180)),
+        ((float) Math.sin((angle + 90) * (Math.PI / 180))));
     }
 }
