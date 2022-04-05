@@ -14,11 +14,11 @@ public class Enemy extends AbstractEntity{
 
     public Vector2 position = new Vector2(0, 0);
 
-    public Enemy(int pos_x, int pos_y) {
+    public Enemy(int posX, int posY) {
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-        position.set(pos_x, pos_y);
+        position.set(posX, posY);
     }
     @Override
     public void render(SpriteBatch batch) {
