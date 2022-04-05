@@ -3,8 +3,11 @@ package de.pogs.rl.game.entities;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
+import de.pogs.rl.utils.SpecialMath;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -74,30 +77,10 @@ public class Player extends AbstractEntity {
     }
 
     private void updateAngle(float delta) {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-        angle = angle + (angleDifferenceSmaller(aimedAngle, angle)) * delta * angle_response;
-        angle = (angle + 180) % 360 - 180;
-    }
 
-    private float angleDifferenceSmaller(float angle1, float angle2) {
-        angle1 = angle1 + 180;
-        angle2 = angle2 + 180;
-        float diff1 = angle1 - angle2;
-        float diff2 = 0;
-        if (diff1 < 0) {
-            diff2 = 360 - diff1;
-        } else {
-            diff2 = diff1 - 360;
-        }
-        diff1 %= 360;
-        diff2 %= 360;
-        System.out.println(diff1);
-        System.out.println(diff2);
-        if (Math.abs(diff1) > Math.abs(diff2)) {
-            return diff2;
-        }
-        return diff1;
+        angle = angle + (SpecialMath.angleDifferenceSmaller(aimedAngle, angle, 360)) * delta * angle_response;
+        angle = SpecialMath.modulus(angle + 180, 360) - 180;
+
     }
 
     private void updatePosition(float delta) {
