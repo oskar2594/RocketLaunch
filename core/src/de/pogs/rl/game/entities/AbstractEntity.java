@@ -1,6 +1,5 @@
 package de.pogs.rl.game.entities;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public abstract class AbstractEntity {
