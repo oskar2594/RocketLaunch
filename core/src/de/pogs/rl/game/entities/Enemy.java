@@ -4,15 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
+
 
 public class Enemy extends AbstractEntity{
     private Texture texture = new Texture(Gdx.files.internal("bucket.png"));
     private Sprite sprite;
 
     private float scale = 0.2f;
-
-    public Vector2 position = new Vector2(0, 0);
 
     public Enemy(int posX, int posY) {
         sprite = new Sprite(texture);

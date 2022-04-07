@@ -1,11 +1,13 @@
 package de.pogs.rl.game.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
 
+import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.utils.SpecialMath;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -20,8 +22,9 @@ public class Player extends AbstractEntity {
     private float angle_response = 1;
 
     private float speed = 15;
-
-    public Vector2 position = new Vector2(0, 0);
+    private float bulletSpeed;
+    private double shotCooldown = 1000;
+    private double lastBulletTime = TimeUtils.millis();
 
     public Player() {
         sprite = new Sprite(texture);
@@ -47,7 +50,22 @@ public class Player extends AbstractEntity {
         // * delta, sprite.getY());
         sprite.setPosition(position.x - (sprite.getWidth() / 2), position.y - sprite.getHeight() / 2);
         sprite.setRotation(angle);
+        // shoot();
+    }
 
+    private void shoot() {
+        if (Gdx.input.isKeyPressed(Keys.SPACE)) {
+            System.out.println(lastBulletTime);
+            System.out.println(TimeUtils.millis());
+            System.out.println(TimeUtils.millis() - lastBulletTime);
+            if ((TimeUtils.millis() - lastBulletTime) >= shotCooldown) {
+                GameScreen.INSTANCE.entityManager
+                        .addEntity(new Bullet(position.x, position.y, this.angle, this.speed + this.bulletSpeed));
+                lastBulletTime = TimeUtils.millis();
+                System.out.println("bam");
+
+            }
+        }
     }
 
     private void updateAimedAngle() {
@@ -82,8 +100,7 @@ public class Player extends AbstractEntity {
     }
 
     private void updatePosition(float delta) {
-        position = position.add(SpecialMath.angleToVector(delta).scl(delta * speed));
+        position = position.add(SpecialMath.angleToVector(this.angle).scl(delta * speed));
     }
 
-    
 }

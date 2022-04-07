@@ -17,7 +17,7 @@ public class Bullet extends AbstractEntity {
     private float angle;
     public Vector2 position = new Vector2(0, 0);
 
-    public Bullet(int posX, int posY, float angle, float speed) {
+    public Bullet(float posX, float posY, float angle, float speed) {
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
@@ -40,4 +40,5 @@ public class Bullet extends AbstractEntity {
     private void updatePosition(float delta) {
         position = position.add(SpecialMath.angleToVector(angle).scl(delta * speed));
     }
+
 }

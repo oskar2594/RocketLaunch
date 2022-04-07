@@ -1,6 +1,5 @@
 package de.pogs.rl.game;
 
-import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -9,8 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.background.BackgroundLayer;
-import de.pogs.rl.game.entities.AbstractEntity;
 import de.pogs.rl.game.entities.Enemy;
+import de.pogs.rl.game.entities.EntityManager;
 import de.pogs.rl.game.entities.Player;
 
 public class GameScreen extends ScreenAdapter {
@@ -21,24 +20,22 @@ public class GameScreen extends ScreenAdapter {
     private BackgroundLayer background;
     public RocketCamera camera;
     public Player player;
-    private LinkedList<AbstractEntity> entities = new LinkedList<AbstractEntity>();
+    public EntityManager entityManager;
 
     public GameScreen() {
         INSTANCE = this;
         batch = RocketLauncher.INSTANCE.batch;
-
+        entityManager = new EntityManager();
         camera = new RocketCamera();
         player = new Player();
         background = new BackgroundLayer();
-        entities.add(player);
-        entities.add(new Enemy(20, 20));
+        entityManager.addEntity(player);
+        entityManager.addEntity(new Enemy(20, 20));
     }
 
     @Override
     public void render(float delta) {
-        for (AbstractEntity entity : entities) {
-            entity.update(delta);
-        }
+        entityManager.update(delta);
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.move();
@@ -47,9 +44,7 @@ public class GameScreen extends ScreenAdapter {
         batch.begin();
         // DRAW
         background.render(delta, batch);
-        for (AbstractEntity entity : entities) {
-            entity.render(batch);
-        }
+        entityManager.render(batch);
         batch.end();
     }
 
