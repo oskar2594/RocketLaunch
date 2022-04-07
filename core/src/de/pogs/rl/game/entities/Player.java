@@ -91,8 +91,6 @@ public class Player extends AbstractEntity {
         }
         diff1 %= 360;
         diff2 %= 360;
-        System.out.println(diff1);
-        System.out.println(diff2);
         if (Math.abs(diff1) > Math.abs(diff2)) {
             return diff2;
         }

@@ -28,13 +28,12 @@ public class Light {
         // lightSeed = new Random().nextGaussian() * 255;
         lightNoise = new PerlinNoiseGenerator(lightSeed);
         light = generateLightTexture(radius, radius, new Vector2());
-
         BackgroundLayer.INSTANCE.lightSprite = new Sprite(light);
     }
 
     public void update(Vector2 start) {
-        light = generateLightTexture(radius, radius, start);
-        BackgroundLayer.INSTANCE.lightSprite = new Sprite(light);
+        light.draw(generatePixmap(radius, radius, start, maxVal, minVal, scale), 0, 0);
+        BackgroundLayer.INSTANCE.lightSprite.setTexture(light);
     }
 
     public Texture generateLightTexture(int width, int height, Vector2 start) {

@@ -26,15 +26,20 @@ public class BackgroundLayer {
     private double lightSeed;
     private double starSeed;
 
+    private ChunkLight ch;
+
     public BackgroundLayer() {
         INSTANCE = this;
+
+        ch = new ChunkLight();
+
         position = new Vector2();
         position.set(0, 0);
 
         lightSprite = new Sprite();
         starSprite = new Sprite();
 
-        radius = Gdx.graphics.getWidth() /2;
+        radius = 50;
         lightSeed = new Random().nextGaussian() * 255;
         starSeed = new Random().nextGaussian() * 255;
 
@@ -43,8 +48,9 @@ public class BackgroundLayer {
     }
 
     public void update(float delta) {
+
         Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
-        if (distance(position, camPos) > Gdx.graphics.getWidth() / 4) {
+        if (distance(position, camPos) > 1) {
             position.set(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
             light.update(camPos);
             stars.update(camPos);
@@ -55,6 +61,7 @@ public class BackgroundLayer {
     }
 
     public void render(float delta, SpriteBatch batch) {
+        ch.update(batch);
         this.update(delta);
         starSprite.draw(batch);
         lightSprite.draw(batch);
