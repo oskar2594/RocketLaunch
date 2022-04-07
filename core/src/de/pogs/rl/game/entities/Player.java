@@ -21,7 +21,7 @@ public class Player extends AbstractEntity {
     private float aimedAngle = 0;
     private float angle_response = 1;
 
-    private float speed = 15;
+    private float speed = 100;
     private float bulletSpeed = 10;
     private double shotCooldown = 1000;
     private double lastBulletTime = TimeUtils.millis();
@@ -93,6 +93,7 @@ public class Player extends AbstractEntity {
 
         angle = angle + (SpecialMath.angleDifferenceSmaller(aimedAngle, angle, 360)) * delta * angle_response;
         angle = SpecialMath.modulus(angle + 180, 360) - 180;
+    }
 
     private float angleDifferenceSmaller(float angle1, float angle2) {
         angle1 = angle1 + 180;
