@@ -22,7 +22,7 @@ public class Player extends AbstractEntity {
     private float angle_response = 1;
 
     private float speed = 15;
-    private float bulletSpeed;
+    private float bulletSpeed = 10;
     private double shotCooldown = 1000;
     private double lastBulletTime = TimeUtils.millis();
 
@@ -50,14 +50,11 @@ public class Player extends AbstractEntity {
         // * delta, sprite.getY());
         sprite.setPosition(position.x - (sprite.getWidth() / 2), position.y - sprite.getHeight() / 2);
         sprite.setRotation(angle);
-        // shoot();
+        shoot();
     }
 
     private void shoot() {
         if (Gdx.input.isKeyPressed(Keys.SPACE)) {
-            System.out.println(lastBulletTime);
-            System.out.println(TimeUtils.millis());
-            System.out.println(TimeUtils.millis() - lastBulletTime);
             if ((TimeUtils.millis() - lastBulletTime) >= shotCooldown) {
                 GameScreen.INSTANCE.entityManager
                         .addEntity(new Bullet(position.x, position.y, this.angle, this.speed + this.bulletSpeed));

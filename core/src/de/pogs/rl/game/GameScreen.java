@@ -31,6 +31,7 @@ public class GameScreen extends ScreenAdapter {
         background = new BackgroundLayer();
         entityManager.addEntity(player);
         entityManager.addEntity(new Enemy(20, 20));
+        entityManager.flush();
     }
 
     @Override
