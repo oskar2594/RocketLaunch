@@ -21,8 +21,8 @@ public class Player extends AbstractEntity {
     private float aimedAngle = 0;
     private float angle_response = 1;
 
-    private float speed = 50;
-    private float bulletSpeed = 10;
+    private float speed = 100;
+    private float bulletSpeed = 200;
     private double shotCooldown = 1000;
     private double lastBulletTime = TimeUtils.millis();
 
@@ -43,11 +43,7 @@ public class Player extends AbstractEntity {
         updateAimedAngle();
         updateAngle(delta);
         updatePosition(delta);
-        // if (input.isKeyPressed(Keys.LEFT)) sprite.setPosition(sprite.getX() - speed *
-        // delta, sprite.getY());
 
-        // if (input.isKeyPressed(Keys.RIGHT)) sprite.setPosition(sprite.getX() + speed
-        // * delta, sprite.getY());
         sprite.setPosition(position.x - (sprite.getWidth() / 2), position.y - sprite.getHeight() / 2);
         sprite.setRotation(angle);
         shoot();
@@ -59,7 +55,6 @@ public class Player extends AbstractEntity {
                 GameScreen.INSTANCE.entityManager
                         .addEntity(new Bullet(position.x, position.y, this.angle, this.speed + this.bulletSpeed));
                 lastBulletTime = TimeUtils.millis();
-                System.out.println("bam");
 
             }
         }
