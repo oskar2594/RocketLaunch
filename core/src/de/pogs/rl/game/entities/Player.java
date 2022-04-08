@@ -95,24 +95,6 @@ public class Player extends AbstractEntity {
         angle = SpecialMath.modulus(angle + 180, 360) - 180;
     }
 
-    private float angleDifferenceSmaller(float angle1, float angle2) {
-        angle1 = angle1 + 180;
-        angle2 = angle2 + 180;
-        float diff1 = angle1 - angle2;
-        float diff2 = 0;
-        if (diff1 < 0) {
-            diff2 = 360 - diff1;
-        } else {
-            diff2 = diff1 - 360;
-        }
-        diff1 %= 360;
-        diff2 %= 360;
-        if (Math.abs(diff1) > Math.abs(diff2)) {
-            return diff2;
-        }
-        return diff1;
-    }
-
     private void updatePosition(float delta) {
         position = position.add(SpecialMath.angleToVector(this.angle).scl(delta * speed));
     }
