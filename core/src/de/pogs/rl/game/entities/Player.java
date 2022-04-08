@@ -26,11 +26,13 @@ public class Player extends AbstractEntity {
     private double shotCooldown = 1000;
     private double lastBulletTime = TimeUtils.millis();
 
+
     public Player() {
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
         position.set(0, 0);
+        renderPriority = 1;
     }
 
     @Override
@@ -52,8 +54,10 @@ public class Player extends AbstractEntity {
     private void shoot() {
         if (Gdx.input.isKeyPressed(Keys.SPACE)) {
             if ((TimeUtils.millis() - lastBulletTime) >= shotCooldown) {
+                Bullet bullet = new Bullet(position.x, position.y, this.angle, this.speed + this.bulletSpeed);
+                bullet.update(0);
                 GameScreen.INSTANCE.entityManager
-                        .addEntity(new Bullet(position.x, position.y, this.angle, this.speed + this.bulletSpeed));
+                        .addEntity(bullet);
                 lastBulletTime = TimeUtils.millis();
 
             }
