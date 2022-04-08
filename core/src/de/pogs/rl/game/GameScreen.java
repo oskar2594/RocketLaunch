@@ -1,6 +1,5 @@
 package de.pogs.rl.game;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -42,8 +41,10 @@ public class GameScreen extends ScreenAdapter {
         camera.move();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-        batch.begin();
         // DRAW
+        // final float delta2 = delta;
+
+        batch.begin();
         background.render(delta, batch);
         entityManager.render(batch);
         batch.end();

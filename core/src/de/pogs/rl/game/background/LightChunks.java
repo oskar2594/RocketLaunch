@@ -29,6 +29,8 @@ public class LightChunks {
     private int chunkRadius;
     private int renderDistance;
 
+    private int chunksPerFrame = 5;
+
     public LightChunks(int chunkRadius, PerlinNoiseGenerator noise, double min, double max, double scale) {
         this.chunkRadius = chunkRadius;
         this.noise = noise;
@@ -36,7 +38,7 @@ public class LightChunks {
         this.min = min;
         this.max = max;
         this.scale = scale;
-        renderDistance = (int) Math.ceil((Gdx.graphics.getWidth() / 1.5) / chunkRadius);
+        renderDistance = (int) Math.ceil((Gdx.graphics.getWidth() / 1.2) / chunkRadius);
 
         chunks = new LinkedList<LightChunk>();
     }
@@ -45,16 +47,21 @@ public class LightChunks {
         LinkedList<LightChunk> addChunks = new LinkedList<LightChunk>();
         Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
         int pixelChunkRadius = chunkRadius * renderDistance;
-        for (int x = (int) getNumInGrid(camPos.x, chunkRadius)
+        xLoop: for (int x = (int) getNumInGrid(camPos.x, chunkRadius)
                 - pixelChunkRadius; x < (int) getNumInGrid(camPos.x, chunkRadius)
                         + pixelChunkRadius; x += chunkRadius) {
-            for (int y = (int) getNumInGrid(camPos.y, chunkRadius)
-                    - pixelChunkRadius ; y < (int) getNumInGrid(camPos.y, chunkRadius)
+            if (addChunks.size() > chunksPerFrame && chunks.size() > Math.pow(renderDistance, 2) * Math.PI) {
+                break xLoop;
+            }
+            yLoop: for (int y = (int) getNumInGrid(camPos.y, chunkRadius)
+                    - pixelChunkRadius; y < (int) getNumInGrid(camPos.y, chunkRadius)
                             + pixelChunkRadius; y += chunkRadius) {
                 if (!checkForChunkAtPosition(x, y)) {
-                    LightChunk ent = new LightChunk(chunkRadius, x, y, noise, colorNoise, min, max, scale, batch);
-                    ent.run();
-                    addChunks.add(ent);
+                    LightChunk oneChunk = new LightChunk(chunkRadius, x, y, noise, colorNoise, min, max, scale, batch);
+                    addChunks.add(oneChunk);
+                }
+                if (addChunks.size() > chunksPerFrame && chunks.size() > Math.pow(renderDistance, 2) * Math.PI) {
+                    break yLoop;
                 }
             }
         }
@@ -75,7 +82,7 @@ public class LightChunks {
         Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
         for (LightChunk chunk : chunks) {
             if (distance(new Vector2(chunk.position.x, chunk.position.y),
-                    camPos) > renderDistance * chunkRadius * 3) {
+                    camPos) > renderDistance * chunkRadius * 2) {
                 chunk.dispose();
                 removeChunks.add(chunk);
             }

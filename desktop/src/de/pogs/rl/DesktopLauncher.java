@@ -6,11 +6,10 @@ import de.pogs.rl.RocketLauncher;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
-	public static void main (String[] arg) {
+	public static void main(String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setTitle("Rocket Launch");
-		config.setWindowedMode(1920, 1080
-		);
+		config.setWindowedMode(1000, 700);
 		config.useVsync(true);
 		config.setForegroundFPS(60);
 		new Lwjgl3Application(new RocketLauncher(), config);

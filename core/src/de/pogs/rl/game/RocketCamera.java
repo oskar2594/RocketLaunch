@@ -13,8 +13,10 @@ public class RocketCamera extends OrthographicCamera {
     }
 
     public void move() {
-        this.position.x = GameScreen.INSTANCE.player.getPosition().x;
-        this.position.y = GameScreen.INSTANCE.player.getPosition().y;
+        this.translate(GameScreen.INSTANCE.player.getPosition().x - this.position.x,
+                GameScreen.INSTANCE.player.getPosition().y - this.position.y);
+        // this.position.x = GameScreen.INSTANCE.player.getPosition().x;
+        // this.position.y = GameScreen.INSTANCE.player.getPosition().y;
     }
 
 }

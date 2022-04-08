@@ -21,7 +21,7 @@ public class Player extends AbstractEntity {
     private float aimedAngle = 0;
     private float angle_response = 1;
 
-    private float speed = 100;
+    private float speed = 50;
     private float bulletSpeed = 10;
     private double shotCooldown = 1000;
     private double lastBulletTime = TimeUtils.millis();

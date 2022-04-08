@@ -15,7 +15,7 @@ import java.awt.Color;
 
 import de.pogs.rl.utils.PerlinNoiseGenerator;
 
-public class LightChunk extends Thread {
+public class LightChunk {
     private Sprite sprite;
     private Texture texture;
     private PerlinNoiseGenerator noise;
@@ -23,7 +23,7 @@ public class LightChunk extends Thread {
     public Vector2 position;
 
     private int radius;
-    private double min;
+    private double min; 
     private double max;
     private double scale;
     private SpriteBatch batch;
@@ -38,24 +38,17 @@ public class LightChunk extends Thread {
         this.y = y;
         this.noise = noise;
         this.colorNoise = colorNoise;
-        this.min = min;
-        this.max = max;
-        this.scale = scale;
-        this.batch = batch;
-    }
-
-    public void run() {
         position = new Vector2();
         position.set(x, y);
         this.noise = noise;
         this.colorNoise = colorNoise;
-        this.texture = new Texture(
-                generatePixmap(radius, radius, new Vector2(position.x - radius, position.y - radius), min, max, scale));
+        this.texture = new Texture(this.generatePixmap(radius, radius, new Vector2(position.x - radius, position.y - radius), min, max, scale));
         sprite = new Sprite(texture);
         sprite.setSize(radius, radius);
         update();
         draw(batch);
     }
+
 
     public void update() {
         sprite.setPosition(position.x, position.y);
