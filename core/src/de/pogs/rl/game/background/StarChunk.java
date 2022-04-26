@@ -77,7 +77,7 @@ public final class StarChunk {
                 // (double) (start.y - y) * scale)) * (max - min + 1)+ min);
                 double value = Math.abs(noise.GetNoise((float) ((start.x + x) * scale), (float) ((start.y - y) * scale)))
                         * (max - min + 1) + min;
-                if (value > 2.6) {
+                if (value > 3) {
                     double lightValue = (BackgroundLayer.INSTANCE.lightNoise.GetNoise(
                             (float) ((start.x + x) * BackgroundLayer.INSTANCE.lightScale),
                             (float) ((start.y - y) * BackgroundLayer.INSTANCE.lightScale)))
