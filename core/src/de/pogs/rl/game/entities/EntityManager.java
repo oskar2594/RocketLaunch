@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class EntityManager {
     private LinkedList<AbstractEntity> entities = new LinkedList<AbstractEntity>();
     private LinkedList<AbstractEntity> entityQueue = new LinkedList<AbstractEntity>();
+
     public EntityManager() {
     }
 
@@ -17,7 +18,7 @@ public class EntityManager {
     public LinkedList<AbstractEntity> getCollidingEntities(AbstractEntity entity, float radius) {
         LinkedList<AbstractEntity> result = new LinkedList<AbstractEntity>();
         for (AbstractEntity entityChecked : entities) {
-            if (entityChecked.getPosition().dst(entity.getPosition()) <= radius && ! entityChecked.equals(entity)) {
+            if (entityChecked.getPosition().dst(entity.getPosition()) <= radius && !entityChecked.equals(entity)) {
                 result.add(entityChecked);
             }
         }
@@ -28,7 +29,9 @@ public class EntityManager {
         for (AbstractEntity entity : entities) {
             entity.update(delta);
         }
-        flush();
+        if (entityQueue.size() != 0) {
+            flush();
+        }
     }
 
     public void render(SpriteBatch batch) {
@@ -36,10 +39,12 @@ public class EntityManager {
             entity.render(batch);
         }
     }
+
     public void flush() {
         entities.addAll(entityQueue);
         while (entityQueue.size() > 0) {
             entityQueue.remove();
         }
+        entities.sort((e1, e2) -> e1.getRenderPriority() - e2.getRenderPriority());
     }
 }

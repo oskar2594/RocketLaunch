@@ -10,4 +10,8 @@ public abstract class AbstractEntity {
     public Vector2 getPosition() {
         return position;
     }
+    protected int renderPriority = 0;
+    public int getRenderPriority() {
+        return renderPriority;
+    }
 }

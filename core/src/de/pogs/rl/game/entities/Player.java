@@ -21,16 +21,18 @@ public class Player extends AbstractEntity {
     private float aimedAngle = 0;
     private float angle_response = 1;
 
-    private float speed = 500;
-    private float bulletSpeed = 10;
+    private float speed = 100;
+    private float bulletSpeed = 200;
     private double shotCooldown = 1000;
     private double lastBulletTime = TimeUtils.millis();
+
 
     public Player() {
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
         position.set(0, 0);
+        renderPriority = 1;
     }
 
     @Override
@@ -43,11 +45,7 @@ public class Player extends AbstractEntity {
         updateAimedAngle();
         updateAngle(delta);
         updatePosition(delta);
-        // if (input.isKeyPressed(Keys.LEFT)) sprite.setPosition(sprite.getX() - speed *
-        // delta, sprite.getY());
 
-        // if (input.isKeyPressed(Keys.RIGHT)) sprite.setPosition(sprite.getX() + speed
-        // * delta, sprite.getY());
         sprite.setPosition(position.x - (sprite.getWidth() / 2), position.y - sprite.getHeight() / 2);
         sprite.setRotation(angle);
         shoot();
@@ -56,10 +54,11 @@ public class Player extends AbstractEntity {
     private void shoot() {
         if (Gdx.input.isKeyPressed(Keys.SPACE)) {
             if ((TimeUtils.millis() - lastBulletTime) >= shotCooldown) {
+                Bullet bullet = new Bullet(position.x, position.y, this.angle, this.speed + this.bulletSpeed);
+                bullet.update(0);
                 GameScreen.INSTANCE.entityManager
-                        .addEntity(new Bullet(position.x, position.y, this.angle, this.speed + this.bulletSpeed));
+                        .addEntity(bullet);
                 lastBulletTime = TimeUtils.millis();
-                System.out.println("bam");
 
             }
         }
@@ -93,24 +92,6 @@ public class Player extends AbstractEntity {
 
         angle = angle + (SpecialMath.angleDifferenceSmaller(aimedAngle, angle, 360)) * delta * angle_response;
         angle = SpecialMath.modulus(angle + 180, 360) - 180;
-    }
-
-    private float angleDifferenceSmaller(float angle1, float angle2) {
-        angle1 = angle1 + 180;
-        angle2 = angle2 + 180;
-        float diff1 = angle1 - angle2;
-        float diff2 = 0;
-        if (diff1 < 0) {
-            diff2 = 360 - diff1;
-        } else {
-            diff2 = diff1 - 360;
-        }
-        diff1 %= 360;
-        diff2 %= 360;
-        if (Math.abs(diff1) > Math.abs(diff2)) {
-            return diff2;
-        }
-        return diff1;
     }
 
     private void updatePosition(float delta) {
