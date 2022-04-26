@@ -32,6 +32,7 @@ public class EntityManager {
         if (entityQueue.size() != 0) {
             flush();
         }
+        entities.removeIf((entity) -> !entity.getAlive());
     }
 
     public void render(SpriteBatch batch) {
