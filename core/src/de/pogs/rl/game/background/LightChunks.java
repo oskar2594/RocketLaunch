@@ -13,14 +13,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import de.pogs.rl.game.GameScreen;
-import de.pogs.rl.utils.PerlinNoiseGenerator;
+import de.pogs.rl.utils.FastNoiseLite;
 
-public class LightChunks {
+public final class LightChunks {
 
     LinkedList<LightChunk> chunks;
 
-    private PerlinNoiseGenerator noise;
-    private PerlinNoiseGenerator colorNoise;
+    private FastNoiseLite noise;
+    private FastNoiseLite colorNoise;
 
     private double min;
     private double max;
@@ -31,19 +31,20 @@ public class LightChunks {
 
     private int chunksPerFrame = 5;
 
-    public LightChunks(int chunkRadius, PerlinNoiseGenerator noise, double min, double max, double scale) {
+    public LightChunks(int chunkRadius, FastNoiseLite noise, double min, double max, double scale) {
         this.chunkRadius = chunkRadius;
         this.noise = noise;
-        colorNoise = new PerlinNoiseGenerator(new Random().nextGaussian() * 255);
+        colorNoise = new FastNoiseLite((int) new Random().nextGaussian() * 255);
+        colorNoise.SetNoiseType(FastNoiseLite.NoiseType.Perlin);
         this.min = min;
         this.max = max;
         this.scale = scale;
-        renderDistance = (int) Math.ceil((Gdx.graphics.getWidth() / 1.2) / chunkRadius);
+        renderDistance = (int) Math.ceil((Gdx.graphics.getWidth() / 1.5) / chunkRadius);
 
         chunks = new LinkedList<LightChunk>();
     }
 
-    public void update(SpriteBatch batch) {
+    public void update() {
         LinkedList<LightChunk> addChunks = new LinkedList<LightChunk>();
         Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
         int pixelChunkRadius = chunkRadius * renderDistance;
@@ -57,7 +58,7 @@ public class LightChunks {
                     - pixelChunkRadius; y < (int) getNumInGrid(camPos.y, chunkRadius)
                             + pixelChunkRadius; y += chunkRadius) {
                 if (!checkForChunkAtPosition(x, y)) {
-                    LightChunk oneChunk = new LightChunk(chunkRadius, x, y, noise, colorNoise, min, max, scale, batch);
+                    LightChunk oneChunk = new LightChunk(chunkRadius, x, y, noise, colorNoise, min, max, scale);
                     addChunks.add(oneChunk);
                 }
                 if (addChunks.size() > chunksPerFrame && chunks.size() > Math.pow(renderDistance, 2) * Math.PI) {
@@ -67,6 +68,10 @@ public class LightChunks {
         }
         chunks.removeAll(removeChunksOutOfRenderDistance());
         chunks.addAll(addChunks);
+    }
+
+
+    public void render(float delta, SpriteBatch batch) {
         for (LightChunk chunk : chunks) {
             // chunk.update();
             chunk.draw(batch);

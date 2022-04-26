@@ -13,13 +13,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import de.pogs.rl.game.GameScreen;
-import de.pogs.rl.utils.PerlinNoiseGenerator;
+import de.pogs.rl.utils.FastNoiseLite;
 
-public class StarChunks {
+public final class StarChunks {
 
     LinkedList<StarChunk> chunks;
 
-    private PerlinNoiseGenerator noise;
+    private FastNoiseLite noise;
     private double min;
     private double max;
     private double scale;
@@ -29,18 +29,18 @@ public class StarChunks {
 
     private int chunksPerFrame = 5;
 
-    public StarChunks(int chunkRadius, PerlinNoiseGenerator noise, double min, double max, double scale) {
+    public StarChunks(int chunkRadius, FastNoiseLite noise, double min, double max, double scale) {
         this.chunkRadius = chunkRadius;
         this.noise = noise;
         this.min = min;
         this.max = max;
         this.scale = scale;
-        renderDistance = (int) Math.ceil((Gdx.graphics.getWidth() / 1.2) / chunkRadius);
+        renderDistance = (int) Math.ceil((Gdx.graphics.getWidth() / 1.5) / chunkRadius);
 
         chunks = new LinkedList<StarChunk>();
     }
 
-    public void update(SpriteBatch batch) {
+    public void update() {
 
         LinkedList<StarChunk> addChunks = new LinkedList<StarChunk>();
         Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
@@ -55,7 +55,7 @@ public class StarChunks {
                     - pixelChunkRadius; y < (int) getNumInGrid(camPos.y, chunkRadius)
                             + pixelChunkRadius; y += chunkRadius) {
                 if (!checkForChunkAtPosition(x, y)) {
-                    StarChunk oneChunk = new StarChunk(chunkRadius, x, y, noise, min, max, scale, batch);
+                    StarChunk oneChunk = new StarChunk(chunkRadius, x, y, noise, min, max, scale);
                     addChunks.add(oneChunk);
                 }
                 if (addChunks.size() > chunksPerFrame && chunks.size() > Math.pow(renderDistance, 2) * Math.PI) {
@@ -65,6 +65,9 @@ public class StarChunks {
         }
         chunks.addAll(addChunks);
         chunks.removeAll(removeChunksOutOfRenderDistance());
+    }
+
+    public void render(float delta, SpriteBatch batch) {
         for (StarChunk chunk : chunks) {
             // chunk.update();
             chunk.draw(batch);

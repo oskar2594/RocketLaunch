@@ -13,13 +13,13 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 
 import java.awt.Color;
 
-import de.pogs.rl.utils.PerlinNoiseGenerator;
+import de.pogs.rl.utils.FastNoiseLite;
 
-public class LightChunk {
+public final class LightChunk {
     private Sprite sprite;
     private Texture texture;
-    private PerlinNoiseGenerator noise;
-    private PerlinNoiseGenerator colorNoise;
+    private FastNoiseLite noise;
+    private FastNoiseLite colorNoise;
     public Vector2 position;
 
     private int radius;
@@ -31,8 +31,8 @@ public class LightChunk {
     private int x;
     private int y;
 
-    LightChunk(int radius, int x, int y, PerlinNoiseGenerator noise, PerlinNoiseGenerator colorNoise, double min,
-            double max, double scale, SpriteBatch batch) {
+    LightChunk(int radius, int x, int y, FastNoiseLite noise, FastNoiseLite colorNoise, double min,
+            double max, double scale) {
         this.radius = radius;
         this.x = x;
         this.y = y;
@@ -42,11 +42,10 @@ public class LightChunk {
         position.set(x, y);
         this.noise = noise;
         this.colorNoise = colorNoise;
-        this.texture = new Texture(this.generatePixmap(radius, radius, new Vector2(position.x - radius, position.y - radius), min, max, scale));
+        this.texture = new Texture(this.generatePixmap(radius, radius, new Vector2(position.x - radius, position.y - radius), min, max, scale), true);
         sprite = new Sprite(texture);
         sprite.setSize(radius, radius);
         update();
-        draw(batch);
     }
 
 
@@ -59,7 +58,7 @@ public class LightChunk {
     }
 
     public void dispose() {
-        texture.dispose();
+        // texture.dispose();
     }
 
     public Pixmap generatePixmap(int width, int height, Vector2 start, double max, double min, double scale) {
@@ -90,11 +89,11 @@ public class LightChunk {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 double lightValue = (Math.max(
-                        noise.noise((double) (start.x + x) * scale, (double) (start.y - y) * scale) * (max - min + 1)
+                        noise.GetNoise((float) ((start.x + x) * scale), (float)((start.y - y) * scale)) * (max - min + 1)
                                 + min,
                         0));
-                double colorValue = colorNoise.noise((double) (start.x + x) * scale * 0.7,
-                        (double) (start.y - y) * scale * 0.7);
+                double colorValue = colorNoise.GetNoise((float)( (start.x + x) * scale * 0.7),
+                        (float) ((start.y - y) * scale * 0.7));
 
                 int alpha = (int) (lightValue);
                 Color mixColor;

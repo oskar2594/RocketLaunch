@@ -7,25 +7,24 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
-import de.pogs.rl.utils.PerlinNoiseGenerator;
+import de.pogs.rl.utils.FastNoiseLite;
 
-public class StarChunk {
+public final class StarChunk {
     private Sprite sprite;
     private Texture texture;
-    private PerlinNoiseGenerator noise;
+    private FastNoiseLite noise;
     public Vector2 position;
 
     private int radius;
     private double min;
     private double max;
     private double scale;
-    private SpriteBatch batch;
 
     private int x;
     private int y;
 
-    StarChunk(int radius, int x, int y, PerlinNoiseGenerator noise, double min,
-            double max, double scale, SpriteBatch batch) {
+    StarChunk(int radius, int x, int y, FastNoiseLite noise, double min,
+            double max, double scale) {
         this.radius = radius;
         this.x = x;
         this.y = y;
@@ -38,7 +37,6 @@ public class StarChunk {
         sprite = new Sprite(texture);
         sprite.setSize(radius, radius);
         update();
-        draw(batch);
     }
 
     public void update() {
@@ -77,12 +75,12 @@ public class StarChunk {
             for (int x = 0; x < width; x++) {
                 // bytes[idx++] = (byte) (Math.abs(noise.noise((double) (start.x + x) * scale,
                 // (double) (start.y - y) * scale)) * (max - min + 1)+ min);
-                double value = Math.abs(noise.noise((double) (start.x + x) * scale, (double) (start.y - y) * scale))
+                double value = Math.abs(noise.GetNoise((float) ((start.x + x) * scale), (float) ((start.y - y) * scale)))
                         * (max - min + 1) + min;
                 if (value > 2.6) {
-                    double lightValue = (BackgroundLayer.INSTANCE.lightNoise.noise(
-                            (double) (start.x + x) * BackgroundLayer.INSTANCE.lightScale,
-                            (double) (start.y - y) * BackgroundLayer.INSTANCE.lightScale))
+                    double lightValue = (BackgroundLayer.INSTANCE.lightNoise.GetNoise(
+                            (float) ((start.x + x) * BackgroundLayer.INSTANCE.lightScale),
+                            (float) ((start.y - y) * BackgroundLayer.INSTANCE.lightScale)))
                             * (max - min + 1) + min;
                     if (lightValue + value > 3.1) {
 

@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.async.AsyncExecutor;
+import com.badlogic.gdx.utils.async.AsyncTask;
 
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.background.BackgroundLayer;
@@ -20,6 +22,8 @@ public class GameScreen extends ScreenAdapter {
     public RocketCamera camera;
     public Player player;
     public EntityManager entityManager;
+
+
 
     public GameScreen() {
         INSTANCE = this;
@@ -43,9 +47,9 @@ public class GameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
         // DRAW
         // final float delta2 = delta;
-
         batch.begin();
         background.render(delta, batch);
+        background.update();
         entityManager.render(batch);
         batch.end();
     }

@@ -9,9 +9,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import de.pogs.rl.game.GameScreen;
+import de.pogs.rl.utils.FastNoiseLite;
 import de.pogs.rl.utils.PerlinNoiseGenerator;
 
-public class BackgroundLayer {
+public final class BackgroundLayer {
     public static BackgroundLayer INSTANCE;
 
     private int radius;
@@ -22,10 +23,10 @@ public class BackgroundLayer {
     private double lightSeed;
     private double starSeed;
 
-    public PerlinNoiseGenerator lightNoise;
-    public PerlinNoiseGenerator starNoise;
+    public FastNoiseLite lightNoise;
+    public FastNoiseLite starNoise;
 
-    public double lightScale = 0.1;
+    public double lightScale = 0.2;
     public double starScale = 50;
 
     public double lightMin = 30;
@@ -42,8 +43,10 @@ public class BackgroundLayer {
         lightSeed = new Random().nextGaussian() * 255;
         starSeed = new Random().nextGaussian() * 255;
 
-        lightNoise = new PerlinNoiseGenerator(lightSeed);
-        starNoise = new PerlinNoiseGenerator(starSeed);
+        lightNoise = new FastNoiseLite((int) lightSeed);
+        lightNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        starNoise = new FastNoiseLite((int) starSeed);
+        starNoise.SetNoiseType(FastNoiseLite.NoiseType.Perlin);
 
         lights = new LightChunks(radius, lightNoise, lightMax, lightMin, lightScale);
         stars = new StarChunks(radius, starNoise, starMax, starMin, starScale);
@@ -76,10 +79,10 @@ public class BackgroundLayer {
     public void render(float delta, final SpriteBatch batch) {
         long startTime = System.nanoTime();
 
-        lights.update(batch);
+        lights.render(delta, batch);
         long endTime = System.nanoTime();
         long startTime2 = System.nanoTime();
-        stars.update(batch);
+        stars.render(delta, batch);
         long endTime2 = System.nanoTime();
         // lights.update(batch);
         // stars.update(batch);
@@ -87,12 +90,19 @@ public class BackgroundLayer {
         long duration2 = (endTime2 - startTime2);
 
         // System.out.println(duration / 1000000);
-        font.draw(batch, Gdx.graphics.getFramesPerSecond() + " | " + (duration / 1000000) + "ms  | " + (duration2 / 1000000) + "ms",
+        font.draw(batch,
+                Gdx.graphics.getFramesPerSecond() + " | " + (duration / 1000000) + "ms  | " + (duration2 / 1000000)
+                        + "ms",
                 GameScreen.INSTANCE.camera.position.x - Gdx.graphics.getWidth() / 3,
                 GameScreen.INSTANCE.camera.position.y - Gdx.graphics.getHeight() / 3);
 
         // starSprite.draw(batch);
         // lightSprite.draw(batch);
+    }
+
+    public void update() {
+        lights.update();
+        stars.update();
     }
 
     private double distance(Vector2 start, Vector2 end) {
