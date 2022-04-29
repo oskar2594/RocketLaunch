@@ -54,7 +54,7 @@ public class Player extends AbstractEntity {
     private void shoot() {
         if (Gdx.input.isKeyPressed(Keys.SPACE)) {
             if ((TimeUtils.millis() - lastBulletTime) >= shotCooldown) {
-                Bullet bullet = new Bullet(position.x, position.y, this.angle, this.speed + this.bulletSpeed);
+                Bullet bullet = new Bullet(position.x, position.y, this.angle, this.speed + this.bulletSpeed, this);
                 bullet.update(0);
                 GameScreen.INSTANCE.entityManager
                         .addEntity(bullet);

@@ -14,4 +14,13 @@ public abstract class AbstractEntity {
     public int getRenderPriority() {
         return renderPriority;
     }
+
+    private boolean alive = true;
+    public void setAlive(boolean alive) {
+        this.alive = alive;
+    }
+
+    public boolean getAlive(){
+        return alive;
+    }
 }
