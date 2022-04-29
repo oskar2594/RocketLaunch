@@ -1,19 +1,18 @@
 package de.pogs.rl.game.background;
 
 import java.util.LinkedList;
-import java.util.Random;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
+import java.awt.Color;
 
 import de.pogs.rl.game.GameScreen;
-import de.pogs.rl.game.RocketCamera;
 import de.pogs.rl.utils.FastNoiseLite;
 
 public final class ChunkManager {
 
-    LinkedList<Chunk> chunks;
+    private LinkedList<Chunk> chunks;
 
     public static FastNoiseLite BASENOISE_LEVEL1;
     public static FastNoiseLite BASENOISE_LEVEL2;
@@ -23,12 +22,12 @@ public final class ChunkManager {
     public static FastNoiseLite COLORNOISE_PURPLE;
     public static FastNoiseLite COLORNOISE_BLUE;
 
-    public static FastNoiseLite STARNOISE_LEVEL1;
-
     private int chunkRadius;
     private int renderDistance;
 
     private int chunksPerFrame = 5;
+
+    private static Color[][] colorCache;
 
     public ChunkManager(int chunkRadius, double seed) {
         this.chunkRadius = chunkRadius;
@@ -47,8 +46,6 @@ public final class ChunkManager {
         ChunkManager.COLORNOISE_BLUE = new FastNoiseLite((int) (seed * 6));
         ChunkManager.COLORNOISE_BLUE.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
 
-        ChunkManager.STARNOISE_LEVEL1 = new FastNoiseLite((int) (seed * 7));
-        ChunkManager.STARNOISE_LEVEL1.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         renderDistance = (int) Math
                 .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 0.75) / chunkRadius);
         chunksPerFrame = (int) Math.ceil(Math.pow(renderDistance, 2) * Math.PI / 140);
@@ -60,7 +57,9 @@ public final class ChunkManager {
         int newRenderDistance = (int) Math
                 .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 0.75) / newChunkRadius);
         int newChunksPerFrame = (int) Math.floor(Math.pow(newRenderDistance, 2) * Math.PI / 150);
-        if (Math.abs(newChunkRadius - chunkRadius) > 30) {
+        if (Math.abs((width * GameScreen.INSTANCE.camera.zoom) / chunkRadius
+                - (width * GameScreen.INSTANCE.camera.zoom) / newChunkRadius) > 5) {
+            collectCache();
             chunks.clear();
             this.chunkRadius = newChunkRadius;
             this.renderDistance = newRenderDistance;
@@ -72,13 +71,51 @@ public final class ChunkManager {
         }
     }
 
-    private float oldZoom = 0;
+    private static Vector2 center = new Vector2();
+    private static int cacheRadius;
+
+    private void collectCache() {
+        System.out.println("COLLECT");
+        this.cacheRadius = this.renderDistance * this.chunkRadius / 10;
+        this.colorCache = new Color[this.cacheRadius][this.cacheRadius];
+        Vector2 centerPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
+        System.out.println(centerPos);
+        this.center = new Vector2(centerPos.x, centerPos.y);
+        for (int x = 0; x < colorCache.length; x++) {
+            for (int y = 0; y < colorCache.length; y++) {
+                colorCache[x][y] = Color.RED;
+            }
+        }
+        for (Chunk chunk : chunks) {
+            Color[][] data = chunk.fieldCache;
+            for (int x = 0; x < data.length; x++) {
+                for (int y = 0; y < data.length; y++) {
+                    Vector2 pos = new Vector2(centerPos.x - this.cacheRadius/2 + chunk.position.x + x,
+                            centerPos.y - this.cacheRadius/2 + chunk.position.y - y);
+                    try {
+                        colorCache[(int) pos.x][(int) pos.y] = data[x][y];
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                    }
+                }
+            }
+        }
+    }
+
+    public Color getCachedColor(int x, int y) {
+        // Vector2 centerPos = new Vector2(GameScreen.INSTANCE.camera.position.x,
+        // GameScreen.INSTANCE.camera.position.y);
+        Vector2 centerPos = this.center;
+        Vector2 pos = new Vector2(centerPos.x -x, y);
+        try {
+            return colorCache[(int) pos.x][(int) pos.y];
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     private void updateZoom() {
-        if (Math.abs(GameScreen.INSTANCE.camera.zoom - oldZoom) > 1) {
-            resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            oldZoom = GameScreen.INSTANCE.camera.zoom;
-        }
+        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     public void update() {
@@ -106,6 +143,7 @@ public final class ChunkManager {
         }
         chunks.removeAll(removeChunksOutOfRenderDistance());
         chunks.addAll(addChunks);
+
     }
 
     public void render(float delta, SpriteBatch batch) {

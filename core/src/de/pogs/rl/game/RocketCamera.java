@@ -11,10 +11,10 @@ public class RocketCamera extends OrthographicCamera {
 
     public RocketCamera() {
         super(Gdx.graphics.getWidth() * 1, Gdx.graphics.getHeight() * 1);
-        this.zoom = 2;
+        this.zoom = 1f;
     }
 
-    public void resize (int width, int height) {
+    public void resize(int width, int height) {
         this.viewportHeight = height;
         this.viewportWidth = width;
     }
@@ -23,14 +23,16 @@ public class RocketCamera extends OrthographicCamera {
         this.translate(GameScreen.INSTANCE.player.getPosition().x - this.position.x,
                 GameScreen.INSTANCE.player.getPosition().y - this.position.y);
 
-                if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                    this.zoom += 0.1f;
-                } else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-                    this.zoom -= 0.1f;
-                }
-         // this.position.x = GameScreen.INSTANCE.player.getPosition().x;
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            this.zoom += 0.01f;
+        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            this.zoom -= 0.01f;
+        }
+
+        if (this.zoom < 0)
+            this.zoom = 0;
+        // this.position.x = GameScreen.INSTANCE.player.getPosition().x;
         // this.position.y = GameScreen.INSTANCE.player.getPosition().y;
     }
-
 
 }

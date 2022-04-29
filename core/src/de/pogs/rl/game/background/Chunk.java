@@ -4,16 +4,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.actions.ColorAction;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 
 import java.awt.Color;
-import java.io.Console;
 
 import de.pogs.rl.utils.FastNoiseLite;
 
 public final class Chunk {
+
+    public Color[][] fieldCache;
 
     private Color blue = new Color(58, 80, 224);
     private Color purple = new Color(212, 0, 255);
@@ -29,7 +29,12 @@ public final class Chunk {
         this.radius = radius;
         position = new Vector2();
         position.set(x, y);
+        fieldCache = new Color[radius][radius];
         this.start = new Vector2(x - radius, y - radius);
+        this.create();
+    }
+
+    public void create() {
         this.texture = new Texture(this.generatePixmap(), true);
         sprite = new Sprite(texture);
         sprite.setSize(radius, radius);
@@ -69,17 +74,25 @@ public final class Chunk {
         for (int y = 0; y < radius; y++) {
             for (int x = 0; x < radius; x++) {
                 // GENERATE COLOR
-                Color color;
+                Color color = BackgroundLayer.INSTANCE.chunkManager.getCachedColor(x, y);
                 double baseValue = getBaseValue(x, y);
                 double starValue = getStarValue(x, y, baseValue);
-                if (starValue == 0) {
-                    color = getColorValue(x, y);
-                    bytes[idx++] = removeAlpha(new Color(color.getRed(), color.getGreen(), color.getBlue(),
-                            (int) (saveRGBValue((int) ((Math.max(baseValue, 0) + 0.2) * 255)))));
-
+                if (color != null) {
+                    bytes[idx++] = color;
+                    // System.out.print('c');
                 } else {
-                    bytes[idx++] = removeAlpha(new Color(255, 255, 255, (int) starValue));
+                    if (starValue == 0) {
+                        color = getColorValue(x, y);
+                        color = removeAlpha(new Color(color.getRed(), color.getGreen(), color.getBlue(),
+                                (int) (saveRGBValue((int) ((Math.max(baseValue, 0) + 0.2) * 255)))));
+                        bytes[idx++] = color;
+
+                    } else {
+                        color = removeAlpha(new Color(255, 255, 255, (int) starValue));
+                        bytes[idx++] = color;
+                    }
                 }
+                fieldCache[x][y] = color;
             }
         }
         return bytes;

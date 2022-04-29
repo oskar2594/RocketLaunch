@@ -4,14 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.async.AsyncExecutor;
-import com.badlogic.gdx.utils.async.AsyncTask;
-
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.background.BackgroundLayer;
 import de.pogs.rl.game.entities.Enemy;
 import de.pogs.rl.game.entities.EntityManager;
 import de.pogs.rl.game.entities.Player;
+
 
 public class GameScreen extends ScreenAdapter {
     public static GameScreen INSTANCE;
@@ -22,8 +21,6 @@ public class GameScreen extends ScreenAdapter {
     public RocketCamera camera;
     public Player player;
     public EntityManager entityManager;
-
-
 
 
     public GameScreen() {

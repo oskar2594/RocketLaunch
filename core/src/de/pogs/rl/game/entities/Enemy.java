@@ -5,9 +5,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import de.pogs.rl.RocketLauncher;
+
 
 public class Enemy extends AbstractEntity{
-    private Texture texture = new Texture(Gdx.files.internal("bucket.png"));
+    private Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("bucket");
     private Sprite sprite;
 
     private float scale = 0.2f;

@@ -4,13 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 
+import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.utils.SpecialMath;
 
 public class Bullet extends AbstractEntity {
-    private Texture texture = new Texture(Gdx.files.internal("bucket.png"));
+    private Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("bucket");
     private Sprite sprite;
 
     private float scale = 0.2f;

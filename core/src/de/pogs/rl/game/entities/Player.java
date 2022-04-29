@@ -3,6 +3,7 @@ package de.pogs.rl.game.entities;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
 
+import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.utils.SpecialMath;
 
@@ -12,7 +13,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Player extends AbstractEntity {
-    private Texture texture = new Texture(Gdx.files.internal("rakete.png"));
+    private Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("rakete");
     private Sprite sprite;
 
     private float scale = 0.2f;
