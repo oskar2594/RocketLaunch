@@ -1,48 +1,60 @@
 package de.pogs.rl.game.background;
 
-import java.nio.channels.Pipe;
 import java.util.LinkedList;
 import java.util.Random;
 
-import javax.swing.text.Position;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.utils.FastNoiseLite;
 
-public final class StarChunks {
+public final class ChunkManager {
 
-    LinkedList<StarChunk> chunks;
+    LinkedList<Chunk> chunks;
 
-    private FastNoiseLite noise;
-    private double min;
-    private double max;
-    private double scale;
+    public static FastNoiseLite BASENOISE_LEVEL1;
+    public static FastNoiseLite BASENOISE_LEVEL2;
+    public static FastNoiseLite BASENOISE_LEVEL3;
+
+    public static FastNoiseLite COLORNOISE_RED;
+    public static FastNoiseLite COLORNOISE_PURPLE;
+    public static FastNoiseLite COLORNOISE_BLUE;
+
+    public static FastNoiseLite STARNOISE_LEVEL1;
 
     private int chunkRadius;
     private int renderDistance;
 
     private int chunksPerFrame = 5;
 
-    public StarChunks(int chunkRadius, FastNoiseLite noise, double min, double max, double scale) {
+    public ChunkManager(int chunkRadius, double seed) {
         this.chunkRadius = chunkRadius;
-        this.noise = noise;
-        this.min = min;
-        this.max = max;
-        this.scale = scale;
+
+        ChunkManager.BASENOISE_LEVEL1 = new FastNoiseLite((int) seed);
+        ChunkManager.BASENOISE_LEVEL1.SetNoiseType(FastNoiseLite.NoiseType.Perlin);
+        ChunkManager.BASENOISE_LEVEL2 = new FastNoiseLite((int) (seed * 2));
+        ChunkManager.BASENOISE_LEVEL2.SetNoiseType(FastNoiseLite.NoiseType.Perlin);
+        ChunkManager.BASENOISE_LEVEL3 = new FastNoiseLite((int) (seed * 3));
+        ChunkManager.BASENOISE_LEVEL3.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2S);
+        
+        ChunkManager.COLORNOISE_RED = new FastNoiseLite((int) (seed * 4));
+        ChunkManager.COLORNOISE_RED.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        ChunkManager.COLORNOISE_PURPLE = new FastNoiseLite((int) (seed * 5));
+        ChunkManager.COLORNOISE_PURPLE.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        ChunkManager.COLORNOISE_BLUE = new FastNoiseLite((int) (seed * 6));
+        ChunkManager.COLORNOISE_BLUE.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+
+        ChunkManager.STARNOISE_LEVEL1 = new FastNoiseLite((int) (seed * 7));
+        ChunkManager.STARNOISE_LEVEL1.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         renderDistance = (int) Math.ceil((Gdx.graphics.getWidth() / 1.5) / chunkRadius);
 
-        chunks = new LinkedList<StarChunk>();
+        chunks = new LinkedList<Chunk>();
     }
 
     public void update() {
-
-        LinkedList<StarChunk> addChunks = new LinkedList<StarChunk>();
+        LinkedList<Chunk> addChunks = new LinkedList<Chunk>();
         Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
         int pixelChunkRadius = chunkRadius * renderDistance;
         xLoop: for (int x = (int) getNumInGrid(camPos.x, chunkRadius)
@@ -55,21 +67,20 @@ public final class StarChunks {
                     - pixelChunkRadius; y < (int) getNumInGrid(camPos.y, chunkRadius)
                             + pixelChunkRadius; y += chunkRadius) {
                 if (!checkForChunkAtPosition(x, y)) {
-                    StarChunk oneChunk = new StarChunk(chunkRadius, x, y, noise, min, max, scale);
-                    addChunks.add(oneChunk);
+                    Chunk chunk = new Chunk(chunkRadius, x, y);
+                    addChunks.add(chunk);
                 }
                 if (addChunks.size() > chunksPerFrame && chunks.size() > Math.pow(renderDistance, 2) * Math.PI) {
                     break yLoop;
                 }
             }
         }
-        chunks.addAll(addChunks);
         chunks.removeAll(removeChunksOutOfRenderDistance());
+        chunks.addAll(addChunks);
     }
 
     public void render(float delta, SpriteBatch batch) {
-        for (StarChunk chunk : chunks) {
-            // chunk.update();
+        for (Chunk chunk : chunks) {
             chunk.draw(batch);
         }
     }
@@ -78,10 +89,10 @@ public final class StarChunks {
         return Math.round((float) num / grid) * grid;
     }
 
-    private LinkedList<StarChunk> removeChunksOutOfRenderDistance() {
-        LinkedList<StarChunk> removeChunks = new LinkedList<StarChunk>();
+    private LinkedList<Chunk> removeChunksOutOfRenderDistance() {
+        LinkedList<Chunk> removeChunks = new LinkedList<Chunk>();
         Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
-        for (StarChunk chunk : chunks) {
+        for (Chunk chunk : chunks) {
             if (distance(new Vector2(chunk.position.x, chunk.position.y),
                     camPos) > renderDistance * chunkRadius * 2) {
                 chunk.dispose();
@@ -93,9 +104,9 @@ public final class StarChunks {
 
     private boolean checkForChunkAtPosition(int x, int y) {
         Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
-        for (StarChunk chunk : chunks) {
+        for (Chunk chunk : chunks) {
             if (distance(new Vector2(x, y),
-                    camPos) > renderDistance * chunkRadius) {
+                    camPos) > renderDistance * chunkRadius * 1) {
                 return true;
             }
             if (distance(chunk.position, new Vector2(x, y)) < chunkRadius) {
