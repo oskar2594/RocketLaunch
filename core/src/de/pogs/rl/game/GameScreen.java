@@ -25,6 +25,7 @@ public class GameScreen extends ScreenAdapter {
 
 
 
+
     public GameScreen() {
         INSTANCE = this;
         batch = RocketLauncher.INSTANCE.batch;
@@ -63,5 +64,11 @@ public class GameScreen extends ScreenAdapter {
     public void dispose() {
         this.dispose();
     }
+
+    @Override
+	public void resize (int width, int height) {
+        camera.resize(width, height);
+        background.resize(width, height);
+	}
 
 }

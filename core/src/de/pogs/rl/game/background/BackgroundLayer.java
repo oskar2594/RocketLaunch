@@ -23,7 +23,7 @@ public final class BackgroundLayer {
 
     public BackgroundLayer() {
         INSTANCE = this;
-        radius = 50;
+        radius = (int)(Gdx.graphics.getHeight() * Gdx.graphics.getWidth() / 14000);
         seed = new Random().nextGaussian() * 255;
         chunkManager = new ChunkManager(radius, seed);
 
@@ -31,6 +31,10 @@ public final class BackgroundLayer {
 
     public BitmapFont font = new BitmapFont();
 
+    public void resize (int width, int height) {
+        chunkManager.resize(width, height);
+    }
+    
     public void render(float delta, final SpriteBatch batch) {
         long startTime = System.nanoTime();
 

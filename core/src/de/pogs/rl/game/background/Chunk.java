@@ -124,24 +124,21 @@ public final class Chunk {
     }
 
     private double getStarValue(int x, int y, double baseValue) {
-        Vector2 relativePositon = getRelativePosition(new Vector2(x, y));
-        double starValue = Math.abs(genNoise(ChunkManager.STARNOISE_LEVEL1, relativePositon, 20, 0, 255));
-        if (starValue > 250 && isStarSpot(baseValue)) {
-            return starValue * getStarMultiplier(baseValue);
-        } else {
-            return 0;
+        if (isStarSpot(baseValue)) {
+            return 255 * getStarMultiplier(baseValue);
         }
+        return 0;
     }
 
     private boolean isStarSpot(double value) {
-        if (value > -0.5) {
+        if (value > -0.5 && Math.random() > 0.99) {
             return true;
         }
         return false;
     }
 
     private double getStarMultiplier(double value) {
-        return Math.min(Math.max(value, -0.6) + 1, 1);
+        return Math.min(Math.max(value, -0.6) + 0.5, 1);
     }
 
     private double minmax(double value, double min, double max) {

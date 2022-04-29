@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import de.pogs.rl.game.GameScreen;
+import de.pogs.rl.game.RocketCamera;
 import de.pogs.rl.utils.FastNoiseLite;
 
 public final class ChunkManager {
@@ -38,7 +39,7 @@ public final class ChunkManager {
         ChunkManager.BASENOISE_LEVEL2.SetNoiseType(FastNoiseLite.NoiseType.Perlin);
         ChunkManager.BASENOISE_LEVEL3 = new FastNoiseLite((int) (seed * 3));
         ChunkManager.BASENOISE_LEVEL3.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2S);
-        
+
         ChunkManager.COLORNOISE_RED = new FastNoiseLite((int) (seed * 4));
         ChunkManager.COLORNOISE_RED.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         ChunkManager.COLORNOISE_PURPLE = new FastNoiseLite((int) (seed * 5));
@@ -48,12 +49,40 @@ public final class ChunkManager {
 
         ChunkManager.STARNOISE_LEVEL1 = new FastNoiseLite((int) (seed * 7));
         ChunkManager.STARNOISE_LEVEL1.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
-        renderDistance = (int) Math.ceil((Gdx.graphics.getWidth() / 1.5) / chunkRadius);
-
+        renderDistance = (int) Math
+                .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 0.75) / chunkRadius);
+        chunksPerFrame = (int) Math.ceil(Math.pow(renderDistance, 2) * Math.PI / 140);
         chunks = new LinkedList<Chunk>();
     }
 
+    public void resize(int width, int height) {
+        int newChunkRadius = (int) (width * height * GameScreen.INSTANCE.camera.zoom / 14000);
+        int newRenderDistance = (int) Math
+                .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 0.75) / newChunkRadius);
+        int newChunksPerFrame = (int) Math.floor(Math.pow(newRenderDistance, 2) * Math.PI / 150);
+        if (Math.abs(newChunkRadius - chunkRadius) > 30) {
+            chunks.clear();
+            this.chunkRadius = newChunkRadius;
+            this.renderDistance = newRenderDistance;
+            this.chunksPerFrame = newChunksPerFrame;
+        } else {
+            this.renderDistance = (int) Math
+                    .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 0.75) / this.chunkRadius);
+            this.chunksPerFrame = (int) Math.floor(Math.pow(this.renderDistance, 2) * Math.PI / 150);
+        }
+    }
+
+    private float oldZoom = 0;
+
+    private void updateZoom() {
+        if (Math.abs(GameScreen.INSTANCE.camera.zoom - oldZoom) > 1) {
+            resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            oldZoom = GameScreen.INSTANCE.camera.zoom;
+        }
+    }
+
     public void update() {
+        updateZoom();
         LinkedList<Chunk> addChunks = new LinkedList<Chunk>();
         Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
         int pixelChunkRadius = chunkRadius * renderDistance;
