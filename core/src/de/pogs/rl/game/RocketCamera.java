@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 public class RocketCamera extends OrthographicCamera {
 
     public RocketCamera() {
-        super(Gdx.graphics.getWidth() * 1, Gdx.graphics.getHeight() * 1);
+        super(Gdx.graphics.getWidth() * 2, Gdx.graphics.getHeight() * 2);
         this.zoom = 1f;
     }
 
