@@ -3,6 +3,7 @@ package de.pogs.rl.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.pogs.rl.RocketLauncher;
@@ -10,6 +11,7 @@ import de.pogs.rl.game.background.BackgroundLayer;
 import de.pogs.rl.game.entities.Enemy;
 import de.pogs.rl.game.entities.EntityManager;
 import de.pogs.rl.game.entities.Player;
+import de.pogs.rl.game.ui.HUD;
 import de.pogs.rl.game.world.EntityGen;
 import de.pogs.rl.game.world.spawners.SimpleSpawner;
 
@@ -23,6 +25,7 @@ public class GameScreen extends ScreenAdapter {
     public RocketCamera camera;
     public Player player;
     public EntityManager entityManager;
+    public HUD hud;
     public EntityGen entityGen;
 
     private int renderDistance2 = (int) Math.pow(1000, 2);
@@ -37,6 +40,7 @@ public class GameScreen extends ScreenAdapter {
         camera = new RocketCamera();
         player = new Player();
         background = new BackgroundLayer();
+        hud = new HUD();
         entityManager.addEntity(player);
         entityManager.addEntity(new Enemy(20, 20));
         entityManager.flush();
@@ -53,11 +57,22 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.move();
         camera.update();
+        hud.update(delta);
+        background.update();
         batch.setProjectionMatrix(camera.combined);
         // DRAW
         // final float delta2 = delta;
         batch.begin();
         background.render(delta, batch);
+
+        batch.end();
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        hud.shapeRender(camera.combined);
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+        
+        batch.begin();
+        hud.render(batch);
         background.update();
         entityManager.render(batch, player.getPosition(), renderDistance2);
         batch.end();
@@ -74,9 +89,10 @@ public class GameScreen extends ScreenAdapter {
     }
 
     @Override
-	public void resize (int width, int height) {
+    public void resize(int width, int height) {
+        hud.resize(width, height);
         camera.resize(width, height);
         background.resize(width, height);
-	}
+    }
 
 }

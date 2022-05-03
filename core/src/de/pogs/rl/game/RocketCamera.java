@@ -3,6 +3,7 @@ package de.pogs.rl.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.utils.GdxNativesLoader;
 
 /**
  * RocketCamera
@@ -20,8 +21,8 @@ public class RocketCamera extends OrthographicCamera {
     }
 
     public void move() {
-        this.translate(GameScreen.INSTANCE.player.getPosition().x - this.position.x,
-                GameScreen.INSTANCE.player.getPosition().y - this.position.y);
+        this.position.set(GameScreen.INSTANCE.player.getPosition().x,
+                GameScreen.INSTANCE.player.getPosition().y, 0);
 
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             this.zoom += 0.01f;
@@ -31,6 +32,8 @@ public class RocketCamera extends OrthographicCamera {
 
         if (this.zoom < 0)
             this.zoom = 0;
+
+            GameScreen.INSTANCE.resize((int)(Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom), (int)(Gdx.graphics.getHeight() * GameScreen.INSTANCE.camera.zoom));
         // this.position.x = GameScreen.INSTANCE.player.getPosition().x;
         // this.position.y = GameScreen.INSTANCE.player.getPosition().y;
     }

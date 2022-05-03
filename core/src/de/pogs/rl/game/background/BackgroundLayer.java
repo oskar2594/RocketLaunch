@@ -56,4 +56,8 @@ public final class BackgroundLayer {
     public void update() {
         chunkManager.update();
     }
+
+    public void dispose() {
+        chunkManager.dispose();
+    }
 }
