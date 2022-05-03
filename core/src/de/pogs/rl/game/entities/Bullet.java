@@ -10,7 +10,7 @@ import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.utils.SpecialMath;
 
 public class Bullet extends AbstractEntity {
-    private Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("bucket");
+    private Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("bullet");
     private Sprite sprite;
 
     private float scale = 0.2f;
