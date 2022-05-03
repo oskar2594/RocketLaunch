@@ -22,6 +22,10 @@ public class GameScreen extends ScreenAdapter {
     public Player player;
     public EntityManager entityManager;
 
+    private int renderDistance2 = (int) Math.pow(1000, 2);
+    private int updateDistance2 = (int) Math.pow(2000, 2);
+    private int removeDistance2 = (int) Math.pow(500, 2);
+
 
     public GameScreen() {
         INSTANCE = this;
@@ -37,7 +41,8 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        entityManager.update(delta);
+        entityManager.removeOutOfRange(player.getPosition(), removeDistance2);
+        entityManager.update(delta, player.getPosition(), updateDistance2);
         Gdx.gl.glClearColor(0.0f, 1.0f, 0.0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.move();
@@ -48,7 +53,7 @@ public class GameScreen extends ScreenAdapter {
         batch.begin();
         background.render(delta, batch);
         background.update();
-        entityManager.render(batch);
+        entityManager.render(batch, player.getPosition(), renderDistance2);
         batch.end();
     }
 
