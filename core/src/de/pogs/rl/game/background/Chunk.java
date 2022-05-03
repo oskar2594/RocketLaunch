@@ -21,11 +21,13 @@ public final class Chunk {
 
     private Sprite sprite;
     private Texture texture;
-    public Vector2 position;
-    private Vector2 start;
-    public int radius;
 
-    Chunk(int radius, int x, int y) {
+    public Vector2 position;
+
+    private Vector2 start;
+    private int radius;
+
+    public Chunk(int radius, int x, int y) {
         this.radius = radius;
         position = new Vector2();
         position.set(x, y);
@@ -54,7 +56,7 @@ public final class Chunk {
         // texture.dispose();
     }
 
-    //generate Pixmap over a Bitstream
+    // generate Pixmap over a Bitstream
     public Pixmap generatePixmap() {
         Color[] bytes = generateBytes();
         Pixmap pixmap = new Pixmap(radius, radius, Format.RGBA8888);
@@ -76,13 +78,13 @@ public final class Chunk {
         for (int y = 0; y < radius; y++) {
             for (int x = 0; x < radius; x++) {
                 Color color = BackgroundLayer.INSTANCE.chunkManager.getCachedColor(x, y, position);
-                if (color == null) { //if there is no cached color
+                if (color == null) { // if there is no cached color
 
-                    double baseValue = getBaseValue(x, y); //get light value
-                    double starValue = getStarValue(x, y, baseValue); //get value of a possible star
-                    if (starValue == 0) {//if theres no star
+                    double baseValue = getBaseValue(x, y); // get light value
+                    double starValue = getStarValue(x, y, baseValue); // get value of a possible star
+                    if (starValue == 0) {// if theres no star
                         color = getColorValue(x, y); // generate a color for position
-                        //replace transparent parts of the image with black
+                        // replace transparent parts of the image with black
                         color = removeAlpha(new Color(color.getRed(), color.getGreen(), color.getBlue(),
                                 (int) (saveRGBValue((int) ((Math.max(baseValue, 0) + 0.2) * 255)))));
 
@@ -98,11 +100,11 @@ public final class Chunk {
     }
 
     private Color removeAlpha(Color color) {
-        //turning RGBA Color to a HSB Color
+        // turning RGBA Color to a HSB Color
         float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
         float saturation = hsb[1];
         float brightness = hsb[2];
-        brightness = color.getAlpha() / 255f; //get the brightness based on the transparency
+        brightness = color.getAlpha() / 255f; // get the brightness based on the transparency
         return new Color(Color.HSBtoRGB(hsb[0], saturation, brightness)); // return a normal Color Object
     }
 
@@ -110,7 +112,7 @@ public final class Chunk {
         return Math.min(Math.max(value, 0), 255);
     }
 
-    //combining Basenoise Level 1-3
+    // combining Basenoise Level 1-3
     private double getBaseValue(int x, int y) {
         Vector2 relativePositon = getRelativePosition(new Vector2(x, y));
         double value_level1 = genNoise(ChunkManager.BASENOISE_LEVEL1, relativePositon, 0.3, 0, 0.4);
@@ -119,7 +121,7 @@ public final class Chunk {
         return (value_level1 - Math.max(value_level2, 0) - value_level3) + 0.3;
     }
 
-    //combining Colornoise Blue, Purple and Red
+    // combining Colornoise Blue, Purple and Red
     private Color getColorValue(int x, int y) {
         Vector2 relativePositon = getRelativePosition(new Vector2(x, y));
         double value_blue = genNoise(ChunkManager.COLORNOISE_BLUE, relativePositon, 0.1, 0, 1);
@@ -131,14 +133,13 @@ public final class Chunk {
         if (Double.isNaN(value_blue / value_purple) || value_blue == 0) {
             return Color.RED;
         }
-        //mixing colors 
+        // mixing colors
         return mix(mix(purple, red, getMixValue(value_purple, value_red)), blue, getMixValue(value_blue, value_purple));
     }
 
     private double getMixValue(double a, double b) {
         return (a + b) / 2;
     }
-
 
     private double getStarValue(int x, int y, double baseValue) {
         if (isStarSpot(baseValue)) {
@@ -147,8 +148,7 @@ public final class Chunk {
         return 0;
     }
 
-
-    //randomly decide if the spot is a star value
+    // randomly decide if the spot is a star value
     private boolean isStarSpot(double value) {
         if (value > -0.5 && Math.random() > 0.99) {
             return true;
@@ -164,12 +164,12 @@ public final class Chunk {
         return Math.min(Math.max(value, min), max);
     }
 
-    //scale size and min max values of raw noise
+    // scale size and min max values of raw noise
     private double genNoise(FastNoiseLite noise, Vector2 position, double scale, double min, double max) {
         return ((noise.GetNoise((float) (position.x * scale), (float) (position.y * scale)) * (max - min + 1)) + min);
     }
 
-    //get position in normal coordination system
+    // get position in normal coordination system
     private Vector2 getRelativePosition(Vector2 position) {
         return new Vector2(position.x + start.x, position.y - start.y);
     }

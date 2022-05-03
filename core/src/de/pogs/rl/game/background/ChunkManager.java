@@ -67,7 +67,7 @@ public final class ChunkManager {
         // changing the chunkradius leads to recreating all
         // chunks
         if (Math.abs((width * GameScreen.INSTANCE.camera.zoom) / chunkRadius
-                - (width * GameScreen.INSTANCE.camera.zoom) / newChunkRadius) > 5) {
+                - (width * GameScreen.INSTANCE.camera.zoom) / newChunkRadius) > 20) {
             // for better performance collecting current colors
             collectCache(newChunkRadius);
             this.chunkRadius = newChunkRadius;
@@ -134,12 +134,7 @@ public final class ChunkManager {
         }
     }
 
-    private void updateZoom() {
-        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-    }
-
     public void update() {
-        updateZoom();
         LinkedList<Chunk> addChunks = new LinkedList<Chunk>();
         Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
         int pixelChunkRadius = chunkRadius * renderDistance;
@@ -170,6 +165,13 @@ public final class ChunkManager {
         chunks.removeAll(removeChunksOutOfRenderDistance());
         chunks.addAll(addChunks);
 
+    }
+
+    public void dispose() {
+        for (Chunk chunk : chunks) {
+            chunk.dispose();
+        }
+        chunks.clear();
     }
 
     public void render(float delta, SpriteBatch batch) {
