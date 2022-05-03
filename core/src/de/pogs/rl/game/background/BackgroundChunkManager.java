@@ -1,10 +1,8 @@
 package de.pogs.rl.game.background;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import java.awt.Color;
 
