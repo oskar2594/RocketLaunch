@@ -33,7 +33,6 @@ public final class BackgroundLayer {
         radius = (int) (Gdx.graphics.getHeight() * Gdx.graphics.getWidth() / 14000);
         seed = new Random().nextGaussian() * 255;
         chunkManager = new ChunkManager(radius, seed);
-
     }
 
     public BitmapFont font = new BitmapFont();
