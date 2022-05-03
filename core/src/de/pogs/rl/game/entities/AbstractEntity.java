@@ -8,7 +8,7 @@ public abstract class AbstractEntity {
     public void update(float delta) {};
     public abstract void render(SpriteBatch batch);
     public Vector2 getPosition() {
-        return position;
+        return new Vector2(position);
     }
     protected int renderPriority = 0;
     public int getRenderPriority() {
