@@ -14,7 +14,7 @@ public class Enemy extends AbstractEntity{
 
     private float scale = 0.2f;
 
-    public Enemy(int posX, int posY) {
+    public Enemy(float posX, float posY) {
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);

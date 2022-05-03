@@ -1,5 +1,6 @@
 package de.pogs.rl.game.entities;
 
+import java.util.Collection;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,8 +13,12 @@ public class EntityManager {
     public EntityManager() {
     }
 
-    public void addEntity(AbstractEntity entity) {
-        entityQueue.add(entity);
+    public void addEntity(AbstractEntity newEntity) {
+        entityQueue.add(newEntity);
+    }
+
+    public void addEntities(Collection<AbstractEntity> newEntities) {
+        entityQueue.addAll(newEntities);
     }
 
     public LinkedList<AbstractEntity> getCollidingEntities(AbstractEntity entity, float radius) {

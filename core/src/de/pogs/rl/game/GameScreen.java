@@ -10,6 +10,8 @@ import de.pogs.rl.game.background.BackgroundLayer;
 import de.pogs.rl.game.entities.Enemy;
 import de.pogs.rl.game.entities.EntityManager;
 import de.pogs.rl.game.entities.Player;
+import de.pogs.rl.game.world.EntityGen;
+import de.pogs.rl.game.world.spawners.SimpleSpawner;
 
 
 public class GameScreen extends ScreenAdapter {
@@ -21,10 +23,11 @@ public class GameScreen extends ScreenAdapter {
     public RocketCamera camera;
     public Player player;
     public EntityManager entityManager;
+    public EntityGen entityGen;
 
     private int renderDistance2 = (int) Math.pow(1000, 2);
     private int updateDistance2 = (int) Math.pow(2000, 2);
-    private int removeDistance2 = (int) Math.pow(500, 2);
+    private int removeDistance2 = (int) Math.pow(5000, 2);
 
 
     public GameScreen() {
@@ -37,10 +40,13 @@ public class GameScreen extends ScreenAdapter {
         entityManager.addEntity(player);
         entityManager.addEntity(new Enemy(20, 20));
         entityManager.flush();
+        entityGen = new EntityGen(entityManager);
+        entityGen.addSpawner(new SimpleSpawner());
     }
 
     @Override
     public void render(float delta) {
+        entityGen.generateChunks(player.getPosition(), renderDistance2, removeDistance2);
         entityManager.removeOutOfRange(player.getPosition(), removeDistance2);
         entityManager.update(delta, player.getPosition(), updateDistance2);
         Gdx.gl.glClearColor(0.0f, 1.0f, 0.0f, 1f);

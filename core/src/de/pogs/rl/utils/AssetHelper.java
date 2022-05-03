@@ -15,7 +15,7 @@ import org.w3c.dom.Text;
 
 public class AssetHelper {
 
-    public final AssetManager aManager;
+    public final AssetManager assetManager;
 
     private HashMap<String, AssetDescriptor> images = new HashMap<String, AssetDescriptor>();
     private HashMap<String, AssetDescriptor> sounds = new HashMap<String, AssetDescriptor>();
@@ -26,9 +26,10 @@ public class AssetHelper {
     private FileHandle baseDir;
 
     public AssetHelper() {
-        aManager = new AssetManager();
+        assetManager = new AssetManager();
         // Gdx.files.internal("dd/");
-        baseDir = Gdx.files.getFileHandle("assets/", FileType.Local);
+        baseDir = Gdx.files.getFileHandle("", FileType.Local);
+        System.out.println(baseDir.file().getAbsolutePath());
     }
 
     public void loadAll() {
@@ -58,22 +59,22 @@ public class AssetHelper {
                 System.out.println(file.path());
                 AssetDescriptor asset = new AssetDescriptor<>(file.path(), Texture.class);
                 fontImages.put(file.nameWithoutExtension(), asset);
-                aManager.load(asset);
+                assetManager.load(asset);
             } else {
                 System.out.println(file.path());
                 AssetDescriptor asset = new AssetDescriptor<>(file.path(), BitmapFont.class);
                 fonts.put(file.nameWithoutExtension(), asset);
-                aManager.load(asset);
+                assetManager.load(asset);
             }
         }
     }
 
     public BitmapFont getFont(String name) {
-        return (BitmapFont) this.aManager.get(fonts.get(name));
+        return (BitmapFont) this.assetManager.get(fonts.get(name));
     }
 
     public Texture getFontImage(String name) {
-        return (Texture) this.aManager.get(fontImages.get(name));
+        return (Texture) this.assetManager.get(fontImages.get(name));
     }
 
     private void loadSounds(FileHandle[] list) {
@@ -81,24 +82,24 @@ public class AssetHelper {
             System.out.println(file.path());
             AssetDescriptor asset = new AssetDescriptor<>(file.path(), Sound.class);
             sounds.put(file.nameWithoutExtension(), asset);
-            aManager.load(asset);
+            assetManager.load(asset);
         }
     }
 
     public Sound getSound(String name) {
-        return (Sound) this.aManager.get(sounds.get(name));
+        return (Sound) this.assetManager.get(sounds.get(name));
     }
 
     private void loadImages(FileHandle[] list) {
         for (FileHandle file : list) {
             System.out.println(file.path());
-            AssetDescriptor asset = new AssetDescriptor<>(file.path(), Texture.class);
+            AssetDescriptor asset = new AssetDescriptor(file.path(), Texture.class);
             images.put(file.nameWithoutExtension(), asset);
-            aManager.load(asset);
+            assetManager.load(asset);
         }
     }
 
     public Texture getImage(String name) {
-        return (Texture) this.aManager.get(images.get(name));
+        return (Texture) this.assetManager.get(images.get(name));
     }
 }
