@@ -16,7 +16,7 @@ public class SimpleSpawner extends AbstractSpawner {
         if (random.nextDouble() < 0.01) {
             int count = random.nextInt(5) + 1;
             for (int i = 0; i<count; i++) {
-                list.add(new Enemy((float) (chunk.get(0) + random.nextDouble() * 50), (float) (chunk.get(1) + random.nextDouble() * 50)));
+                list.add(new Enemy((float) (chunk.get(0) + random.nextDouble() * 200), (float) (chunk.get(1) + random.nextDouble() * 200)));
             }
         }
         return list;
