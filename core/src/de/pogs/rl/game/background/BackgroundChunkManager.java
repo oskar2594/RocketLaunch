@@ -1,19 +1,17 @@
 package de.pogs.rl.game.background;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import java.awt.Color;
 
 import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.utils.FastNoiseLite;
 
-public final class ChunkManager {
+public final class BackgroundChunkManager {
 
-    private LinkedList<Chunk> chunks;
+    private LinkedList<BackgroundChunk> chunks;
 
     public static FastNoiseLite BASENOISE_LEVEL1;
     public static FastNoiseLite BASENOISE_LEVEL2;
@@ -30,31 +28,31 @@ public final class ChunkManager {
 
     private static Color[][] colorCache;
 
-    public ChunkManager(int chunkRadius, double seed) {
+    public BackgroundChunkManager(int chunkRadius, double seed) {
         this.chunkRadius = chunkRadius;
 
         // NoiseMaps
 
-        ChunkManager.BASENOISE_LEVEL1 = new FastNoiseLite((int) seed);
-        ChunkManager.BASENOISE_LEVEL1.SetNoiseType(FastNoiseLite.NoiseType.Perlin);
-        ChunkManager.BASENOISE_LEVEL2 = new FastNoiseLite((int) (seed * 2));
-        ChunkManager.BASENOISE_LEVEL2.SetNoiseType(FastNoiseLite.NoiseType.Perlin);
-        ChunkManager.BASENOISE_LEVEL3 = new FastNoiseLite((int) (seed * 3));
-        ChunkManager.BASENOISE_LEVEL3.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2S);
+        BackgroundChunkManager.BASENOISE_LEVEL1 = new FastNoiseLite((int) seed);
+        BackgroundChunkManager.BASENOISE_LEVEL1.SetNoiseType(FastNoiseLite.NoiseType.Perlin);
+        BackgroundChunkManager.BASENOISE_LEVEL2 = new FastNoiseLite((int) (seed * 2));
+        BackgroundChunkManager.BASENOISE_LEVEL2.SetNoiseType(FastNoiseLite.NoiseType.Perlin);
+        BackgroundChunkManager.BASENOISE_LEVEL3 = new FastNoiseLite((int) (seed * 3));
+        BackgroundChunkManager.BASENOISE_LEVEL3.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2S);
 
-        ChunkManager.COLORNOISE_RED = new FastNoiseLite((int) (seed * 4));
-        ChunkManager.COLORNOISE_RED.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
-        ChunkManager.COLORNOISE_PURPLE = new FastNoiseLite((int) (seed * 5));
-        ChunkManager.COLORNOISE_PURPLE.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
-        ChunkManager.COLORNOISE_BLUE = new FastNoiseLite((int) (seed * 6));
-        ChunkManager.COLORNOISE_BLUE.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        BackgroundChunkManager.COLORNOISE_RED = new FastNoiseLite((int) (seed * 4));
+        BackgroundChunkManager.COLORNOISE_RED.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        BackgroundChunkManager.COLORNOISE_PURPLE = new FastNoiseLite((int) (seed * 5));
+        BackgroundChunkManager.COLORNOISE_PURPLE.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        BackgroundChunkManager.COLORNOISE_BLUE = new FastNoiseLite((int) (seed * 6));
+        BackgroundChunkManager.COLORNOISE_BLUE.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
 
         // Render Distance calculated based on zoom and screen dimensions
         renderDistance = (int) Math
                 .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 0.75) / chunkRadius);
         // chunks calculated per frame based on ratios
         chunksPerFrame = (int) Math.ceil(Math.pow(renderDistance, 2) * Math.PI / 140);
-        chunks = new LinkedList<Chunk>();
+        chunks = new LinkedList<BackgroundChunk>();
     }
 
     public void resize(int width, int height) {
@@ -95,7 +93,7 @@ public final class ChunkManager {
         cacheStart.set(GameScreen.INSTANCE.camera.position.x - cacheRadius / 2,
                 GameScreen.INSTANCE.camera.position.y - cacheRadius / 2);
         // looping through all chunks to place their data on cacheMap
-        for (Chunk chunk : chunks) {
+        for (BackgroundChunk chunk : chunks) {
             Color[][] data = chunk.fieldCache;
             // skip if chunk is not in range
             if (chunk.position.x + this.chunkRadius < -cacheRadius + cacheStart.x)
@@ -135,7 +133,7 @@ public final class ChunkManager {
     }
 
     public void update() {
-        LinkedList<Chunk> addChunks = new LinkedList<Chunk>();
+        LinkedList<BackgroundChunk> addChunks = new LinkedList<BackgroundChunk>();
         Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
         int pixelChunkRadius = chunkRadius * renderDistance;
         xLoop: for (int x = (int) getNumInGrid(camPos.x, chunkRadius)
@@ -151,7 +149,7 @@ public final class ChunkManager {
 
                 if (!checkForChunkAtPosition(x, y)) { // check for chunk at position
                     // create new chunk
-                    Chunk chunk = new Chunk(chunkRadius, x, y);
+                    BackgroundChunk chunk = new BackgroundChunk(chunkRadius, x, y);
                     //add chunk to create list
                     addChunks.add(chunk);
                 }
@@ -168,14 +166,14 @@ public final class ChunkManager {
     }
 
     public void dispose() {
-        for (Chunk chunk : chunks) {
+        for (BackgroundChunk chunk : chunks) {
             chunk.dispose();
         }
         chunks.clear();
     }
 
     public void render(float delta, SpriteBatch batch) {
-        for (Chunk chunk : chunks) {
+        for (BackgroundChunk chunk : chunks) {
             chunk.draw(batch);
         }
     }
@@ -187,10 +185,10 @@ public final class ChunkManager {
     }
 
     //check if chunks are out of render distance
-    private LinkedList<Chunk> removeChunksOutOfRenderDistance() {
-        LinkedList<Chunk> removeChunks = new LinkedList<Chunk>();
+    private LinkedList<BackgroundChunk> removeChunksOutOfRenderDistance() {
+        LinkedList<BackgroundChunk> removeChunks = new LinkedList<BackgroundChunk>();
         Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
-        for (Chunk chunk : chunks) {
+        for (BackgroundChunk chunk : chunks) {
             if (distance(new Vector2(chunk.position.x, chunk.position.y),
                     camPos) > renderDistance * chunkRadius * 2) {
                 chunk.dispose();
@@ -203,7 +201,7 @@ public final class ChunkManager {
     //check if there is a chunk at the position
     private boolean checkForChunkAtPosition(int x, int y) {
         Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
-        for (Chunk chunk : chunks) {
+        for (BackgroundChunk chunk : chunks) {
             if (distance(new Vector2(x, y),
                     camPos) > renderDistance * chunkRadius * 1) {
                 return true;

@@ -11,7 +11,7 @@ import java.awt.Color;
 
 import de.pogs.rl.utils.FastNoiseLite;
 
-public final class Chunk {
+public final class BackgroundChunk {
 
     public Color[][] fieldCache;
 
@@ -27,7 +27,7 @@ public final class Chunk {
     private Vector2 start;
     private int radius;
 
-    public Chunk(int radius, int x, int y) {
+    BackgroundChunk(int radius, int x, int y) {
         this.radius = radius;
         position = new Vector2();
         position.set(x, y);
@@ -115,18 +115,18 @@ public final class Chunk {
     // combining Basenoise Level 1-3
     private double getBaseValue(int x, int y) {
         Vector2 relativePositon = getRelativePosition(new Vector2(x, y));
-        double value_level1 = genNoise(ChunkManager.BASENOISE_LEVEL1, relativePositon, 0.3, 0, 0.4);
-        double value_level2 = genNoise(ChunkManager.BASENOISE_LEVEL2, relativePositon, 1, 0, 0.1);
-        double value_level3 = genNoise(ChunkManager.BASENOISE_LEVEL3, relativePositon, 0.1, 0, 0.2);
+        double value_level1 = genNoise(BackgroundChunkManager.BASENOISE_LEVEL1, relativePositon, 0.3, 0, 0.4);
+        double value_level2 = genNoise(BackgroundChunkManager.BASENOISE_LEVEL2, relativePositon, 1, 0, 0.1);
+        double value_level3 = genNoise(BackgroundChunkManager.BASENOISE_LEVEL3, relativePositon, 0.1, 0, 0.2);
         return (value_level1 - Math.max(value_level2, 0) - value_level3) + 0.3;
     }
 
     // combining Colornoise Blue, Purple and Red
     private Color getColorValue(int x, int y) {
         Vector2 relativePositon = getRelativePosition(new Vector2(x, y));
-        double value_blue = genNoise(ChunkManager.COLORNOISE_BLUE, relativePositon, 0.1, 0, 1);
-        double value_purple = genNoise(ChunkManager.COLORNOISE_PURPLE, relativePositon, 0.3, 0, 1);
-        double value_red = genNoise(ChunkManager.COLORNOISE_RED, relativePositon, 0.1, 0, 1);
+        double value_blue = genNoise(BackgroundChunkManager.COLORNOISE_BLUE, relativePositon, 0.1, 0, 1);
+        double value_purple = genNoise(BackgroundChunkManager.COLORNOISE_PURPLE, relativePositon, 0.3, 0, 1);
+        double value_red = genNoise(BackgroundChunkManager.COLORNOISE_RED, relativePositon, 0.1, 0, 1);
         value_blue = minmax(value_blue, 0.001, 1);
         value_purple = minmax(value_purple, 0.001, 1);
         value_red = minmax(value_red, 0.001, 1);

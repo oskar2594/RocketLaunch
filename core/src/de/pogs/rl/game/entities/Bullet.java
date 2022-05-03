@@ -1,6 +1,6 @@
 package de.pogs.rl.game.entities;
 
-import com.badlogic.gdx.Gdx;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,7 +10,7 @@ import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.utils.SpecialMath;
 
 public class Bullet extends AbstractEntity {
-    private Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("bucket");
+    private Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("bullet");
     private Sprite sprite;
 
     private float scale = 0.2f;
@@ -24,6 +24,7 @@ public class Bullet extends AbstractEntity {
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+        sprite.setScale(0.5f);
         position.set(posX, posY);
         this.angle = angle;
         this.speed = speed;

@@ -5,13 +5,16 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.background.BackgroundLayer;
 import de.pogs.rl.game.entities.Enemy;
 import de.pogs.rl.game.entities.EntityManager;
 import de.pogs.rl.game.entities.Player;
 import de.pogs.rl.game.ui.HUD;
+import de.pogs.rl.game.world.EntityGen;
+import de.pogs.rl.game.world.spawners.SimpleSpawner;
+
 
 public class GameScreen extends ScreenAdapter {
     public static GameScreen INSTANCE;
@@ -23,6 +26,12 @@ public class GameScreen extends ScreenAdapter {
     public Player player;
     public EntityManager entityManager;
     public HUD hud;
+    public EntityGen entityGen;
+
+    private int renderDistance2 = (int) Math.pow(1000, 2);
+    private int updateDistance2 = (int) Math.pow(2000, 2);
+    private int removeDistance2 = (int) Math.pow(5000, 2);
+
 
     public GameScreen() {
         INSTANCE = this;
@@ -35,13 +44,17 @@ public class GameScreen extends ScreenAdapter {
         entityManager.addEntity(player);
         entityManager.addEntity(new Enemy(20, 20));
         entityManager.flush();
+        entityGen = new EntityGen(entityManager);
+        entityGen.addSpawner(new SimpleSpawner());
     }
 
     @Override
     public void render(float delta) {
+        entityGen.generateChunks(player.getPosition(), renderDistance2, removeDistance2);
+        entityManager.removeOutOfRange(player.getPosition(), removeDistance2);
+        entityManager.update(delta, player.getPosition(), updateDistance2);
         Gdx.gl.glClearColor(0.0f, 1.0f, 0.0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        entityManager.update(delta);
         camera.move();
         camera.update();
         hud.update(delta);
@@ -51,7 +64,6 @@ public class GameScreen extends ScreenAdapter {
         // final float delta2 = delta;
         batch.begin();
         background.render(delta, batch);
-        entityManager.render(batch);
 
         batch.end();
         Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -61,6 +73,8 @@ public class GameScreen extends ScreenAdapter {
         
         batch.begin();
         hud.render(batch);
+        background.update();
+        entityManager.render(batch, player.getPosition(), renderDistance2);
         batch.end();
     }
 

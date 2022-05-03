@@ -1,8 +1,10 @@
 package de.pogs.rl.game.entities;
 
+import java.util.Collection;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 public class EntityManager {
     private LinkedList<AbstractEntity> entities = new LinkedList<AbstractEntity>();
@@ -11,23 +13,29 @@ public class EntityManager {
     public EntityManager() {
     }
 
-    public void addEntity(AbstractEntity entity) {
-        entityQueue.add(entity);
+    public void addEntity(AbstractEntity newEntity) {
+        entityQueue.add(newEntity);
+    }
+
+    public void addEntities(Collection<AbstractEntity> newEntities) {
+        entityQueue.addAll(newEntities);
     }
 
     public LinkedList<AbstractEntity> getCollidingEntities(AbstractEntity entity, float radius) {
         LinkedList<AbstractEntity> result = new LinkedList<AbstractEntity>();
+        float radius2 = (float) Math.pow(radius, 2);
         for (AbstractEntity entityChecked : entities) {
-            if (entityChecked.getPosition().dst(entity.getPosition()) <= radius && !entityChecked.equals(entity)) {
+            if (entityChecked.getPosition().dst2(entity.getPosition()) <= radius2 && !entityChecked.equals(entity)) {
                 result.add(entityChecked);
             }
         }
         return result;
     }
 
-    public void update(float delta) {
+    public void update(float delta, Vector2 playerPosition, int updateDistance2) {
         for (AbstractEntity entity : entities) {
-            entity.update(delta);
+            if (entity.getPosition().dst2(playerPosition) < updateDistance2)
+                entity.update(delta);
         }
         if (entityQueue.size() != 0) {
             flush();
@@ -35,9 +43,10 @@ public class EntityManager {
         entities.removeIf((entity) -> !entity.getAlive());
     }
 
-    public void render(SpriteBatch batch) {
+    public void render(SpriteBatch batch, Vector2 playerPosition, int renderDistance2) {
         for (AbstractEntity entity : entities) {
-            entity.render(batch);
+            if (entity.getPosition().dst2(playerPosition) < renderDistance2)
+                entity.render(batch);
         }
     }
 
@@ -47,5 +56,9 @@ public class EntityManager {
             entityQueue.remove();
         }
         entities.sort((e1, e2) -> e1.getRenderPriority() - e2.getRenderPriority());
+    }
+
+    public void removeOutOfRange(Vector2 pos, float range2) {
+        entities.removeIf((entity) -> entity.getPosition().dst2(pos) > range2);
     }
 }
