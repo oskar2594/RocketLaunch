@@ -68,5 +68,9 @@ public class SpecialMath {
         public float dst(Vector2 other) {
             return this.sub(other).magn();
         }
+
+        public float toAngle() {
+            return (float) Math.acos(nor().x * 180 / Math.PI);
+        }
     }
 }

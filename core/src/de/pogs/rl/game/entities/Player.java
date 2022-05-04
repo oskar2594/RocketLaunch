@@ -21,20 +21,25 @@ public class Player extends AbstractEntity {
 
     private float angle = 0;
     private float aimedAngle = 0;
-    private float angle_response = 1;
+    private float angle_response = 2;
 
     private float speed = 100;
-    private float bulletSpeed = 200;
+    private float bulletSpeed = 500;
     private double shotCooldown = 200;
     private double lastBulletTime = TimeUtils.millis();
 
+    private float armor = 100;
+    private float health = 100;
+    private float maxArmor = 100;
+    private float maxHealth = 100;
 
-    float armor = 100;
-    float health = 100;
-    float maxArmor = 100;
-    float maxHealth = 100;
+    private float acceleration = 1000;
+
+    private float breakCoeff = 0.5f;
 
     float bulletDamage = 10;
+
+    Vector2 velocity = new Vector2(0, 0);
 
     public Player() {
         sprite = new Sprite(texture);
@@ -54,6 +59,7 @@ public class Player extends AbstractEntity {
         updateAimedAngle();
         updateAngle(delta);
         updatePosition(delta);
+        updateVelocity(delta);
 
         sprite.setPosition(position.x - (sprite.getWidth() / 2), position.y - sprite.getHeight() / 2);
         sprite.setRotation(angle);
@@ -63,7 +69,8 @@ public class Player extends AbstractEntity {
     private void shoot() {
         if (Gdx.input.isKeyPressed(Keys.SPACE)) {
             if ((TimeUtils.millis() - lastBulletTime) >= shotCooldown) {
-                Bullet bullet = new Bullet(position.x, position.y, this.angle, this.speed + this.bulletSpeed, this, bulletDamage);
+                Bullet bullet = new Bullet(position.x, position.y, this,
+                        bulletDamage, velocity.add(SpecialMath.angleToVector(angle).mul(bulletSpeed)), angle);
                 bullet.update(0);
                 GameScreen.INSTANCE.entityManager
                         .addEntity(bullet);
@@ -74,19 +81,17 @@ public class Player extends AbstractEntity {
     }
 
     private void updateAimedAngle() {
-        if (Gdx.input.isTouched()) {
 
-            aimedAngle = (float) Math
-                    .toDegrees((float) (Math.atan(mouseXfromPlayer()
-                            / mouseYfromPlayer())));
-            if (mouseXfromPlayer() > 0 && mouseYfromPlayer() > 0) {
-                aimedAngle = -180 + aimedAngle;
-            }
-            if (mouseXfromPlayer() < 0 && mouseYfromPlayer() > 0) {
-                aimedAngle = 180 + aimedAngle;
-            }
-
+        aimedAngle = (float) Math
+                .toDegrees((float) (Math.atan(mouseXfromPlayer()
+                        / mouseYfromPlayer())));
+        if (mouseXfromPlayer() > 0 && mouseYfromPlayer() > 0) {
+            aimedAngle = -180 + aimedAngle;
         }
+        if (mouseXfromPlayer() < 0 && mouseYfromPlayer() > 0) {
+            aimedAngle = 180 + aimedAngle;
+        }
+
     }
 
     private float mouseXfromPlayer() {
@@ -104,9 +109,17 @@ public class Player extends AbstractEntity {
     }
 
     private void updatePosition(float delta) {
-        position = position.add(SpecialMath.angleToVector(this.angle).mul(delta * speed));
+        // position = position.add(SpecialMath.angleToVector(this.angle).mul(delta * speed));
+        position = position.add(velocity.mul(delta));
     }
 
+    private void updateVelocity(float delta) {
+        if (Gdx.input.isTouched()) {
+            velocity = velocity.add(SpecialMath.angleToVector(this.angle).mul(delta * acceleration));
+        }
+        velocity = velocity.sub(velocity.mul(breakCoeff * delta));
+
+    }
     public float getHealth() {
         return health;
     }
@@ -116,7 +129,7 @@ public class Player extends AbstractEntity {
     }
 
     public float getMaxHealth() {
-        return maxHealth;   
+        return maxHealth;
     }
 
     public float getMaxArmor() {

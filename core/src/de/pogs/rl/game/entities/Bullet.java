@@ -23,13 +23,15 @@ public class Bullet extends AbstractEntity {
 
     private float damage;
 
-    public Bullet(float posX, float posY, float angle, float speed, AbstractEntity sender, float damage) {
+    private Vector2 velocity;
+
+    public Bullet(float posX, float posY, AbstractEntity sender, float damage, Vector2 velocity, float angle) {
         sprite = new Sprite(texture);
+        this.angle = angle;
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
         position = new Vector2(posX, posY);
-        this.angle = angle;
-        this.speed = speed;
+        this.velocity = velocity;
         sprite.setRotation(this.angle);
         this.sender = sender;
         this.damage = damage;
@@ -53,7 +55,7 @@ public class Bullet extends AbstractEntity {
     }
 
     private void updatePosition(float delta) {
-        position = position.add(SpecialMath.angleToVector(angle).mul(delta * speed));
+        position = position.add(velocity.mul(delta));
     }
 
     @Override
