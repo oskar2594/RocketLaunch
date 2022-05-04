@@ -19,7 +19,7 @@ public class Enemy extends AbstractEntity{
     private Sprite sprite;
     private float speed = 50;
 
-    private float scale = 0.2f;
+    private float scale = 0.1f;
 
     private Vector2 moveDirection = new Vector2(random.nextFloat() - 0.5f, random.nextFloat() - 0.5f).nor();
 
@@ -27,7 +27,6 @@ public class Enemy extends AbstractEntity{
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-        sprite.setScale(0.5f);
         position.set(posX, posY);
     }
     @Override
