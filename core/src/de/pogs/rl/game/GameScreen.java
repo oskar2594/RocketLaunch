@@ -57,7 +57,7 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.move();
         camera.update();
-        hud.update(delta);
+        hud.update(delta, player.getHealth() / player.getMaxHealth(), player.getArmor() / player.getMaxArmor());
         background.update();
         batch.setProjectionMatrix(camera.combined);
         // DRAW

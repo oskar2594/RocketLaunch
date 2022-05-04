@@ -46,7 +46,9 @@ public class HUD {
         components.put("debug", debug);
     }
 
-    public void update(float delta) {
+    public void update(float delta, float healthProg, float armorProg) {
+        playerHealth.setProg(healthProg);
+        playerArmor.setProg(armorProg);
         Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
         position.set(camPos.x, camPos.y);
         components.forEach((name, component) -> {

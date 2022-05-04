@@ -57,4 +57,7 @@ public class PlayerArmor extends HUDComponent {
                 (width - width * 0.02f) * currProg, height - width * 0.02f);
     }
 
+    public void setProg(float prog) {
+        progress = prog;
+    }
 }

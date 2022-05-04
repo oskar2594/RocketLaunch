@@ -28,6 +28,11 @@ public class Player extends AbstractEntity {
     private double lastBulletTime = TimeUtils.millis();
 
 
+    float armor = 100;
+    float health = 100;
+    float maxArmor = 100;
+    float maxHealth = 100;
+
     public Player() {
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
@@ -99,4 +104,19 @@ public class Player extends AbstractEntity {
         position = position.add(SpecialMath.angleToVector(this.angle).scl(delta * speed));
     }
 
+    public float getHealth() {
+        return health;
+    }
+
+    public float getArmor() {
+        return armor;
+    }
+
+    public float getMaxHealth() {
+        return maxHealth;   
+    }
+
+    public float getMaxArmor() {
+        return maxArmor;
+    }
 }
