@@ -42,6 +42,5 @@ public class Enemy extends AbstractEntity{
             moveDirection = GameScreen.INSTANCE.player.getPosition().sub(position).nor();
         }
         position.add(new Vector2(moveDirection).scl(speed * delta));
-        System.out.println(position);
     }
 }

@@ -37,7 +37,7 @@ public class EntityGen {
                 }
             }
         }
-        generatedChunks.removeIf((chunk) -> Math.pow(chunk.get(0), 2) + Math.pow(chunk.get(1), 2) > removeDistance2);
+        generatedChunks.removeIf((chunk) -> Math.pow(chunk.get(0) - pos.x, 2) + Math.pow(chunk.get(1) - pos.y, 2) > removeDistance2);
     }
 
     private void spawn(ArrayList<Integer> chunk) {
