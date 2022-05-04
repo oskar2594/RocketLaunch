@@ -37,8 +37,10 @@ public class PlayerArmor extends HUDComponent {
 
     public void updateAngle() {
         currProg += (progress - currProg) * progress_response;
-        if(currProg > 1) currProg = 1f;
-        if(currProg < 0) currProg = 0;
+        if (currProg > 1)
+            currProg = 1f;
+        if (currProg < 0)
+            currProg = 0;
     }
 
     @Override

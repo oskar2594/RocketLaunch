@@ -27,6 +27,7 @@ public class HUD {
 
     private PlayerHealth playerHealth;
     private PlayerArmor playerArmor;
+    private Debug debug;
 
     public int border = 10;
 
@@ -41,6 +42,8 @@ public class HUD {
         components.put("playerHealth", playerHealth);
         playerArmor = new PlayerArmor();
         components.put("playerArmor", playerArmor);
+        debug = new Debug();
+        components.put("debug", debug);
     }
 
     public void update(float delta) {
@@ -67,9 +70,8 @@ public class HUD {
     }
 
     public void resize(int width, int height) {
-        this.width = width * GameScreen.INSTANCE.camera.zoom - border * 2;
+        this.width = width * GameScreen.INSTANCE.camera.zoom - border;
         this.height = height * GameScreen.INSTANCE.camera.zoom - border * 2;
-        this.border = (int) (this.height * 0.02);
         components.forEach((name, component) -> {
             component.resize(this.width, this.height);
         });

@@ -64,8 +64,7 @@ public final class BackgroundChunkManager {
         // check if new chunkradius is needed, because
         // changing the chunkradius leads to recreating all
         // chunks
-        if (Math.abs((width * GameScreen.INSTANCE.camera.zoom) / chunkRadius
-                - (width * GameScreen.INSTANCE.camera.zoom) / newChunkRadius) > 20) {
+        if (Math.abs(newChunkRadius - this.chunkRadius) > 50) {
             // for better performance collecting current colors
             collectCache(newChunkRadius);
             this.chunkRadius = newChunkRadius;

@@ -64,7 +64,7 @@ public class GameScreen extends ScreenAdapter {
         // final float delta2 = delta;
         batch.begin();
         background.render(delta, batch);
-
+        entityManager.render(batch, player.getPosition(), renderDistance2);
         batch.end();
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -74,7 +74,6 @@ public class GameScreen extends ScreenAdapter {
         batch.begin();
         hud.render(batch);
         background.update();
-        entityManager.render(batch, player.getPosition(), renderDistance2);
         batch.end();
     }
 

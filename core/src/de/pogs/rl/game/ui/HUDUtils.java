@@ -28,7 +28,7 @@ public class HUDUtils {
     }
 
     public static Vector2 getTopLeft() {
-        return new Vector2(HUD.INSTANCE.position.x - HUD.INSTANCE.height / 2, HUD.INSTANCE.position.y + HUD.INSTANCE.width / 2);
+        return new Vector2(HUD.INSTANCE.position.x - HUD.INSTANCE.height / 2, HUD.INSTANCE.position.y - HUD.INSTANCE.width / 2);
     }
 
     public static Vector2 getBottomLeft() {
