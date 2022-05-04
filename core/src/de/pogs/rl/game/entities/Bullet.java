@@ -13,7 +13,7 @@ public class Bullet extends AbstractEntity {
     private Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("bullet");
     private Sprite sprite;
 
-    private float scale = 0.2f;
+    private float scale = 0.1f;
     private float speed;
     private float angle;
     
@@ -24,7 +24,6 @@ public class Bullet extends AbstractEntity {
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-        sprite.setScale(0.5f);
         position.set(posX, posY);
         this.angle = angle;
         this.speed = speed;
