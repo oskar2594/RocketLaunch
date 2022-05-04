@@ -40,7 +40,7 @@ public class Enemy extends AbstractEntity {
         if (position.dst2(GameScreen.INSTANCE.player.getPosition()) < sightRange) {
             moveDirection = GameScreen.INSTANCE.player.getPosition().sub(position).nor();
         }
-        position.add(moveDirection.mul(speed * delta));
+        position = position.add(moveDirection.mul(speed * delta));
 
         for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this, 10)) {
             if (!(entity instanceof Enemy)) {
