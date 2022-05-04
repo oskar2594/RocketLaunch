@@ -18,7 +18,7 @@ public class Bullet extends AbstractEntity {
     private float speed;
     private float angle;
     
-    private float radius = 10;
+    private float radius = 20;
     private AbstractEntity sender;
 
     private float damage;
