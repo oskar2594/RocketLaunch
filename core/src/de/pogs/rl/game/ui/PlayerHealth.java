@@ -28,7 +28,7 @@ public class PlayerHealth extends HUDComponent {
     @Override
     public void update(float delta) {
         position.set(HUDUtils.getBottomCenter().x - width / 2, HUDUtils.getBottomCenter().y);
-        updateAngle();
+        updateProg();
     }
 
     @Override
@@ -37,7 +37,7 @@ public class PlayerHealth extends HUDComponent {
         this.height = (float) (this.width * 0.07);
     }
 
-    public void updateAngle() {
+    public void updateProg() {
         currProg += (progress - currProg) * progress_response;
         if(currProg > 1) currProg = 1f;
         if(currProg < 0) currProg = 0;
@@ -65,4 +65,7 @@ public class PlayerHealth extends HUDComponent {
                 (width - width * 0.02f) * currProg, height - width * 0.02f);
     }
 
+    public void setProg(float prog) {
+        progress = prog;
+    }
 }

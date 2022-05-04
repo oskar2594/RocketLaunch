@@ -1,6 +1,5 @@
 package de.pogs.rl.game.entities;
 
-
 import java.util.Random;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -11,9 +10,8 @@ import com.badlogic.gdx.math.Vector2;
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
 
-
-public class Enemy extends AbstractEntity{
-    private static  Random random = new Random();
+public class Enemy extends AbstractEntity {
+    private static Random random = new Random();
     private float sightRange = (float) Math.pow(200, 2);
     private Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("monster1");
     private Sprite sprite;
@@ -29,6 +27,7 @@ public class Enemy extends AbstractEntity{
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
         position.set(posX, posY);
     }
+
     @Override
     public void render(SpriteBatch batch) {
         sprite.draw(batch);
@@ -41,5 +40,16 @@ public class Enemy extends AbstractEntity{
             moveDirection = GameScreen.INSTANCE.player.getPosition().sub(position).nor();
         }
         position.add(new Vector2(moveDirection).scl(speed * delta));
+
+        for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this, 10)) {
+            if (!(entity instanceof Enemy)) {
+                entity.addDamage(5 * delta);
+            }
+        }
+    }
+
+    @Override
+    public void addDamage(float damage) {
+        this.alive = false;
     }
 }

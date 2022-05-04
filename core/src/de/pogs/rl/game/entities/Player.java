@@ -28,6 +28,13 @@ public class Player extends AbstractEntity {
     private double lastBulletTime = TimeUtils.millis();
 
 
+    float armor = 100;
+    float health = 100;
+    float maxArmor = 100;
+    float maxHealth = 100;
+
+    float bulletDamage = 10;
+
     public Player() {
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
@@ -55,7 +62,7 @@ public class Player extends AbstractEntity {
     private void shoot() {
         if (Gdx.input.isKeyPressed(Keys.SPACE)) {
             if ((TimeUtils.millis() - lastBulletTime) >= shotCooldown) {
-                Bullet bullet = new Bullet(position.x, position.y, this.angle, this.speed + this.bulletSpeed, this);
+                Bullet bullet = new Bullet(position.x, position.y, this.angle, this.speed + this.bulletSpeed, this, bulletDamage);
                 bullet.update(0);
                 GameScreen.INSTANCE.entityManager
                         .addEntity(bullet);
@@ -99,4 +106,27 @@ public class Player extends AbstractEntity {
         position = position.add(SpecialMath.angleToVector(this.angle).scl(delta * speed));
     }
 
+    public float getHealth() {
+        return health;
+    }
+
+    public float getArmor() {
+        return armor;
+    }
+
+    public float getMaxHealth() {
+        return maxHealth;   
+    }
+
+    public float getMaxArmor() {
+        return maxArmor;
+    }
+
+    @Override
+    public void addDamage(float damage) {
+        health -= damage;
+        if (health < 0) {
+            health = 0;
+        }
+    }
 }

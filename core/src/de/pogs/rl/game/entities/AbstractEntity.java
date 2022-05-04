@@ -15,10 +15,8 @@ public abstract class AbstractEntity {
         return renderPriority;
     }
 
-    private boolean alive = true;
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-    }
+    protected boolean alive = true;
+    public abstract void addDamage(float damage);
 
     public boolean getAlive(){
         return alive;

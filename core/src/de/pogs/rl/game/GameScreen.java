@@ -61,7 +61,7 @@ public class GameScreen extends ScreenAdapter {
         camera.move();
         camera.update();
         hudCamera.update();
-        hud.update(delta);
+        hud.update(delta, player.getHealth() / player.getMaxHealth(), player.getArmor() / player.getMaxArmor());
         background.update();
         batch.setProjectionMatrix(camera.combined);
         // DRAW

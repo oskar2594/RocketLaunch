@@ -20,7 +20,9 @@ public class Bullet extends AbstractEntity {
     private float radius = 10;
     private AbstractEntity sender;
 
-    public Bullet(float posX, float posY, float angle, float speed, AbstractEntity sender) {
+    private float damage;
+
+    public Bullet(float posX, float posY, float angle, float speed, AbstractEntity sender, float damage) {
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
@@ -29,6 +31,7 @@ public class Bullet extends AbstractEntity {
         this.speed = speed;
         sprite.setRotation(this.angle);
         this.sender = sender;
+        this.damage = damage;
     }
     @Override
     public void render(SpriteBatch batch) {
@@ -43,7 +46,7 @@ public class Bullet extends AbstractEntity {
             if (entity != sender) {
                 System.out.println(entity);
                 System.out.println(entity.getPosition());
-                entity.setAlive(false);
+                entity.addDamage(damage);
             }
         }
     }
@@ -52,4 +55,8 @@ public class Bullet extends AbstractEntity {
         position = position.add(SpecialMath.angleToVector(angle).scl(delta * speed));
     }
 
+    @Override
+    public void addDamage(float damage) {
+        
+    }
 }
