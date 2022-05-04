@@ -5,10 +5,10 @@ import java.util.Random;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
+import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class Enemy extends AbstractEntity {
     private static Random random = new Random();
@@ -21,11 +21,12 @@ public class Enemy extends AbstractEntity {
 
     private Vector2 moveDirection = new Vector2(random.nextFloat() - 0.5f, random.nextFloat() - 0.5f).nor();
 
+
     public Enemy(float posX, float posY) {
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-        position.set(posX, posY);
+        position = new Vector2(posX, posY);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class Enemy extends AbstractEntity {
         if (position.dst2(GameScreen.INSTANCE.player.getPosition()) < sightRange) {
             moveDirection = GameScreen.INSTANCE.player.getPosition().sub(position).nor();
         }
-        position.add(new Vector2(moveDirection).scl(speed * delta));
+        position.add(moveDirection.mul(speed * delta));
 
         for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this, 10)) {
             if (!(entity instanceof Enemy)) {

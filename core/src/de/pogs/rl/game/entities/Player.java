@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.utils.SpecialMath;
+import de.pogs.rl.utils.SpecialMath.Vector2;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -39,7 +40,7 @@ public class Player extends AbstractEntity {
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-        position.set(0, 0);
+        position = new Vector2(0, 0);
         renderPriority = 1;
     }
 
@@ -103,7 +104,7 @@ public class Player extends AbstractEntity {
     }
 
     private void updatePosition(float delta) {
-        position = position.add(SpecialMath.angleToVector(this.angle).scl(delta * speed));
+        position = position.add(SpecialMath.angleToVector(this.angle).mul(delta * speed));
     }
 
     public float getHealth() {

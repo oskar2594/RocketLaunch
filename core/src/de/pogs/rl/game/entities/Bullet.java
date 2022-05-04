@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.utils.SpecialMath;
+import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class Bullet extends AbstractEntity {
     private Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("bullet");
@@ -26,7 +27,7 @@ public class Bullet extends AbstractEntity {
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-        position.set(posX, posY);
+        position = new Vector2(posX, posY);
         this.angle = angle;
         this.speed = speed;
         sprite.setRotation(this.angle);
@@ -52,11 +53,11 @@ public class Bullet extends AbstractEntity {
     }
 
     private void updatePosition(float delta) {
-        position = position.add(SpecialMath.angleToVector(angle).scl(delta * speed));
+        position = position.add(SpecialMath.angleToVector(angle).mul(delta * speed));
     }
 
     @Override
     public void addDamage(float damage) {
-        
+
     }
 }

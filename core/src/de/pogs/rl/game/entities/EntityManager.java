@@ -4,7 +4,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
+
+import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class EntityManager {
     private LinkedList<AbstractEntity> entities = new LinkedList<AbstractEntity>();

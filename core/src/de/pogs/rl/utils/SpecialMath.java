@@ -1,6 +1,5 @@
 package de.pogs.rl.utils;
 
-import com.badlogic.gdx.math.Vector2;
 
 public class SpecialMath {
     public static float modulus(float x, float n) {
@@ -30,5 +29,44 @@ public class SpecialMath {
     public static Vector2 angleToVector(float angle) {
         return new Vector2(((float) Math.cos((angle + 90) * Math.PI / 180)),
         ((float) Math.sin((angle + 90) * (Math.PI / 180))));
+    }
+
+
+    public static class Vector2 {
+        public float x;
+        public float y;
+
+        public Vector2(float x, float y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public Vector2 mul(float scalar) {
+            return new Vector2(x * scalar, y * scalar);
+        }
+
+        public Vector2 add(Vector2 other) {
+            return new Vector2(x + other.x, y + other.y);
+        }
+
+        public Vector2 sub(Vector2 other) {
+            return new Vector2(x - other.x, y - other.y);
+        }
+
+        public float dst2(Vector2 other) {
+            return (float) (Math.pow(x - other.x, 2) + Math.pow(y - other.y, 2));
+        }
+
+        public Vector2 nor() {
+            return new Vector2(x / magn(), y / magn());
+        }
+
+        public float magn() {
+            return (float) Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+        }
+
+        public float dst(Vector2 other) {
+            return this.sub(other).magn();
+        }
     }
 }

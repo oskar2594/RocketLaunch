@@ -5,10 +5,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-import com.badlogic.gdx.math.Vector2;
-
 import de.pogs.rl.game.entities.EntityManager;
 import de.pogs.rl.utils.SpecialMath;
+import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class EntityGen {
     private EntityManager entityManager;
