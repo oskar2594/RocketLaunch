@@ -29,10 +29,12 @@ public class HUD {
     private PlayerArmor playerArmor;
     private Debug debug;
 
-    public int border = 10;
+    public int border = 20;
 
     public HUD() {
         INSTANCE = this;
+        width = Gdx.graphics.getWidth();
+        height = Gdx.graphics.getHeight();
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setAutoShapeType(true);
         components = new HashMap<String, HUDComponent>();
@@ -47,8 +49,6 @@ public class HUD {
     }
 
     public void update(float delta) {
-        Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
-        position.set(camPos.x, camPos.y);
         components.forEach((name, component) -> {
             component.update(delta);
         });
@@ -70,8 +70,8 @@ public class HUD {
     }
 
     public void resize(int width, int height) {
-        this.width = width * GameScreen.INSTANCE.camera.zoom - border;
-        this.height = height * GameScreen.INSTANCE.camera.zoom - border * 2;
+        this.width = width - border * 2;
+        this.height = height - border * 2;
         components.forEach((name, component) -> {
             component.resize(this.width, this.height);
         });

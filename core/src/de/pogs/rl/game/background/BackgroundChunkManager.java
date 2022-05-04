@@ -58,13 +58,15 @@ public final class BackgroundChunkManager {
     public void resize(int width, int height) {
         // possible recalculations
         int newChunkRadius = (int) (width * height * GameScreen.INSTANCE.camera.zoom / 14000);
+        if(newChunkRadius < width / 10) newChunkRadius = width / 10;
+        if(newChunkRadius > width / 2) newChunkRadius = width / 2;
         int newRenderDistance = (int) Math
                 .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 0.75) / newChunkRadius);
         int newChunksPerFrame = (int) Math.floor(Math.pow(newRenderDistance, 2) * Math.PI / 150);
         // check if new chunkradius is needed, because
         // changing the chunkradius leads to recreating all
         // chunks
-        if (Math.abs(newChunkRadius - this.chunkRadius) > 50) {
+        if (Math.abs(newChunkRadius - this.chunkRadius) > 30) {
             // for better performance collecting current colors
             collectCache(newChunkRadius);
             this.chunkRadius = newChunkRadius;

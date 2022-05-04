@@ -3,6 +3,7 @@ package de.pogs.rl.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -23,6 +24,7 @@ public class GameScreen extends ScreenAdapter {
 
     private BackgroundLayer background;
     public RocketCamera camera;
+    private OrthographicCamera hudCamera;
     public Player player;
     public EntityManager entityManager;
     public HUD hud;
@@ -38,6 +40,7 @@ public class GameScreen extends ScreenAdapter {
         batch = RocketLauncher.INSTANCE.batch;
         entityManager = new EntityManager();
         camera = new RocketCamera();
+        hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         player = new Player();
         background = new BackgroundLayer();
         hud = new HUD();
@@ -57,24 +60,29 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.move();
         camera.update();
+        hudCamera.update();
         hud.update(delta);
         background.update();
         batch.setProjectionMatrix(camera.combined);
         // DRAW
-        // final float delta2 = delta;
         batch.begin();
         background.render(delta, batch);
         entityManager.render(batch, player.getPosition(), renderDistance2);
         batch.end();
+
+        //HUD SHAPES
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        hud.shapeRender(camera.combined);
+        hud.shapeRender(hudCamera.combined);
         Gdx.gl.glDisable(GL20.GL_BLEND);
-        
+
+
+        //HUD SPRITES
+        batch.setProjectionMatrix(hudCamera.combined);
         batch.begin();
         hud.render(batch);
-        background.update();
         batch.end();
+
     }
 
     @Override
@@ -90,6 +98,12 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void resize(int width, int height) {
         hud.resize(width, height);
+        camera.resize(width, height);
+        background.resize(width, height);
+    }
+
+
+    public void resizeZoom(int width, int height) {
         camera.resize(width, height);
         background.resize(width, height);
     }
