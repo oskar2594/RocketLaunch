@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.GdxNativesLoader;
 public class RocketCamera extends OrthographicCamera {
 
     public RocketCamera() {
-        super(Gdx.graphics.getWidth() * 2, Gdx.graphics.getHeight() * 2);
+        super(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.zoom = 1f;
     }
 
@@ -33,7 +33,8 @@ public class RocketCamera extends OrthographicCamera {
         if (this.zoom < 0)
             this.zoom = 0;
 
-            GameScreen.INSTANCE.resize((int)(Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom), (int)(Gdx.graphics.getHeight() * GameScreen.INSTANCE.camera.zoom));
+        GameScreen.INSTANCE.resizeZoom((int) (Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom),
+                (int) (Gdx.graphics.getHeight() * GameScreen.INSTANCE.camera.zoom));
         // this.position.x = GameScreen.INSTANCE.player.getPosition().x;
         // this.position.y = GameScreen.INSTANCE.player.getPosition().y;
     }
