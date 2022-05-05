@@ -14,7 +14,7 @@ public class Enemy extends AbstractEntity {
     private static Random random = new Random();
     private float sightRange = (float) Math.pow(500, 2);
     private float haloRange = (float) Math.pow(200, 2);
-    
+
     private float respectDistance = (float) Math.pow(180, 2);
     private Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("monster1");
     private Sprite sprite;
@@ -52,15 +52,16 @@ public class Enemy extends AbstractEntity {
     }
 
     private void updateVelocity(float delta) {
-        if ((position.dst2(GameScreen.INSTANCE.player.getPosition()) > haloRange)
-                && (position.dst2(GameScreen.INSTANCE.player.getPosition()) < sightRange)) {
-            moveDirection = GameScreen.INSTANCE.player.getPosition().sub(position).nor();
+        Vector2 playerPos = GameScreen.INSTANCE.player.getPosition();
+        if ((position.dst2(playerPos) > haloRange)
+                && (position.dst2(playerPos) < sightRange)) {
+            moveDirection = playerPos.sub(position).nor();
             velocity = moveDirection.mul(speed);
-        } else if (position.dst2(GameScreen.INSTANCE.player.getPosition()) < respectDistance) {
-            moveDirection = GameScreen.INSTANCE.player.getPosition().sub(position).nor().mul(-1);
+        } else if (position.dst2(playerPos) < respectDistance) {
+            moveDirection = playerPos.sub(position).nor().mul(-1);
             velocity = moveDirection.mul(speed);
-        } else if ((position.dst2(GameScreen.INSTANCE.player.getPosition()) > respectDistance)
-        && (position.dst2(GameScreen.INSTANCE.player.getPosition()) < sightRange)) {
+        } else if ((position.dst2(playerPos) > respectDistance)
+                && (position.dst2(playerPos) < sightRange)) {
             velocity = new Vector2(0, 0);
         }
     }
