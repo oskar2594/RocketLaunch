@@ -105,26 +105,8 @@ public final class BackgroundChunkManager {
         cacheStart.set(GameScreen.INSTANCE.camera.position.x - cacheRadius / 2,
                 GameScreen.INSTANCE.camera.position.y - cacheRadius / 2);
         // looping through all chunks to place their data on cacheMap
-        // for (int x = 0; x < colorCache.length; x++) {
-        //     for (int y = 0; y < colorCache.length; y++) {
-        //         colorCache[x][y] = Color.RED;
-        //     }
-        // }
         for (BackgroundChunk chunk : chunks) {
             Color[][] data = chunk.fieldCache;
-            // skip if chunk is not in range
-            // if (chunk.position.x + this.realChunkRadius / scaling < -cacheRadius +
-            // cacheStart.x)
-            // continue;
-            // if (chunk.position.y + this.realChunkRadius / scaling < -cacheRadius +
-            // cacheStart.y)
-            // continue;
-            // if (chunk.position.x - this.realChunkRadius / scaling > cacheRadius +
-            // cacheStart.x)
-            // continue;
-            // if (chunk.position.y - this.realChunkRadius / scaling > cacheRadius +
-            // cacheStart.y)
-            // continue;
             i++;
             for (int x = 0; x < data.length; x++) {
                 for (int y = 0; y < data.length; y++) {
