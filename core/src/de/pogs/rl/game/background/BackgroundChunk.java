@@ -27,8 +27,11 @@ public final class BackgroundChunk {
     private Vector2 start;
     private int radius;
 
-    BackgroundChunk(int radius, int x, int y) {
+    private float scaling;
+
+    BackgroundChunk(int radius, int x, int y, float scaling) {
         this.radius = radius;
+        this.scaling = scaling;
         position = new Vector2();
         position.set(x, y);
         fieldCache = new Color[radius][radius];
@@ -40,7 +43,7 @@ public final class BackgroundChunk {
         this.texture = new Texture(this.generatePixmap(), true);
         sprite = new Sprite(texture);
         sprite.setSize(radius, radius);
-        // sprite.setScale(0.98f);
+        sprite.setScale(scaling);
         update();
     }
 
@@ -166,12 +169,13 @@ public final class BackgroundChunk {
 
     // scale size and min max values of raw noise
     private double genNoise(FastNoiseLite noise, Vector2 position, double scale, double min, double max) {
-        return ((noise.GetNoise((float) (position.x * scale), (float) (position.y * scale)) * (max - min + 1)) + min);
+        return ((noise.GetNoise((float) (position.x * scale * 1.5), (float) (position.y * scale * 1.5))
+                * (max - min + 1)) + min);
     }
 
     // get position in normal coordination system
     private Vector2 getRelativePosition(Vector2 position) {
-        return new Vector2(position.x + start.x, position.y - start.y);
+        return new Vector2(position.x * scaling + start.x, position.y * scaling - start.y);
     }
 
     private Color mix(Color a, Color b, double percent) {

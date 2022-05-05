@@ -17,14 +17,14 @@ public class Player extends AbstractEntity {
     private Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("rakete");
     private Sprite sprite;
 
-    private float scale = 0.2f;
+    private float scale = 0.1f;
 
     private float angle = 0;
     private float aimedAngle = 0;
     private float angle_response = 2;
 
     private float speed = 100;
-    private float bulletSpeed = 500;
+    private float bulletSpeed = 1000;
     private double shotCooldown = 200;
     private double lastBulletTime = TimeUtils.millis();
 
@@ -33,13 +33,14 @@ public class Player extends AbstractEntity {
     private float maxArmor = 100;
     private float maxHealth = 100;
 
-    private float acceleration = 1000;
+    private float acceleration = 500;
 
     private float breakCoeff = 0.5f;
 
     float bulletDamage = 10;
 
     Vector2 velocity = new Vector2(0, 0);
+
 
     public Player() {
         sprite = new Sprite(texture);
@@ -142,5 +143,8 @@ public class Player extends AbstractEntity {
         if (health < 0) {
             health = 0;
         }
+    }
+    public float getSpeed() {
+        return (float) Math.sqrt(Math.pow(velocity.x, 2) + Math.pow(velocity.y, 2));
     }
 }
