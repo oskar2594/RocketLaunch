@@ -6,8 +6,11 @@ import com.badlogic.gdx.utils.TimeUtils;
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.game.world.particles.ParticleEmitter;
+import de.pogs.rl.game.world.particles.ParticleUtils;
 import de.pogs.rl.utils.SpecialMath;
 import de.pogs.rl.utils.SpecialMath.Vector2;
+
+import java.awt.Color;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
@@ -60,28 +63,28 @@ public class Player extends AbstractEntity {
 
         dust = GameScreen.INSTANCE.particleManager.createEmitter(
                 new ParticleEmitter(0, 0, -1, 10,
-                        RocketLauncher.INSTANCE.assetHelper.getImage("dust"),
+                        ParticleUtils.generateParticleTexture(new Color(0x808080)),
                         -10, 10, 150, 250,
                         5, 10, .2f, 1f, 0f, .5f, false));
         dust.attach(this.getSprite(), 20, 0, this);
 
         flame = GameScreen.INSTANCE.particleManager.createEmitter(
                 new ParticleEmitter(0, 0, -1, 3,
-                        RocketLauncher.INSTANCE.assetHelper.getImage("hot"),
+                        ParticleUtils.generateParticleTexture(new Color(0xd63636)),
                         -10, 10, 150, 250,
                         5, 5, .6f, .5f, 0f, 0, false));
         flame.attach(this.getSprite(), 20, 0, this);
 
         hot = GameScreen.INSTANCE.particleManager.createEmitter(
                 new ParticleEmitter(0, 0, -1, 2,
-                        RocketLauncher.INSTANCE.assetHelper.getImage("flame"),
+                        ParticleUtils.generateParticleTexture(new Color(0xd9851e)),
                         -10, 10, 150, 250,
                         5, 5, .6f, .3f, 0f, 0, false));
         hot.attach(this.getSprite(), 20, 0, this);
 
         overheat = GameScreen.INSTANCE.particleManager.createEmitter(
                 new ParticleEmitter(0, 0, -1, 1,
-                        RocketLauncher.INSTANCE.assetHelper.getImage("overheat"),
+                        ParticleUtils.generateParticleTexture(new Color(0xffeba8)),
                         -10, 10, 150, 250,
                         5, 5, .6f, .1f, 0f, 0, false));
         overheat.attach(this.getSprite(), 20, 0, this);
