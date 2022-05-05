@@ -30,7 +30,7 @@ public class HUD {
     private Debug debug;
     private Level level;
 
-    public int border = 20;
+    public int border = 30;
 
     public HUD() {
         INSTANCE = this;
@@ -73,6 +73,7 @@ public class HUD {
     }
 
     public void resize(int width, int height) {
+        this.border = (int) (width * 0.03);
         this.width = width - border * 2;
         this.height = height - border * 2;
         components.forEach((name, component) -> {
