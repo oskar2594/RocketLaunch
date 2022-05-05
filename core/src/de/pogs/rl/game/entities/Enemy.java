@@ -12,10 +12,13 @@ import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class Enemy extends AbstractEntity {
     private static Random random = new Random();
-    private float sightRange = (float) Math.pow(200, 2);
+    private float sightRange = (float) Math.pow(500, 2);
+    private float haloRange = (float) Math.pow(200, 2);
+    
+    private float respectDistance = (float) Math.pow(180, 2);
     private Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("monster1");
     private Sprite sprite;
-    private float speed = 50;
+    private float speed = 100;
 
     private float scale = 0.1f;
 
@@ -38,11 +41,8 @@ public class Enemy extends AbstractEntity {
     @Override
     public void update(float delta) {
         sprite.setPosition(position.x - (sprite.getWidth() / 2), position.y - sprite.getHeight() / 2);
-        if (position.dst2(GameScreen.INSTANCE.player.getPosition()) < sightRange) {
-            moveDirection = GameScreen.INSTANCE.player.getPosition().sub(position).nor();
-            velocity = moveDirection.mul(velocity.magn());
-        }
-        position = position.add(velocity.mul(delta));
+        updateVelocity(delta);
+        updatePos(delta);
 
         for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this, 10)) {
             if (!(entity instanceof Enemy)) {
@@ -51,8 +51,27 @@ public class Enemy extends AbstractEntity {
         }
     }
 
+    private void updateVelocity(float delta) {
+        if ((position.dst2(GameScreen.INSTANCE.player.getPosition()) > haloRange)
+                && (position.dst2(GameScreen.INSTANCE.player.getPosition()) < sightRange)) {
+            moveDirection = GameScreen.INSTANCE.player.getPosition().sub(position).nor();
+            velocity = moveDirection.mul(speed);
+        } else if (position.dst2(GameScreen.INSTANCE.player.getPosition()) < respectDistance) {
+            moveDirection = GameScreen.INSTANCE.player.getPosition().sub(position).nor().mul(-1);
+            velocity = moveDirection.mul(speed);
+        } else if ((position.dst2(GameScreen.INSTANCE.player.getPosition()) > respectDistance)
+        && (position.dst2(GameScreen.INSTANCE.player.getPosition()) < sightRange)) {
+            velocity = new Vector2(0, 0);
+        }
+    }
+
+    private void updatePos(float delta) {
+        position = position.add(velocity.mul(delta));
+    }
+
     @Override
     public void addDamage(float damage) {
         this.alive = false;
     }
+
 }
