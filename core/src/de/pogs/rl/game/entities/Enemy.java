@@ -21,6 +21,7 @@ public class Enemy extends AbstractEntity {
 
     private Vector2 moveDirection = new Vector2(random.nextFloat() - 0.5f, random.nextFloat() - 0.5f).nor();
 
+    private Vector2 velocity = moveDirection.mul(speed);
 
     public Enemy(float posX, float posY) {
         sprite = new Sprite(texture);
@@ -39,8 +40,9 @@ public class Enemy extends AbstractEntity {
         sprite.setPosition(position.x - (sprite.getWidth() / 2), position.y - sprite.getHeight() / 2);
         if (position.dst2(GameScreen.INSTANCE.player.getPosition()) < sightRange) {
             moveDirection = GameScreen.INSTANCE.player.getPosition().sub(position).nor();
+            velocity = moveDirection.mul(velocity.magn());
         }
-        position = position.add(moveDirection.mul(speed * delta));
+        position = position.add(velocity.mul(delta));
 
         for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this, 10)) {
             if (!(entity instanceof Enemy)) {
