@@ -48,7 +48,12 @@ public class Enemy extends AbstractEntity {
             if (!(entity instanceof Enemy)) {
                 entity.addDamage(5 * delta);
             }
+            position = position.add(antiForce(delta, entity));
         }
+    }
+
+    private Vector2 antiForce(float delta, AbstractEntity entity) {
+        return position.sub(entity.getPosition()).mul(delta * speed / position.sub(entity.getPosition()).magn());
     }
 
     private void updateVelocity(float delta) {
