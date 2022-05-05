@@ -25,6 +25,8 @@ public class Player extends AbstractEntity {
 
     private float speed = 100;
     private float bulletSpeed = 1000;
+    private float maxSpeed = 500;
+    
     private double shotCooldown = 200;
     private double lastBulletTime = TimeUtils.millis();
 
@@ -119,6 +121,9 @@ public class Player extends AbstractEntity {
             velocity = velocity.add(SpecialMath.angleToVector(this.angle).mul(delta * acceleration));
         }
         velocity = velocity.sub(velocity.mul(breakCoeff * delta));
+        if (velocity.magn() > maxSpeed) {
+            velocity = velocity.mul(maxSpeed / velocity.magn());
+        }
 
     }
     public float getHealth() {
@@ -139,12 +144,19 @@ public class Player extends AbstractEntity {
 
     @Override
     public void addDamage(float damage) {
-        health -= damage;
+        armor -= damage;
+        if (armor < 0) {
+            health += armor;
+            armor = 0;
+        }
         if (health < 0) {
             health = 0;
         }
     }
     public float getSpeed() {
         return (float) Math.sqrt(Math.pow(velocity.x, 2) + Math.pow(velocity.y, 2));
+
+    public Vector2 getVelocity() {
+        return velocity;
     }
 }
