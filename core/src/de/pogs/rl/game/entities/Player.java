@@ -5,10 +5,12 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
+import de.pogs.rl.game.world.particles.ParticleEmitter;
 import de.pogs.rl.utils.SpecialMath;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -43,12 +45,53 @@ public class Player extends AbstractEntity {
 
     Vector2 velocity = new Vector2(0, 0);
 
+    private ParticleEmitter dust;
+    private ParticleEmitter sparks;
+    private ParticleEmitter hot;
+    private ParticleEmitter flame;
+    private ParticleEmitter overheat;
+
     public Player() {
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
         position = new Vector2(0, 0);
         renderPriority = 1;
+
+        dust = GameScreen.INSTANCE.particleManager.createEmitter(
+                new ParticleEmitter(0, 0, -1, 10,
+                        RocketLauncher.INSTANCE.assetHelper.getImage("dust"),
+                        -10, 10, 150, 250,
+                        5, 10, .2f, 1f, 0f, .5f, false));
+        dust.attach(this.getSprite(), 20, 0, this);
+
+        flame = GameScreen.INSTANCE.particleManager.createEmitter(
+                new ParticleEmitter(0, 0, -1, 3,
+                        RocketLauncher.INSTANCE.assetHelper.getImage("hot"),
+                        -10, 10, 150, 250,
+                        5, 5, .6f, .5f, 0f, 0, false));
+        flame.attach(this.getSprite(), 20, 0, this);
+
+        hot = GameScreen.INSTANCE.particleManager.createEmitter(
+                new ParticleEmitter(0, 0, -1, 2,
+                        RocketLauncher.INSTANCE.assetHelper.getImage("flame"),
+                        -10, 10, 150, 250,
+                        5, 5, .6f, .3f, 0f, 0, false));
+        hot.attach(this.getSprite(), 20, 0, this);
+
+        overheat = GameScreen.INSTANCE.particleManager.createEmitter(
+                new ParticleEmitter(0, 0, -1, 1,
+                        RocketLauncher.INSTANCE.assetHelper.getImage("overheat"),
+                        -10, 10, 150, 250,
+                        5, 5, .6f, .1f, 0f, 0, false));
+        overheat.attach(this.getSprite(), 20, 0, this);
+
+        sparks = GameScreen.INSTANCE.particleManager.createEmitter(
+                new ParticleEmitter(0, 0, -1, 0.3f,
+                        RocketLauncher.INSTANCE.assetHelper.getImage("spark"),
+                        -5, 5, 200, 300,
+                        5, 5, .8f, 0.4f, .9f, 0, false));
+        sparks.attach(this.getSprite(), 20, 0, this);
     }
 
     @Override
@@ -62,6 +105,13 @@ public class Player extends AbstractEntity {
         updateAngle(delta);
         updatePosition(delta);
         updateVelocity(delta);
+        updateParticles();
+
+        dust.updateVelocity(velocity);
+        sparks.updateVelocity(velocity);
+        hot.updateVelocity(velocity);
+        flame.updateVelocity(velocity);
+        overheat.updateVelocity(velocity);
 
         sprite.setPosition(position.x - (sprite.getWidth() / 2), position.y - sprite.getHeight() / 2);
         sprite.setRotation(angle);
@@ -69,7 +119,7 @@ public class Player extends AbstractEntity {
     }
 
     private void shoot() {
-        if (Gdx.input.isKeyPressed(Keys.SPACE)) {
+        if (Gdx.input.isButtonPressed(Buttons.LEFT) || Gdx.input.isKeyPressed(Keys.SPACE)) {
             if ((TimeUtils.millis() - lastBulletTime) >= shotCooldown) {
                 Bullet bullet = new Bullet(position.x, position.y, this,
                         bulletDamage, velocity.add(SpecialMath.angleToVector(angle).mul(bulletSpeed)), angle);
@@ -117,7 +167,7 @@ public class Player extends AbstractEntity {
     }
 
     private void updateVelocity(float delta) {
-        if (Gdx.input.isTouched()) {
+        if (Gdx.input.isButtonPressed(Buttons.RIGHT)) {
             velocity = velocity.add(SpecialMath.angleToVector(this.angle).mul(delta * acceleration));
         }
         velocity = velocity.sub(velocity.mul(breakCoeff * delta));
@@ -125,6 +175,22 @@ public class Player extends AbstractEntity {
             velocity = velocity.mul(maxSpeed / velocity.magn());
         }
 
+    }
+
+    private void updateParticles() {
+        if (Gdx.input.isButtonPressed(Buttons.RIGHT)) {
+            dust.isActive = true;
+            sparks.isActive = true;
+            hot.isActive = true;
+            flame.isActive = true;
+            overheat.isActive = true;
+        } else {
+            dust.isActive = false;
+            sparks.isActive = false;
+            hot.isActive = false;
+            flame.isActive = false;
+            overheat.isActive = false;
+        }
     }
 
     public float getHealth() {
@@ -137,6 +203,10 @@ public class Player extends AbstractEntity {
 
     public float getMaxHealth() {
         return maxHealth;
+    }
+
+    public Sprite getSprite() {
+        return sprite;
     }
 
     public float getMaxArmor() {

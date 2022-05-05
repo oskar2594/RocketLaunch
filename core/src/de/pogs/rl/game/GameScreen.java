@@ -15,8 +15,10 @@ import de.pogs.rl.game.entities.Player;
 import de.pogs.rl.game.ui.HUD;
 import de.pogs.rl.game.ui.HUDCamera;
 import de.pogs.rl.game.world.EntityGen;
+import de.pogs.rl.game.world.particles.ParticleManager;
+import de.pogs.rl.game.world.particles.ParticleEmitter;
 import de.pogs.rl.game.world.spawners.SimpleSpawner;
-
+import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class GameScreen extends ScreenAdapter {
     public static GameScreen INSTANCE;
@@ -28,6 +30,7 @@ public class GameScreen extends ScreenAdapter {
     private HUDCamera hudCamera;
     public Player player;
     public EntityManager entityManager;
+    public ParticleManager particleManager;
     public HUD hud;
     public EntityGen entityGen;
 
@@ -35,11 +38,11 @@ public class GameScreen extends ScreenAdapter {
     private int updateDistance2 = (int) Math.pow(2000, 2);
     private int removeDistance2 = (int) Math.pow(5000, 2);
 
-
     public GameScreen() {
         INSTANCE = this;
         batch = RocketLauncher.INSTANCE.batch;
         entityManager = new EntityManager();
+        particleManager = new ParticleManager();
         camera = new RocketCamera();
         hudCamera = new HUDCamera();
         player = new Player();
@@ -62,23 +65,25 @@ public class GameScreen extends ScreenAdapter {
         camera.move();
         camera.update();
         hudCamera.update();
-        hud.update(delta, player.getHealth() / player.getMaxHealth(), player.getArmor() / player.getMaxArmor());
+
+        hud.update(delta);
+        particleManager.update(delta);
         background.update();
         batch.setProjectionMatrix(camera.combined);
         // DRAW
         batch.begin();
         background.render(delta, batch);
+        particleManager.render(batch);
         entityManager.render(batch, player.getPosition(), renderDistance2);
         batch.end();
 
-        //HUD SHAPES
+        // HUD SHAPES
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         hud.shapeRender(hudCamera.combined);
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
-
-        //HUD SPRITES
+        // HUD SPRITES
         batch.setProjectionMatrix(hudCamera.combined);
         batch.begin();
         hud.render(batch);
@@ -103,7 +108,6 @@ public class GameScreen extends ScreenAdapter {
         hudCamera.resize(width, height);
         background.resize(width, height);
     }
-
 
     public void resizeZoom(int width, int height) {
         camera.resize(width, height);

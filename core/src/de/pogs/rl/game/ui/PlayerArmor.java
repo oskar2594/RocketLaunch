@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import de.pogs.rl.game.GameScreen;
+
 public class PlayerArmor extends HUDComponent {
 
     private float width;
@@ -25,6 +27,7 @@ public class PlayerArmor extends HUDComponent {
 
     @Override
     public void update(float delta) {
+        this.progress = GameScreen.INSTANCE.player.getArmor() / GameScreen.INSTANCE.player.getMaxArmor();
         position.set(HUDUtils.getBottomCenter().x - width / 2, HUDUtils.getBottomCenter().y + height * 1.5f);
         updateAngle();
     }
@@ -57,7 +60,4 @@ public class PlayerArmor extends HUDComponent {
                 (width - width * 0.02f) * currProg, height - width * 0.02f);
     }
 
-    public void setProg(float prog) {
-        progress = prog;
-    }
 }

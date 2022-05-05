@@ -48,9 +48,7 @@ public class HUD {
         components.put("debug", debug);
     }
 
-    public void update(float delta, float healthProg, float armorProg) {
-        playerHealth.setProg(healthProg);
-        playerArmor.setProg(armorProg);
+    public void update(float delta) {
         components.forEach((name, component) -> {
             component.update(delta);
         });

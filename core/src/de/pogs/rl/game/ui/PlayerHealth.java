@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import de.pogs.rl.RocketLauncher;
+import de.pogs.rl.game.GameScreen;
 
 public class PlayerHealth extends HUDComponent {
 
@@ -27,6 +28,7 @@ public class PlayerHealth extends HUDComponent {
 
     @Override
     public void update(float delta) {
+        this.progress = GameScreen.INSTANCE.player.getHealth() / GameScreen.INSTANCE.player.getMaxHealth();
         position.set(HUDUtils.getBottomCenter().x - width / 2, HUDUtils.getBottomCenter().y);
         updateProg();
     }
@@ -63,9 +65,5 @@ public class PlayerHealth extends HUDComponent {
         shapeRenderer.setColor(Color.GREEN);
         shapeRenderer.rect(position.x + width * 0.01f, position.y + width * 0.01f,
                 (width - width * 0.02f) * currProg, height - width * 0.02f);
-    }
-
-    public void setProg(float prog) {
-        progress = prog;
     }
 }
