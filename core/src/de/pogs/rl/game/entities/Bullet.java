@@ -47,8 +47,6 @@ public class Bullet extends AbstractEntity {
         sprite.setPosition(position.x - (sprite.getWidth() / 2), position.y - sprite.getHeight() / 2);
         for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this, radius)) {
             if (entity != sender) {
-                System.out.println(entity);
-                System.out.println(entity.getPosition());
                 entity.addDamage(damage);
             }
         }
