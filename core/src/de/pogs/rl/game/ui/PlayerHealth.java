@@ -19,7 +19,7 @@ public class PlayerHealth extends HUDComponent {
     private float currProg = 0f;
     private float progress_response = 0.1f;
 
-    private BitmapFont font = RocketLauncher.INSTANCE.assetHelper.getFont("roboto");
+    private BitmapFont font;
 
     public PlayerHealth() {
         super();
@@ -37,12 +37,15 @@ public class PlayerHealth extends HUDComponent {
     public void resize(float width, float height) {
         this.width = (float) (width * 0.3);
         this.height = (float) (this.width * 0.07);
+        font = RocketLauncher.INSTANCE.assetHelper.getFont("roboto", (int) Math.ceil(this.height * 0.5));
     }
 
     public void updateProg() {
         currProg += (progress - currProg) * progress_response;
-        if(currProg > 1) currProg = 1f;
-        if(currProg < 0) currProg = 0;
+        if (currProg > 1)
+            currProg = 1f;
+        if (currProg < 0)
+            currProg = 0;
     }
 
     @Override
@@ -53,10 +56,14 @@ public class PlayerHealth extends HUDComponent {
     @Override
     public void render(SpriteBatch batch) {
         font.setColor(Color.WHITE);
-        font.getData().setScale(50f / 100f);
-        font.draw(batch, "test", position.x + 5, position.y + 5);
+        font.draw(batch,
+                Math.round(GameScreen.INSTANCE.player.getHealth()) + " | "
+                        + Math.round(GameScreen.INSTANCE.player.getMaxHealth()),
+                position.x + width * 0.02f, position.y + height - ((height - (font.getXHeight())) / 2));
     }
 
+    public Color color1 = new Color(0xc74234ff);
+    public Color color2 = new Color(0xc92626ff);
 
     @Override
     public void shapeRender(ShapeRenderer shapeRenderer) {
@@ -64,6 +71,7 @@ public class PlayerHealth extends HUDComponent {
         shapeRenderer.rect(position.x, position.y, width, height);
         shapeRenderer.setColor(Color.GREEN);
         shapeRenderer.rect(position.x + width * 0.01f, position.y + width * 0.01f,
-                (width - width * 0.02f) * currProg, height - width * 0.02f);
+                (width - width * 0.02f) * currProg, height - width * 0.02f, color1, color2, color2, color1);
     }
+
 }

@@ -28,6 +28,7 @@ public class HUD {
     private PlayerHealth playerHealth;
     private PlayerArmor playerArmor;
     private Debug debug;
+    private Level level;
 
     public int border = 20;
 
@@ -46,6 +47,8 @@ public class HUD {
         components.put("playerArmor", playerArmor);
         debug = new Debug();
         components.put("debug", debug);
+        level = new Level();
+        components.put("level", level);
     }
 
     public void update(float delta) {
