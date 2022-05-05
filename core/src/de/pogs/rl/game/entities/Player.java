@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.utils.SpecialMath;
+import de.pogs.rl.utils.SpecialMath.Vector2;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -20,19 +21,31 @@ public class Player extends AbstractEntity {
 
     private float angle = 0;
     private float aimedAngle = 0;
-    private float angle_response = 1;
+    private float angle_response = 2;
 
     private float speed = 100;
-    private float bulletSpeed = 200;
+    private float bulletSpeed = 500;
     private double shotCooldown = 200;
     private double lastBulletTime = TimeUtils.millis();
 
+    private float armor = 100;
+    private float health = 100;
+    private float maxArmor = 100;
+    private float maxHealth = 100;
+
+    private float acceleration = 1000;
+
+    private float breakCoeff = 0.5f;
+
+    float bulletDamage = 10;
+
+    Vector2 velocity = new Vector2(0, 0);
 
     public Player() {
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-        position.set(0, 0);
+        position = new Vector2(0, 0);
         renderPriority = 1;
     }
 
@@ -46,6 +59,7 @@ public class Player extends AbstractEntity {
         updateAimedAngle();
         updateAngle(delta);
         updatePosition(delta);
+        updateVelocity(delta);
 
         sprite.setPosition(position.x - (sprite.getWidth() / 2), position.y - sprite.getHeight() / 2);
         sprite.setRotation(angle);
@@ -55,7 +69,8 @@ public class Player extends AbstractEntity {
     private void shoot() {
         if (Gdx.input.isKeyPressed(Keys.SPACE)) {
             if ((TimeUtils.millis() - lastBulletTime) >= shotCooldown) {
-                Bullet bullet = new Bullet(position.x, position.y, this.angle, this.speed + this.bulletSpeed, this);
+                Bullet bullet = new Bullet(position.x, position.y, this,
+                        bulletDamage, velocity.add(SpecialMath.angleToVector(angle).mul(bulletSpeed)), angle);
                 bullet.update(0);
                 GameScreen.INSTANCE.entityManager
                         .addEntity(bullet);
@@ -66,19 +81,17 @@ public class Player extends AbstractEntity {
     }
 
     private void updateAimedAngle() {
-        if (Gdx.input.isTouched()) {
 
-            aimedAngle = (float) Math
-                    .toDegrees((float) (Math.atan(mouseXfromPlayer()
-                            / mouseYfromPlayer())));
-            if (mouseXfromPlayer() > 0 && mouseYfromPlayer() > 0) {
-                aimedAngle = -180 + aimedAngle;
-            }
-            if (mouseXfromPlayer() < 0 && mouseYfromPlayer() > 0) {
-                aimedAngle = 180 + aimedAngle;
-            }
-
+        aimedAngle = (float) Math
+                .toDegrees((float) (Math.atan(mouseXfromPlayer()
+                        / mouseYfromPlayer())));
+        if (mouseXfromPlayer() > 0 && mouseYfromPlayer() > 0) {
+            aimedAngle = -180 + aimedAngle;
         }
+        if (mouseXfromPlayer() < 0 && mouseYfromPlayer() > 0) {
+            aimedAngle = 180 + aimedAngle;
+        }
+
     }
 
     private float mouseXfromPlayer() {
@@ -96,7 +109,38 @@ public class Player extends AbstractEntity {
     }
 
     private void updatePosition(float delta) {
-        position = position.add(SpecialMath.angleToVector(this.angle).scl(delta * speed));
+        // position = position.add(SpecialMath.angleToVector(this.angle).mul(delta * speed));
+        position = position.add(velocity.mul(delta));
     }
 
+    private void updateVelocity(float delta) {
+        if (Gdx.input.isTouched()) {
+            velocity = velocity.add(SpecialMath.angleToVector(this.angle).mul(delta * acceleration));
+        }
+        velocity = velocity.sub(velocity.mul(breakCoeff * delta));
+
+    }
+    public float getHealth() {
+        return health;
+    }
+
+    public float getArmor() {
+        return armor;
+    }
+
+    public float getMaxHealth() {
+        return maxHealth;
+    }
+
+    public float getMaxArmor() {
+        return maxArmor;
+    }
+
+    @Override
+    public void addDamage(float damage) {
+        health -= damage;
+        if (health < 0) {
+            health = 0;
+        }
+    }
 }

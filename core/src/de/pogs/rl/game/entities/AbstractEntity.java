@@ -1,7 +1,7 @@
 package de.pogs.rl.game.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
+import de.pogs.rl.utils.SpecialMath.Vector2;;
 
 public abstract class AbstractEntity {
     protected Vector2 position = new Vector2(0, 0);
@@ -15,10 +15,8 @@ public abstract class AbstractEntity {
         return renderPriority;
     }
 
-    private boolean alive = true;
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-    }
+    protected boolean alive = true;
+    public abstract void addDamage(float damage);
 
     public boolean getAlive(){
         return alive;

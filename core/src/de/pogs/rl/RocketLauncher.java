@@ -22,7 +22,7 @@ public class RocketLauncher extends Game {
 		batch = new SpriteBatch();
 		assetHelper = new AssetHelper();
 		assetHelper.loadAll();
-		assetHelper.aManager.finishLoading();
+		assetHelper.assetManager.finishLoading();
 		this.setScreen(new de.pogs.rl.game.GameScreen());
 	}
 

@@ -24,7 +24,7 @@ public final class BackgroundLayer {
 
     private int radius;
 
-    public ChunkManager chunkManager;
+    public BackgroundChunkManager chunkManager;
 
     private double seed;
 
@@ -32,8 +32,7 @@ public final class BackgroundLayer {
         INSTANCE = this;
         radius = (int) (Gdx.graphics.getHeight() * Gdx.graphics.getWidth() / 14000);
         seed = new Random().nextGaussian() * 255;
-        chunkManager = new ChunkManager(radius, seed);
-
+        chunkManager = new BackgroundChunkManager(radius, seed);
     }
 
     public BitmapFont font = new BitmapFont();
@@ -43,18 +42,14 @@ public final class BackgroundLayer {
     }
 
     public void render(float delta, final SpriteBatch batch) {
-        // DEBUG
-        long startTime = System.nanoTime();
         chunkManager.render(delta, batch);
-        long endTime = System.nanoTime();
-        long duration = (endTime - startTime);
-        font.draw(batch,
-                Gdx.graphics.getFramesPerSecond() + " | " + (duration / 1000000) + "ms",
-                GameScreen.INSTANCE.camera.position.x - Gdx.graphics.getWidth() / 3,
-                GameScreen.INSTANCE.camera.position.y - Gdx.graphics.getHeight() / 3);
     }
 
     public void update() {
         chunkManager.update();
+    }
+
+    public void dispose() {
+        chunkManager.dispose();
     }
 }

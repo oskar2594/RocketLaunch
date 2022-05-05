@@ -1,9 +1,11 @@
 package de.pogs.rl.game.entities;
 
+import java.util.Collection;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
+
+import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class EntityManager {
     private LinkedList<AbstractEntity> entities = new LinkedList<AbstractEntity>();
@@ -12,10 +14,24 @@ public class EntityManager {
     public EntityManager() {
     }
 
-    public void addEntity(AbstractEntity entity) {
-        entityQueue.add(entity);
+    public void addEntity(AbstractEntity newEntity) {
+        entityQueue.add(newEntity);
     }
 
+    public void addEntities(Collection<AbstractEntity> newEntities) {
+        entityQueue.addAll(newEntities);
+    }
+
+    public LinkedList<AbstractEntity> getCollidingEntities(Vector2 position, float radius) {
+        LinkedList<AbstractEntity> result = new LinkedList<AbstractEntity>();
+        float radius2 = (float) Math.pow(radius, 2);
+        for (AbstractEntity entityChecked : entities) {
+            if (entityChecked.getPosition().dst2(position) <= radius2) {
+                result.add(entityChecked);
+            }
+        }
+        return result;
+    }
     public LinkedList<AbstractEntity> getCollidingEntities(AbstractEntity entity, float radius) {
         LinkedList<AbstractEntity> result = new LinkedList<AbstractEntity>();
         float radius2 = (float) Math.pow(radius, 2);
