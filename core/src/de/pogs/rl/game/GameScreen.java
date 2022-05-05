@@ -13,6 +13,7 @@ import de.pogs.rl.game.entities.Enemy;
 import de.pogs.rl.game.entities.EntityManager;
 import de.pogs.rl.game.entities.Player;
 import de.pogs.rl.game.ui.HUD;
+import de.pogs.rl.game.ui.HUDCamera;
 import de.pogs.rl.game.world.EntityGen;
 import de.pogs.rl.game.world.spawners.SimpleSpawner;
 
@@ -24,7 +25,7 @@ public class GameScreen extends ScreenAdapter {
 
     private BackgroundLayer background;
     public RocketCamera camera;
-    private OrthographicCamera hudCamera;
+    private HUDCamera hudCamera;
     public Player player;
     public EntityManager entityManager;
     public HUD hud;
@@ -40,7 +41,7 @@ public class GameScreen extends ScreenAdapter {
         batch = RocketLauncher.INSTANCE.batch;
         entityManager = new EntityManager();
         camera = new RocketCamera();
-        hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        hudCamera = new HUDCamera();
         player = new Player();
         background = new BackgroundLayer();
         hud = new HUD();
@@ -99,6 +100,7 @@ public class GameScreen extends ScreenAdapter {
     public void resize(int width, int height) {
         hud.resize(width, height);
         camera.resize(width, height);
+        hudCamera.resize(width, height);
         background.resize(width, height);
     }
 

@@ -100,30 +100,38 @@ public final class BackgroundChunkManager {
     int i = 0;
 
     private void collectCache(int newChR) {
-        int cacheRadius = this.realChunkRadius * this.renderDistance;
+        int cacheRadius = (int) (this.realChunkRadius * this.renderDistance * 2);
         colorCache = new Color[cacheRadius][cacheRadius];
         cacheStart.set(GameScreen.INSTANCE.camera.position.x - cacheRadius / 2,
                 GameScreen.INSTANCE.camera.position.y - cacheRadius / 2);
         // looping through all chunks to place their data on cacheMap
+        // for (int x = 0; x < colorCache.length; x++) {
+        //     for (int y = 0; y < colorCache.length; y++) {
+        //         colorCache[x][y] = Color.RED;
+        //     }
+        // }
         for (BackgroundChunk chunk : chunks) {
             Color[][] data = chunk.fieldCache;
             // skip if chunk is not in range
-            if (chunk.position.x + this.realChunkRadius < -cacheRadius + cacheStart.x)
-                continue;
-            if (chunk.position.y + this.realChunkRadius < -cacheRadius + cacheStart.y)
-                continue;
-            if (chunk.position.x - this.realChunkRadius > cacheRadius + cacheStart.x)
-                continue;
-            if (chunk.position.y - this.realChunkRadius > cacheRadius + cacheStart.y)
-                continue;
+            // if (chunk.position.x + this.realChunkRadius / scaling < -cacheRadius +
+            // cacheStart.x)
+            // continue;
+            // if (chunk.position.y + this.realChunkRadius / scaling < -cacheRadius +
+            // cacheStart.y)
+            // continue;
+            // if (chunk.position.x - this.realChunkRadius / scaling > cacheRadius +
+            // cacheStart.x)
+            // continue;
+            // if (chunk.position.y - this.realChunkRadius / scaling > cacheRadius +
+            // cacheStart.y)
+            // continue;
             i++;
             for (int x = 0; x < data.length; x++) {
                 for (int y = 0; y < data.length; y++) {
-                    Vector2 realPosition = new Vector2(chunk.position.x + x - cacheStart.x,
-                            chunk.position.y - y - cacheStart.y);
+                    Vector2 realPosition = new Vector2(chunk.position.x / scaling + x / scaling - cacheStart.x,
+                            chunk.position.y / scaling - y / scaling - cacheStart.y);
                     try {
-                        colorCache[(int) realPosition.x + (newChR - this.realChunkRadius)][(int) realPosition.y
-                                + (newChR - this.realChunkRadius)] = data[x][y];
+                        colorCache[(int) realPosition.x][(int) realPosition.y] = data[x][y];
                     } catch (Exception e) {
                         // pixel is out of range
                     }
@@ -136,7 +144,7 @@ public final class BackgroundChunkManager {
 
     // for individual chunk get cached color on position
     public Color getCachedColor(int x, int y, Vector2 start) {
-        Vector2 relPos = new Vector2(start.x * scaling + x - cacheStart.x, start.y * scaling - y - cacheStart.y);
+        Vector2 relPos = new Vector2((start.x + x) - cacheStart.x, (start.y - y) - cacheStart.y);
         try {
             return colorCache[(int) relPos.x][(int) relPos.y];
         } catch (Exception e) {

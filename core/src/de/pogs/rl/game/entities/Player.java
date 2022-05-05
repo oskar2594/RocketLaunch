@@ -21,7 +21,7 @@ public class Player extends AbstractEntity {
 
     private float angle = 0;
     private float aimedAngle = 0;
-    private float angle_response = 2;
+    private float angle_response = 3;
 
     private float speed = 100;
     private float bulletSpeed = 1000;
@@ -35,7 +35,7 @@ public class Player extends AbstractEntity {
     private float maxArmor = 100;
     private float maxHealth = 100;
 
-    private float acceleration = 500;
+    private float acceleration = 200;
 
     private float breakCoeff = 0.5f;
 
@@ -157,6 +157,10 @@ public class Player extends AbstractEntity {
 
     public float getSpeed() {
         return (float) Math.sqrt(Math.pow(velocity.x, 2) + Math.pow(velocity.y, 2));
+    }
+
+    public float getMaxSpeed() {
+        return this.maxSpeed;
     }
 
     public Vector2 getVelocity() {

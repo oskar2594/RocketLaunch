@@ -34,7 +34,7 @@ public final class BackgroundChunk {
         this.scaling = scaling;
         position = new Vector2();
         position.set(x, y);
-        fieldCache = new Color[radius][radius];
+        fieldCache = new Color[(int) (radius * scaling)][(int) (radius * scaling)];
         this.start = new Vector2(x - radius, y - radius);
         this.create();
     }
@@ -96,7 +96,7 @@ public final class BackgroundChunk {
                     }
                 }
                 bytes[idx++] = color;
-                fieldCache[x][y] = color;
+                fieldCache[(int) (x * scaling) ][(int) (y* scaling)] = color;
             }
         }
         return bytes;
