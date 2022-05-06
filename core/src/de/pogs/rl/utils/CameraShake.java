@@ -1,6 +1,7 @@
 package de.pogs.rl.utils;
 
 import java.util.Random;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Interpolation.Pow;
 
@@ -24,8 +25,8 @@ public class CameraShake {
     public static Vector2 getShake() {
         Vector2 move = new Vector2(0, 0);
         if (isActive) {
-            move.x = (random.nextFloat() - 0.5f) * 2 * strength;
-            move.y = (random.nextFloat() - 0.5f) * 2 * strength;
+            move.x = (random.nextFloat() - 0.5f) * 2 * strength * (Gdx.graphics.getWidth() / 1000);
+            move.y = (random.nextFloat() - 0.5f) * 2 * strength * (Gdx.graphics.getWidth() / 1000);
         }
         return move;
     }

@@ -56,6 +56,10 @@ public class Player extends AbstractEntity {
     private Sound startSound;
     private long startId;
     private float startVolume = 0.5f;
+    
+    private Sound shootSound;
+    private long shootId;
+    private float shootVolume = 0.5f;
 
     float bulletDamage = 10;
 
@@ -76,10 +80,11 @@ public class Player extends AbstractEntity {
         renderPriority = 1;
 
         thrustSound = RocketLauncher.INSTANCE.assetHelper.getSound("thrust");
-        thrustId = thrustSound.play(thrustVolume);
+        thrustId = thrustSound.loop(thrustVolume);
         thrustSound.setLooping(thrustId, true);
 
         startSound = RocketLauncher.INSTANCE.assetHelper.getSound("start");
+        shootSound = RocketLauncher.INSTANCE.assetHelper.getSound("shoot");
 
         dust = GameScreen.INSTANCE.particleManager.createEmitter(new ParticleEmitter(0, 0, -1, 10,
                 ParticleUtils.generateParticleTexture(new Color(0x808080)), -10, 10, 150, 250, 5,
@@ -156,6 +161,7 @@ public class Player extends AbstractEntity {
                 Bullet bullet = new Bullet(position.x, position.y, this, bulletDamage,
                         velocity.add(SpecialMath.angleToVector(angle).mul(bulletSpeed)), angle);
                 bullet.update(0);
+                shootSound.play(shootVolume);
                 GameScreen.INSTANCE.entityManager.addEntity(bullet);
                 lastBulletTime = TimeUtils.millis();
 

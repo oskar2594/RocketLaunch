@@ -33,8 +33,8 @@ public class RocketCamera extends OrthographicCamera {
         float zoom = (float) easeInOut((playerSpeed / maxSpeed)) * 0.18f + 0.9f;
         this.zoom = Math.min(zoom, 1.1f);
 
-        if (zoom > .95f && GameScreen.INSTANCE.player.isAccelerating()) {
-            CameraShake.activate((zoom - .9f) * 20);
+        if (zoom > .9f && GameScreen.INSTANCE.player.isAccelerating()) {
+            CameraShake.activate((zoom - .95f) * 20);
         } else {
             CameraShake.deactivate();
         }
