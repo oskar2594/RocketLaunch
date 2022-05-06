@@ -1,6 +1,5 @@
 package de.pogs.rl.game.entities;
 
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,7 +16,7 @@ public class Bullet extends AbstractEntity {
     private float scale = 0.1f;
     private float speed;
     private float angle;
-    
+
     private float radius = 8;
     private AbstractEntity sender;
 
@@ -36,6 +35,7 @@ public class Bullet extends AbstractEntity {
         this.sender = sender;
         this.damage = damage;
     }
+
     @Override
     public void render(SpriteBatch batch) {
         sprite.draw(batch);

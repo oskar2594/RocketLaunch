@@ -44,6 +44,8 @@ public class Player extends AbstractEntity {
 
     private float breakCoeff = 0.5f;
 
+    private boolean isAccelerating = false;
+
     float bulletDamage = 10;
 
     Vector2 velocity = new Vector2(0, 0);
@@ -53,6 +55,7 @@ public class Player extends AbstractEntity {
     private ParticleEmitter hot;
     private ParticleEmitter flame;
     private ParticleEmitter overheat;
+
 
     public Player() {
         sprite = new Sprite(texture);
@@ -171,7 +174,10 @@ public class Player extends AbstractEntity {
 
     private void updateVelocity(float delta) {
         if (Gdx.input.isButtonPressed(Buttons.RIGHT)) {
+            isAccelerating = true;
             velocity = velocity.add(SpecialMath.angleToVector(this.angle).mul(delta * acceleration));
+        } else {
+            isAccelerating = false;
         }
         velocity = velocity.sub(velocity.mul(breakCoeff * delta));
         if (velocity.magn() > maxSpeed) {
@@ -238,5 +244,9 @@ public class Player extends AbstractEntity {
 
     public Vector2 getVelocity() {
         return velocity;
+    }
+
+    public boolean isAccelerating() {
+        return isAccelerating;
     }
 }
