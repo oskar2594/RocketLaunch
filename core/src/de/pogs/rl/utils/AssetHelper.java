@@ -88,6 +88,7 @@ public class AssetHelper {
         try {
             return (Sound) this.assetManager.get(sounds.get(name));
         } catch (Exception e) {
+            System.out.println(e);
             return null;
         }
     }

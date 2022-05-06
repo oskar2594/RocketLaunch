@@ -11,10 +11,11 @@ import de.pogs.rl.utils.SpecialMath;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 import java.awt.Color;
-
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -45,6 +46,16 @@ public class Player extends AbstractEntity {
     private float breakCoeff = 0.5f;
 
     private boolean isAccelerating = false;
+    private boolean wasAccelerating = false;
+
+    private Sound thrustSound;
+    private long thrustId;
+    private float thrustVolume = 0f;
+    private float thrustMaxVolume = 0.5f;
+
+    private Sound startSound;
+    private long startId;
+    private float startVolume = 0.5f;
 
     float bulletDamage = 10;
 
@@ -64,39 +75,35 @@ public class Player extends AbstractEntity {
         position = new Vector2(0, 0);
         renderPriority = 1;
 
-        dust = GameScreen.INSTANCE.particleManager.createEmitter(
-                new ParticleEmitter(0, 0, -1, 10,
-                        ParticleUtils.generateParticleTexture(new Color(0x808080)),
-                        -10, 10, 150, 250,
-                        5, 10, .2f, 1f, 0f, .5f, false));
+        thrustSound = RocketLauncher.INSTANCE.assetHelper.getSound("thrust");
+        thrustId = thrustSound.play(thrustVolume);
+        thrustSound.setLooping(thrustId, true);
+
+        startSound = RocketLauncher.INSTANCE.assetHelper.getSound("start");
+
+        dust = GameScreen.INSTANCE.particleManager.createEmitter(new ParticleEmitter(0, 0, -1, 10,
+                ParticleUtils.generateParticleTexture(new Color(0x808080)), -10, 10, 150, 250, 5,
+                10, .2f, 1f, 0f, .5f, false));
         dust.attach(this.getSprite(), 20, 0, this);
 
-        flame = GameScreen.INSTANCE.particleManager.createEmitter(
-                new ParticleEmitter(0, 0, -1, 3,
-                        ParticleUtils.generateParticleTexture(new Color(0xd63636)),
-                        -10, 10, 150, 250,
-                        5, 5, .6f, .5f, 0f, 0, false));
+        flame = GameScreen.INSTANCE.particleManager.createEmitter(new ParticleEmitter(0, 0, -1, 3,
+                ParticleUtils.generateParticleTexture(new Color(0xd63636)), -10, 10, 150, 250, 5, 5,
+                .6f, .5f, 0f, 0, false));
         flame.attach(this.getSprite(), 20, 0, this);
 
-        hot = GameScreen.INSTANCE.particleManager.createEmitter(
-                new ParticleEmitter(0, 0, -1, 2,
-                        ParticleUtils.generateParticleTexture(new Color(0xd9851e)),
-                        -10, 10, 150, 250,
-                        5, 5, .6f, .3f, 0f, 0, false));
+        hot = GameScreen.INSTANCE.particleManager.createEmitter(new ParticleEmitter(0, 0, -1, 2,
+                ParticleUtils.generateParticleTexture(new Color(0xd9851e)), -10, 10, 150, 250, 5, 5,
+                .6f, .3f, 0f, 0, false));
         hot.attach(this.getSprite(), 20, 0, this);
 
-        overheat = GameScreen.INSTANCE.particleManager.createEmitter(
-                new ParticleEmitter(0, 0, -1, 1,
-                        ParticleUtils.generateParticleTexture(new Color(0xffeba8)),
-                        -10, 10, 150, 250,
-                        5, 5, .6f, .1f, 0f, 0, false));
+        overheat = GameScreen.INSTANCE.particleManager.createEmitter(new ParticleEmitter(0, 0, -1,
+                1, ParticleUtils.generateParticleTexture(new Color(0xffeba8)), -10, 10, 150, 250, 5,
+                5, .6f, .1f, 0f, 0, false));
         overheat.attach(this.getSprite(), 20, 0, this);
 
-        sparks = GameScreen.INSTANCE.particleManager.createEmitter(
-                new ParticleEmitter(0, 0, -1, 0.3f,
-                        RocketLauncher.INSTANCE.assetHelper.getImage("spark"),
-                        -5, 5, 200, 300,
-                        5, 5, .8f, 0.4f, .9f, 0, false));
+        sparks = GameScreen.INSTANCE.particleManager.createEmitter(new ParticleEmitter(0, 0, -1,
+                0.3f, RocketLauncher.INSTANCE.assetHelper.getImage("spark"), -5, 5, 200, 300, 5, 5,
+                .8f, 0.4f, .9f, 0, false));
         sparks.attach(this.getSprite(), 20, 0, this);
     }
 
@@ -112,6 +119,7 @@ public class Player extends AbstractEntity {
         updatePosition(delta);
         updateVelocity(delta);
         updateParticles();
+        updateSounds(delta);
 
         dust.updateVelocity(velocity);
         sparks.updateVelocity(velocity);
@@ -119,19 +127,36 @@ public class Player extends AbstractEntity {
         flame.updateVelocity(velocity);
         overheat.updateVelocity(velocity);
 
-        sprite.setPosition(position.x - (sprite.getWidth() / 2), position.y - sprite.getHeight() / 2);
+        sprite.setPosition(position.x - (sprite.getWidth() / 2),
+                position.y - sprite.getHeight() / 2);
         sprite.setRotation(angle);
         shoot();
+    }
+
+    private void updateSounds(float delta) {
+        if (thrustVolume < thrustMaxVolume && isAccelerating)
+            thrustVolume += delta * 5;
+        if (thrustVolume >= 0 && !isAccelerating)
+            thrustVolume -= delta * 5;
+        thrustVolume = Math.max(Math.min(thrustVolume, thrustMaxVolume), 0);
+
+        if (wasAccelerating != isAccelerating) {
+            if (isAccelerating) {
+                startId = startSound.play(startVolume);
+                startSound.setLooping(startId, false);
+            }
+        }
+        thrustSound.setVolume(thrustId, thrustVolume);
+        wasAccelerating = isAccelerating;
     }
 
     private void shoot() {
         if (Gdx.input.isButtonPressed(Buttons.LEFT) || Gdx.input.isKeyPressed(Keys.SPACE)) {
             if ((TimeUtils.millis() - lastBulletTime) >= shotCooldown) {
-                Bullet bullet = new Bullet(position.x, position.y, this,
-                        bulletDamage, velocity.add(SpecialMath.angleToVector(angle).mul(bulletSpeed)), angle);
+                Bullet bullet = new Bullet(position.x, position.y, this, bulletDamage,
+                        velocity.add(SpecialMath.angleToVector(angle).mul(bulletSpeed)), angle);
                 bullet.update(0);
-                GameScreen.INSTANCE.entityManager
-                        .addEntity(bullet);
+                GameScreen.INSTANCE.entityManager.addEntity(bullet);
                 lastBulletTime = TimeUtils.millis();
 
             }
@@ -141,8 +166,7 @@ public class Player extends AbstractEntity {
     private void updateAimedAngle() {
 
         aimedAngle = (float) Math
-                .toDegrees((float) (Math.atan(mouseXfromPlayer()
-                        / mouseYfromPlayer())));
+                .toDegrees((float) (Math.atan(mouseXfromPlayer() / mouseYfromPlayer())));
         if (mouseXfromPlayer() > 0 && mouseYfromPlayer() > 0) {
             aimedAngle = -180 + aimedAngle;
         }
@@ -162,7 +186,8 @@ public class Player extends AbstractEntity {
 
     private void updateAngle(float delta) {
 
-        angle = angle + (SpecialMath.angleDifferenceSmaller(aimedAngle, angle, 360)) * delta * angle_response;
+        angle = angle + (SpecialMath.angleDifferenceSmaller(aimedAngle, angle, 360)) * delta
+                * angle_response;
         angle = SpecialMath.modulus(angle + 180, 360) - 180;
     }
 
@@ -175,7 +200,8 @@ public class Player extends AbstractEntity {
     private void updateVelocity(float delta) {
         if (Gdx.input.isButtonPressed(Buttons.RIGHT)) {
             isAccelerating = true;
-            velocity = velocity.add(SpecialMath.angleToVector(this.angle).mul(delta * acceleration));
+            velocity =
+                    velocity.add(SpecialMath.angleToVector(this.angle).mul(delta * acceleration));
         } else {
             isAccelerating = false;
         }
