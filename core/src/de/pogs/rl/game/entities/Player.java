@@ -43,7 +43,7 @@ public class Player extends AbstractEntity {
 
     private float acceleration = 200;
 
-    private float breakCoeff = 0.5f;
+    private float tractionCoeff = 0.5f;
 
     private boolean isAccelerating = false;
     private boolean wasAccelerating = false;
@@ -158,7 +158,7 @@ public class Player extends AbstractEntity {
     private void shoot() {
         if (Gdx.input.isButtonPressed(Buttons.LEFT) || Gdx.input.isKeyPressed(Keys.SPACE)) {
             if ((TimeUtils.millis() - lastBulletTime) >= shotCooldown) {
-                Bullet bullet = new Bullet(position.x, position.y, this, bulletDamage,
+                Bullet bullet = new Bullet(position, this, bulletDamage,
                         velocity.add(SpecialMath.angleToVector(angle).mul(bulletSpeed)), angle);
                 bullet.update(0);
                 shootId = shootSound.play(shootVolume);
@@ -171,13 +171,12 @@ public class Player extends AbstractEntity {
     }
 
     private void updateAimedAngle() {
-
         aimedAngle = (float) Math
                 .toDegrees((float) (Math.atan(mouseXfromPlayer() / mouseYfromPlayer())));
-        if (mouseXfromPlayer() > 0 && mouseYfromPlayer() > 0) {
+        if (mouseXfromPlayer() >= 0 && mouseYfromPlayer() >= 0) {
             aimedAngle = -180 + aimedAngle;
         }
-        if (mouseXfromPlayer() < 0 && mouseYfromPlayer() > 0) {
+        if (mouseXfromPlayer() < 0 && mouseYfromPlayer() >= 0) {
             aimedAngle = 180 + aimedAngle;
         }
 
@@ -212,7 +211,7 @@ public class Player extends AbstractEntity {
         } else {
             isAccelerating = false;
         }
-        velocity = velocity.sub(velocity.mul(breakCoeff * delta));
+        velocity = velocity.sub(velocity.mul(tractionCoeff * delta));
         if (velocity.magn() > maxSpeed) {
             velocity = velocity.mul(maxSpeed / velocity.magn());
         }
