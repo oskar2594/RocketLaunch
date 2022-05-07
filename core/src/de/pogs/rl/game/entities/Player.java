@@ -158,7 +158,7 @@ public class Player extends AbstractEntity {
     private void shoot() {
         if (Gdx.input.isButtonPressed(Buttons.LEFT) || Gdx.input.isKeyPressed(Keys.SPACE)) {
             if ((TimeUtils.millis() - lastBulletTime) >= shotCooldown) {
-                Bullet bullet = new Bullet(position.x, position.y, this, bulletDamage,
+                Bullet bullet = new Bullet(position, this, bulletDamage,
                         velocity.add(SpecialMath.angleToVector(angle).mul(bulletSpeed)), angle);
                 bullet.update(0);
                 shootSound.play(shootVolume);

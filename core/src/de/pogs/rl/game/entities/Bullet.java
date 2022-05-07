@@ -24,12 +24,12 @@ public class Bullet extends AbstractEntity {
 
     private Vector2 velocity;
 
-    public Bullet(float posX, float posY, AbstractEntity sender, float damage, Vector2 velocity, float angle) {
+    public Bullet(Vector2 position, AbstractEntity sender, float damage, Vector2 velocity, float angle) {
         sprite = new Sprite(texture);
         this.angle = angle;
         sprite.setSize(texture.getWidth() / texture.getHeight() * radius, radius);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-        position = new Vector2(posX, posY);
+        this.position = position;
         this.velocity = velocity;
         sprite.setRotation(this.angle + 90);
         this.sender = sender;
