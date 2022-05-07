@@ -57,7 +57,12 @@ public class Enemy extends AbstractEntity {
             if (!(entity instanceof Enemy)) {
                 entity.addDamage(5 * delta);
             }
+            position = position.add(antiForce(delta, entity));
         }
+    }
+
+    private Vector2 antiForce(float delta, AbstractEntity entity) {
+        return position.sub(entity.getPosition()).mul(delta * speed / position.sub(entity.getPosition()).magn());
     }
 
     private void splashEffectSelf() {
@@ -71,15 +76,16 @@ public class Enemy extends AbstractEntity {
 
 
     private void updateVelocity(float delta) {
-        if ((position.dst2(GameScreen.INSTANCE.player.getPosition()) > haloRange)
-                && (position.dst2(GameScreen.INSTANCE.player.getPosition()) < sightRange)) {
-            moveDirection = GameScreen.INSTANCE.player.getPosition().sub(position).nor();
+        Vector2 playerPos = GameScreen.INSTANCE.player.getPosition();
+        if ((position.dst2(playerPos) > haloRange)
+                && (position.dst2(playerPos) < sightRange)) {
+            moveDirection = playerPos.sub(position).nor();
             velocity = moveDirection.mul(speed);
-        } else if (position.dst2(GameScreen.INSTANCE.player.getPosition()) < respectDistance) {
-            moveDirection = GameScreen.INSTANCE.player.getPosition().sub(position).nor().mul(-1);
+        } else if (position.dst2(playerPos) < respectDistance) {
+            moveDirection = playerPos.sub(position).nor().mul(-1);
             velocity = moveDirection.mul(speed);
-        } else if ((position.dst2(GameScreen.INSTANCE.player.getPosition()) > respectDistance)
-                && (position.dst2(GameScreen.INSTANCE.player.getPosition()) < sightRange)) {
+        } else if ((position.dst2(playerPos) > respectDistance)
+                && (position.dst2(playerPos) < sightRange)) {
             velocity = new Vector2(0, 0);
         }
     }
