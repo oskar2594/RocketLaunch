@@ -49,7 +49,6 @@ public class GameScreen extends ScreenAdapter {
         background = new BackgroundLayer();
         hud = new HUD();
         entityManager.addEntity(player);
-        entityManager.addEntity(new Enemy(20, 20));
         entityManager.flush();
         entityGen = new EntityGen(entityManager);
         entityGen.addSpawner(new SimpleSpawner());

@@ -32,13 +32,16 @@ public class Enemy extends AbstractEntity {
 
     private Vector2 velocity = moveDirection.mul(speed);
 
-    public Enemy(float posX, float posY) {
+   
+    public Enemy(Vector2 position) {
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-        position = new Vector2(posX, posY);
+        this.position = position;
     }
-
+    public Enemy(float posX, float posY) {
+        this(new Vector2(posX, posY));
+    }
     @Override
     public void render(SpriteBatch batch) {
         sprite.draw(batch);
