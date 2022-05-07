@@ -23,9 +23,12 @@ public class EntityManager {
     }
 
     public LinkedList<AbstractEntity> getCollidingEntities(AbstractEntity entity) {
+        return getCollidingEntities(entity, entity.getRadius());
+    }
+    public LinkedList<AbstractEntity> getCollidingEntities(AbstractEntity entity, float radius) {
         LinkedList<AbstractEntity> result = new LinkedList<AbstractEntity>();
         for (AbstractEntity entityChecked : entities) {
-            if (entityChecked.getPosition().dst(entity.getPosition()) <= (entity.getRadius() + entityChecked.getRadius()) && !entityChecked.equals(entity)) {
+            if (entityChecked.getPosition().dst(entity.getPosition()) <= (radius + entityChecked.getRadius()) && !entityChecked.equals(entity)) {
                 result.add(entityChecked);
             }
         }
