@@ -1,6 +1,5 @@
 package de.pogs.rl.game.entities;
 
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -28,14 +27,15 @@ public class Bullet extends AbstractEntity {
     public Bullet(float posX, float posY, AbstractEntity sender, float damage, Vector2 velocity, float angle) {
         sprite = new Sprite(texture);
         this.angle = angle;
-        sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
+        sprite.setSize(texture.getWidth() / texture.getHeight() * radius, radius);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
         position = new Vector2(posX, posY);
         this.velocity = velocity;
-        sprite.setRotation(this.angle);
+        sprite.setRotation(this.angle + 90);
         this.sender = sender;
         this.damage = damage;
     }
+
     @Override
     public void render(SpriteBatch batch) {
         sprite.draw(batch);
@@ -47,8 +47,6 @@ public class Bullet extends AbstractEntity {
         sprite.setPosition(position.x - (sprite.getWidth() / 2), position.y - sprite.getHeight() / 2);
         for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this)) {
             if (entity != sender) {
-                System.out.println(entity);
-                System.out.println(entity.getPosition());
                 entity.addDamage(damage);
             }
         }

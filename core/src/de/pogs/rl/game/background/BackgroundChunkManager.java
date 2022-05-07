@@ -22,7 +22,9 @@ public final class BackgroundChunkManager {
     public static FastNoiseLite COLORNOISE_BLUE;
 
     private int chunkRadius;
+    private int realChunkRadius;
     private int renderDistance;
+    private float scaling = 2;
 
     private int chunksPerFrame = 5;
 
@@ -30,6 +32,7 @@ public final class BackgroundChunkManager {
 
     public BackgroundChunkManager(int chunkRadius, double seed) {
         this.chunkRadius = chunkRadius;
+        this.realChunkRadius = (int) (chunkRadius * scaling);
 
         // NoiseMaps
 
@@ -49,27 +52,34 @@ public final class BackgroundChunkManager {
 
         // Render Distance calculated based on zoom and screen dimensions
         renderDistance = (int) Math
-                .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 0.75) / chunkRadius);
+                .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 0.7) / chunkRadius);
         // chunks calculated per frame based on ratios
         chunksPerFrame = (int) Math.ceil(Math.pow(renderDistance, 2) * Math.PI / 140);
         chunks = new LinkedList<BackgroundChunk>();
     }
 
+    private int oldWidth = -1;
+
     public void resize(int width, int height) {
         // possible recalculations
+        if (oldWidth < 0)
+            oldWidth = width;
         int newChunkRadius = (int) (width * height * GameScreen.INSTANCE.camera.zoom / 14000);
-        if(newChunkRadius < width / 10) newChunkRadius = width / 10;
-        if(newChunkRadius > width / 2) newChunkRadius = width / 2;
+        if (newChunkRadius < width / 10)
+            newChunkRadius = width / 10;
+        if (newChunkRadius > width / 2)
+            newChunkRadius = width / 2;
         int newRenderDistance = (int) Math
-                .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 0.75) / newChunkRadius);
+                .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 0.7) / newChunkRadius);
         int newChunksPerFrame = (int) Math.floor(Math.pow(newRenderDistance, 2) * Math.PI / 150);
         // check if new chunkradius is needed, because
         // changing the chunkradius leads to recreating all
         // chunks
-        if (Math.abs(newChunkRadius - this.chunkRadius) > 30) {
-            // for better performance collecting current colors
+        newChunkRadius *= scaling;
+        if (Math.abs(oldWidth - width) > width * 0.2 || Math.abs(oldWidth - width) > oldWidth * 0.2) {
+            // for better performance collecting current color
             collectCache(newChunkRadius);
-            this.chunkRadius = newChunkRadius;
+            this.realChunkRadius = newChunkRadius;
             this.renderDistance = newRenderDistance;
             this.chunksPerFrame = newChunksPerFrame;
             // removing all current chunks
@@ -77,9 +87,10 @@ public final class BackgroundChunkManager {
         } else {
             // setting new generating values
             this.renderDistance = (int) Math
-                    .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 0.75) / this.chunkRadius);
+                    .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 0.7) / this.realChunkRadius);
             this.chunksPerFrame = (int) Math.floor(Math.pow(this.renderDistance, 2) * Math.PI / 150);
         }
+        oldWidth = width;
     }
 
     private static Vector2 cacheStart = new Vector2();
@@ -89,30 +100,20 @@ public final class BackgroundChunkManager {
     int i = 0;
 
     private void collectCache(int newChR) {
-        int cacheRadius = this.chunkRadius * this.renderDistance;
+        int cacheRadius = (int) (this.realChunkRadius * this.renderDistance * 2);
         colorCache = new Color[cacheRadius][cacheRadius];
         cacheStart.set(GameScreen.INSTANCE.camera.position.x - cacheRadius / 2,
                 GameScreen.INSTANCE.camera.position.y - cacheRadius / 2);
         // looping through all chunks to place their data on cacheMap
         for (BackgroundChunk chunk : chunks) {
             Color[][] data = chunk.fieldCache;
-            // skip if chunk is not in range
-            if (chunk.position.x + this.chunkRadius < -cacheRadius + cacheStart.x)
-                continue;
-            if (chunk.position.y + this.chunkRadius < -cacheRadius + cacheStart.y)
-                continue;
-            if (chunk.position.x - this.chunkRadius > cacheRadius + cacheStart.x)
-                continue;
-            if (chunk.position.y - this.chunkRadius > cacheRadius + cacheStart.y)
-                continue;
             i++;
             for (int x = 0; x < data.length; x++) {
                 for (int y = 0; y < data.length; y++) {
-                    Vector2 realPosition = new Vector2(chunk.position.x + x - cacheStart.x,
-                            chunk.position.y - y - cacheStart.y);
+                    Vector2 realPosition = new Vector2(chunk.position.x / scaling + x / scaling - cacheStart.x,
+                            chunk.position.y / scaling - y / scaling - cacheStart.y);
                     try {
-                        colorCache[(int) realPosition.x + (newChR - this.chunkRadius)][(int) realPosition.y
-                                + (newChR - this.chunkRadius)] = data[x][y];
+                        colorCache[(int) realPosition.x][(int) realPosition.y] = data[x][y];
                     } catch (Exception e) {
                         // pixel is out of range
                     }
@@ -125,7 +126,7 @@ public final class BackgroundChunkManager {
 
     // for individual chunk get cached color on position
     public Color getCachedColor(int x, int y, Vector2 start) {
-        Vector2 relPos = new Vector2(start.x + x - cacheStart.x, start.y - y - cacheStart.y);
+        Vector2 relPos = new Vector2((start.x + x) - cacheStart.x, (start.y - y) - cacheStart.y);
         try {
             return colorCache[(int) relPos.x][(int) relPos.y];
         } catch (Exception e) {
@@ -136,22 +137,22 @@ public final class BackgroundChunkManager {
     public void update() {
         LinkedList<BackgroundChunk> addChunks = new LinkedList<BackgroundChunk>();
         Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
-        int pixelChunkRadius = chunkRadius * renderDistance;
-        xLoop: for (int x = (int) getNumInGrid(camPos.x, chunkRadius)
-                - pixelChunkRadius; x < (int) getNumInGrid(camPos.x, chunkRadius)
-                        + pixelChunkRadius; x += chunkRadius) {
+        int pixelChunkRadius = realChunkRadius * renderDistance;
+        xLoop: for (int x = (int) getNumInGrid(camPos.x, realChunkRadius)
+                - pixelChunkRadius; x < (int) getNumInGrid(camPos.x, realChunkRadius)
+                        + pixelChunkRadius; x += realChunkRadius) {
             // only skip if enough chunks are created
             if (addChunks.size() > chunksPerFrame && chunks.size() > Math.pow(renderDistance, 2) * Math.PI) {
                 break xLoop;
             }
-            yLoop: for (int y = (int) getNumInGrid(camPos.y, chunkRadius)
-                    - pixelChunkRadius; y < (int) getNumInGrid(camPos.y, chunkRadius)
-                            + pixelChunkRadius; y += chunkRadius) {
+            yLoop: for (int y = (int) getNumInGrid(camPos.y, realChunkRadius)
+                    - pixelChunkRadius; y < (int) getNumInGrid(camPos.y, realChunkRadius)
+                            + pixelChunkRadius; y += realChunkRadius) {
 
                 if (!checkForChunkAtPosition(x, y)) { // check for chunk at position
                     // create new chunk
-                    BackgroundChunk chunk = new BackgroundChunk(chunkRadius, x, y);
-                    //add chunk to create list
+                    BackgroundChunk chunk = new BackgroundChunk(realChunkRadius / 2, x, y, scaling);
+                    // add chunk to create list
                     addChunks.add(chunk);
                 }
                 // only skip if enough chunks are created
@@ -160,7 +161,7 @@ public final class BackgroundChunkManager {
                 }
             }
         }
-        //execute changes to chunklist
+        // execute changes to chunklist
         chunks.removeAll(removeChunksOutOfRenderDistance());
         chunks.addAll(addChunks);
 
@@ -179,19 +180,18 @@ public final class BackgroundChunkManager {
         }
     }
 
-
-    //get a number in a numbergrid
+    // get a number in a numbergrid
     private int getNumInGrid(double num, int grid) {
         return Math.round((float) num / grid) * grid;
     }
 
-    //check if chunks are out of render distance
+    // check if chunks are out of render distance
     private LinkedList<BackgroundChunk> removeChunksOutOfRenderDistance() {
         LinkedList<BackgroundChunk> removeChunks = new LinkedList<BackgroundChunk>();
         Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
         for (BackgroundChunk chunk : chunks) {
             if (distance(new Vector2(chunk.position.x, chunk.position.y),
-                    camPos) > renderDistance * chunkRadius * 2) {
+                    camPos) > renderDistance * realChunkRadius * 2) {
                 chunk.dispose();
                 removeChunks.add(chunk);
             }
@@ -199,15 +199,15 @@ public final class BackgroundChunkManager {
         return removeChunks;
     }
 
-    //check if there is a chunk at the position
+    // check if there is a chunk at the position
     private boolean checkForChunkAtPosition(int x, int y) {
         Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
         for (BackgroundChunk chunk : chunks) {
             if (distance(new Vector2(x, y),
-                    camPos) > renderDistance * chunkRadius * 1) {
+                    camPos) > renderDistance * realChunkRadius * 1) {
                 return true;
             }
-            if (distance(chunk.position, new Vector2(x, y)) < chunkRadius) {
+            if (distance(chunk.position, new Vector2(x, y)) < realChunkRadius) {
                 return true;
             }
         }

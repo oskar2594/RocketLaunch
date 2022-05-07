@@ -10,6 +10,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 import org.w3c.dom.Text;
 
@@ -19,7 +20,7 @@ public class AssetHelper {
 
     private HashMap<String, AssetDescriptor> images = new HashMap<String, AssetDescriptor>();
     private HashMap<String, AssetDescriptor> sounds = new HashMap<String, AssetDescriptor>();
-    private HashMap<String, AssetDescriptor> fonts = new HashMap<String, AssetDescriptor>();
+    private HashMap<String, FreeTypeFontGenerator> fonts = new HashMap<String, FreeTypeFontGenerator>();
     // private String[] dirs = { "images", "sounds", "fonts", "particles" };
 
     private FileHandle baseDir;
@@ -54,19 +55,22 @@ public class AssetHelper {
 
     private void loadFonts(FileHandle[] list) {
         for (FileHandle file : list) {
-            System.out.println(file.extension());
-            if (file.extension().equalsIgnoreCase("fnt")) {
-                AssetDescriptor asset = new AssetDescriptor<>(file.path(), BitmapFont.class);
-                fonts.put(file.nameWithoutExtension(), asset);
-                assetManager.load(asset);
+            System.out.println(file.name());
+            if (file.extension().equalsIgnoreCase("ttf")) {
+                FreeTypeFontGenerator generator = new FreeTypeFontGenerator(file);
+                fonts.put(file.nameWithoutExtension().toLowerCase(), generator);
             }
         }
     }
 
-    public BitmapFont getFont(String name) {
+    public BitmapFont getFont(String name, int size) {
         try {
-            return (BitmapFont) this.assetManager.get(fonts.get(name));
+            FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+            parameter.size = size;
+            BitmapFont font = fonts.get(name).generateFont(parameter);
+            return font;
         } catch (Exception e) {
+            System.out.println(e);
             return null;
         }
     }
@@ -84,6 +88,7 @@ public class AssetHelper {
         try {
             return (Sound) this.assetManager.get(sounds.get(name));
         } catch (Exception e) {
+            System.out.println(e);
             return null;
         }
     }

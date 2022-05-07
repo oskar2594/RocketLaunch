@@ -32,6 +32,10 @@ public class HUDUtils {
     }
 
     public static Vector2 getBottomLeft() {
-        return new Vector2(HUD.INSTANCE.position.x - HUD.INSTANCE.height / 2, HUD.INSTANCE.position.y - HUD.INSTANCE.width / 2);
+        return new Vector2(HUD.INSTANCE.position.x - HUD.INSTANCE.width / 2, HUD.INSTANCE.position.y - HUD.INSTANCE.height / 2);
+    }
+
+    public static Vector2 getCenter() {
+        return new Vector2(HUD.INSTANCE.position.x, HUD.INSTANCE.position.y );
     }
 }
