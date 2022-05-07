@@ -18,7 +18,7 @@ public class Bullet extends AbstractEntity {
     private float speed;
     private float angle;
     
-    private float radius = 20;
+    
     private AbstractEntity sender;
 
     private float damage;
@@ -45,7 +45,7 @@ public class Bullet extends AbstractEntity {
     public void update(float delta) {
         updatePosition(delta);
         sprite.setPosition(position.x - (sprite.getWidth() / 2), position.y - sprite.getHeight() / 2);
-        for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this, radius)) {
+        for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this)) {
             if (entity != sender) {
                 System.out.println(entity);
                 System.out.println(entity.getPosition());

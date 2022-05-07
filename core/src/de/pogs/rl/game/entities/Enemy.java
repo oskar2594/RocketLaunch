@@ -42,7 +42,7 @@ public class Enemy extends AbstractEntity {
         }
         position = position.add(moveDirection.mul(speed * delta));
 
-        for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this, 10)) {
+        for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this)) {
             if (!(entity instanceof Enemy)) {
                 entity.addDamage(5 * delta);
             }

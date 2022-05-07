@@ -15,9 +15,15 @@ public abstract class AbstractEntity {
         return renderPriority;
     }
 
-    protected boolean alive = true;
     public abstract void addDamage(float damage);
 
+    protected float radius = 10;
+    
+    public float getRadius() {
+        return radius;
+    }
+
+    protected boolean alive = true;
     public boolean getAlive(){
         return alive;
     }
