@@ -170,13 +170,12 @@ public class Player extends AbstractEntity {
     }
 
     private void updateAimedAngle() {
-
         aimedAngle = (float) Math
                 .toDegrees((float) (Math.atan(mouseXfromPlayer() / mouseYfromPlayer())));
-        if (mouseXfromPlayer() > 0 && mouseYfromPlayer() > 0) {
+        if (mouseXfromPlayer() >= 0 && mouseYfromPlayer() >= 0) {
             aimedAngle = -180 + aimedAngle;
         }
-        if (mouseXfromPlayer() < 0 && mouseYfromPlayer() > 0) {
+        if (mouseXfromPlayer() < 0 && mouseYfromPlayer() >= 0) {
             aimedAngle = 180 + aimedAngle;
         }
 
