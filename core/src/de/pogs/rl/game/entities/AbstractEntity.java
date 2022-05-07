@@ -6,8 +6,7 @@ import de.pogs.rl.utils.SpecialMath.Vector2;;
 public abstract class AbstractEntity {
     protected Vector2 position = new Vector2(0, 0);
     public void update(float delta) {};
-    public abstract void renderSpriteBatch(SpriteBatch batch);
-    public abstract void renderOther();
+    public abstract void render(SpriteBatch batch);
     public Vector2 getPosition() {
         return position;
     }

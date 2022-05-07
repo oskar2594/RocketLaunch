@@ -113,7 +113,7 @@ public class Player extends AbstractEntity {
     }
 
     @Override
-    public void renderSpriteBatch(SpriteBatch batch) {
+    public void render(SpriteBatch batch) {
         sprite.draw(batch);
     }
 
