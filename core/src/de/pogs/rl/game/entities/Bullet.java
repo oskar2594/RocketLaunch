@@ -1,6 +1,5 @@
 package de.pogs.rl.game.entities;
 
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,26 +17,29 @@ public class Bullet extends AbstractEntity {
     private float speed;
     private float angle;
     
-    private float radius = 20;
+    
     private AbstractEntity sender;
 
     private float damage;
 
     private Vector2 velocity;
 
-    public Bullet(float posX, float posY, AbstractEntity sender, float damage, Vector2 velocity, float angle) {
+    public Bullet(Vector2 position, AbstractEntity sender, float damage, Vector2 velocity, float angle) {
         sprite = new Sprite(texture);
         this.angle = angle;
-        sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
+        sprite.setSize(texture.getWidth() / texture.getHeight() * radius, radius);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-        position = new Vector2(posX, posY);
+        this.position = position;
         this.velocity = velocity;
-        sprite.setRotation(this.angle);
+        sprite.setRotation(this.angle + 90);
         this.sender = sender;
         this.damage = damage;
+        radius = 2;
     }
+
     @Override
     public void render(SpriteBatch batch) {
+        
         sprite.draw(batch);
     }
 
@@ -45,9 +47,11 @@ public class Bullet extends AbstractEntity {
     public void update(float delta) {
         updatePosition(delta);
         sprite.setPosition(position.x - (sprite.getWidth() / 2), position.y - sprite.getHeight() / 2);
-        for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this, radius)) {
+        for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this)) {
             if (entity != sender) {
                 entity.addDamage(damage);
+                this.alive = false;
+                break;
             }
         }
     }
@@ -58,6 +62,6 @@ public class Bullet extends AbstractEntity {
 
     @Override
     public void addDamage(float damage) {
-
+        this.alive = false;
     }
 }

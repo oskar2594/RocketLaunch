@@ -28,8 +28,9 @@ public class HUD {
     private PlayerHealth playerHealth;
     private PlayerArmor playerArmor;
     private Debug debug;
+    private Level level;
 
-    public int border = 20;
+    public int border = 30;
 
     public HUD() {
         INSTANCE = this;
@@ -46,11 +47,11 @@ public class HUD {
         components.put("playerArmor", playerArmor);
         debug = new Debug();
         components.put("debug", debug);
+        level = new Level();
+        components.put("level", level);
     }
 
-    public void update(float delta, float healthProg, float armorProg) {
-        playerHealth.setProg(healthProg);
-        playerArmor.setProg(armorProg);
+    public void update(float delta) {
         components.forEach((name, component) -> {
             component.update(delta);
         });
@@ -72,6 +73,7 @@ public class HUD {
     }
 
     public void resize(int width, int height) {
+        this.border = (int) (width * 0.03);
         this.width = width - border * 2;
         this.height = height - border * 2;
         components.forEach((name, component) -> {

@@ -11,6 +11,7 @@ public class DesktopLauncher {
 		config.setWindowedMode(1000, 700);
 		config.useVsync(true);
 		config.setForegroundFPS(60);
+		config.setBackBufferConfig(8, 8, 8, 8, 16, 0, 2);
 		new Lwjgl3Application(new RocketLauncher(), config);
 	}
 }

@@ -10,7 +10,7 @@ import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
 
 public class Debug extends HUDComponent {
-    private BitmapFont font = RocketLauncher.INSTANCE.assetHelper.getFont("roboto");
+    private BitmapFont font = RocketLauncher.INSTANCE.assetHelper.getFont("roboto", 16);
     private String text = "";
     Debug() {
         super();
@@ -32,7 +32,6 @@ public class Debug extends HUDComponent {
     public void render(SpriteBatch batch) {
         position.set(HUDUtils.getTopLeft().x, HUDUtils.getTopLeft().y);
         font.setColor(Color.WHITE);
-        font.getData().setScale(2 / 10f);
         font.draw(batch, text, position.x, position.y);
         
     }

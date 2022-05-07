@@ -1,8 +1,14 @@
 package de.pogs.rl.game.ui;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeType.Bitmap;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+
+import de.pogs.rl.RocketLauncher;
+import de.pogs.rl.game.GameScreen;
 
 public class PlayerArmor extends HUDComponent {
 
@@ -13,6 +19,8 @@ public class PlayerArmor extends HUDComponent {
     private float currProg = 0f;
     private float progress_response = 0.1f;
 
+    private BitmapFont font;
+
     public PlayerArmor() {
         super();
         progress = 0.15f;
@@ -20,11 +28,14 @@ public class PlayerArmor extends HUDComponent {
 
     @Override
     public void render(SpriteBatch batch) {
+        font.setColor(Color.WHITE);
+        font.draw(batch, Math.round(GameScreen.INSTANCE.player.getHealth()) + " | " + Math.round(GameScreen.INSTANCE.player.getMaxHealth()), position.x + width * 0.02f, position.y + height - ((height - (font.getCapHeight())) / 2));
 
     }
 
     @Override
     public void update(float delta) {
+        this.progress = GameScreen.INSTANCE.player.getArmor() / GameScreen.INSTANCE.player.getMaxArmor();
         position.set(HUDUtils.getBottomCenter().x - width / 2, HUDUtils.getBottomCenter().y + height * 1.5f);
         updateAngle();
     }
@@ -33,6 +44,7 @@ public class PlayerArmor extends HUDComponent {
     public void resize(float width, float height) {
         this.width = (float) (width * 0.3);
         this.height = (float) (this.width * 0.07);
+        font = RocketLauncher.INSTANCE.assetHelper.getFont("roboto", (int) Math.ceil(this.height * 0.5));
     }
 
     public void updateAngle() {
@@ -48,16 +60,15 @@ public class PlayerArmor extends HUDComponent {
 
     }
 
+    public Color color1 = new Color(0x349eebff);
+    public Color color2 = new Color(0x2164c2ff);
+
     @Override
     public void shapeRender(ShapeRenderer shapeRenderer) {
         shapeRenderer.setColor(new Color(0x26262691));
         shapeRenderer.rect(position.x, position.y, width, height);
-        shapeRenderer.setColor(Color.BLUE);
         shapeRenderer.rect(position.x + width * 0.01f, position.y + width * 0.01f,
-                (width - width * 0.02f) * currProg, height - width * 0.02f);
+                (width - width * 0.02f) * currProg, height - width * 0.02f, color2, color1, color1, color2);
     }
 
-    public void setProg(float prog) {
-        progress = prog;
-    }
 }
