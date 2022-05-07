@@ -28,7 +28,8 @@ public class AssetHelper {
     public AssetHelper() {
         assetManager = new AssetManager();
         // Gdx.files.internal("dd/");
-        baseDir = Gdx.files.getFileHandle("assets/", FileType.Local);
+        baseDir = Gdx.files.getFileHandle("", FileType.Internal);
+        System.out.println("dddd");
         System.out.println(baseDir.file().getAbsolutePath());
     }
 
