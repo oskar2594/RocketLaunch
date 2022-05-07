@@ -37,7 +37,7 @@ public class Bullet extends AbstractEntity {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
+    public void renderSpriteBatch(SpriteBatch batch) {
         sprite.draw(batch);
     }
 

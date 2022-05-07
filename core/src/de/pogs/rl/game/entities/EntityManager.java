@@ -46,7 +46,7 @@ public class EntityManager {
     public void render(SpriteBatch batch, Vector2 playerPosition, int renderDistance2) {
         for (AbstractEntity entity : entities) {
             if (entity.getPosition().dst2(playerPosition) < renderDistance2)
-                entity.render(batch);
+                entity.renderSpriteBatch(batch);
         }
     }
 

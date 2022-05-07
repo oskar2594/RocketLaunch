@@ -40,7 +40,7 @@ public class Enemy extends AbstractEntity {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
+    public void renderSpriteBatch(SpriteBatch batch) {
         sprite.draw(batch);
     }
 
