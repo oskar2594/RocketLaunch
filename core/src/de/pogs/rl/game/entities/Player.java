@@ -43,7 +43,7 @@ public class Player extends AbstractEntity {
 
     private float acceleration = 200;
 
-    private float breakCoeff = 0.5f;
+    private float tractionCoeff = 0.5f;
 
     private boolean isAccelerating = false;
     private boolean wasAccelerating = false;
@@ -210,7 +210,7 @@ public class Player extends AbstractEntity {
         } else {
             isAccelerating = false;
         }
-        velocity = velocity.sub(velocity.mul(breakCoeff * delta));
+        velocity = velocity.sub(velocity.mul(tractionCoeff * delta));
         if (velocity.magn() > maxSpeed) {
             velocity = velocity.mul(maxSpeed / velocity.magn());
         }
