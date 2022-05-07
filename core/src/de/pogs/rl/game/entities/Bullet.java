@@ -34,10 +34,12 @@ public class Bullet extends AbstractEntity {
         sprite.setRotation(this.angle + 90);
         this.sender = sender;
         this.damage = damage;
+        radius = 2;
     }
 
     @Override
     public void render(SpriteBatch batch) {
+        
         sprite.draw(batch);
     }
 
@@ -48,6 +50,8 @@ public class Bullet extends AbstractEntity {
         for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this)) {
             if (entity != sender) {
                 entity.addDamage(damage);
+                this.alive = false;
+                break;
             }
         }
     }
@@ -58,6 +62,6 @@ public class Bullet extends AbstractEntity {
 
     @Override
     public void addDamage(float damage) {
-
+        this.alive = false;
     }
 }
