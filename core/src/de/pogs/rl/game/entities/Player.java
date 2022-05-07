@@ -59,7 +59,7 @@ public class Player extends AbstractEntity {
     
     private Sound shootSound;
     private long shootId;
-    private float shootVolume = 0.5f;
+    private float shootVolume = 0.3f;
 
     float bulletDamage = 10;
 
@@ -161,7 +161,8 @@ public class Player extends AbstractEntity {
                 Bullet bullet = new Bullet(position.x, position.y, this, bulletDamage,
                         velocity.add(SpecialMath.angleToVector(angle).mul(bulletSpeed)), angle);
                 bullet.update(0);
-                shootSound.play(shootVolume);
+                shootId = shootSound.play(shootVolume);
+                shootSound.setVolume(shootId, shootVolume);
                 GameScreen.INSTANCE.entityManager.addEntity(bullet);
                 lastBulletTime = TimeUtils.millis();
 
