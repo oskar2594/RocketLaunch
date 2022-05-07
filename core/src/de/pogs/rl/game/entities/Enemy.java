@@ -25,23 +25,32 @@ public class Enemy extends AbstractEntity {
     private Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("monster1");
     private Sprite sprite;
     private float speed = 100;
-
+    
     private float scale = 0.1f;
 
-    private Vector2 moveDirection = new Vector2(random.nextFloat() - 0.5f, random.nextFloat() - 0.5f).nor();
+    private Vector2 moveDirection =
+            new Vector2(random.nextFloat() - 0.5f, random.nextFloat() - 0.5f).nor();
 
     private Vector2 velocity = moveDirection.mul(speed);
 
-   
+    private float repulsionRadius = 20;
+
+    private float playerAttraction = 0.5f;
+    private float playerRepulsion = 1;
+
+    private float tractionCoeff = 0.1f;
+
     public Enemy(Vector2 position) {
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
         this.position = position;
     }
+
     public Enemy(float posX, float posY) {
         this(new Vector2(posX, posY));
     }
+
     @Override
     public void render(SpriteBatch batch) {
         sprite.draw(batch);
@@ -49,7 +58,8 @@ public class Enemy extends AbstractEntity {
 
     @Override
     public void update(float delta) {
-        sprite.setPosition(position.x - (sprite.getWidth() / 2), position.y - sprite.getHeight() / 2);
+        sprite.setPosition(position.x - (sprite.getWidth() / 2),
+                position.y - sprite.getHeight() / 2);
         updateVelocity(delta);
         updatePos(delta);
 
@@ -57,36 +67,39 @@ public class Enemy extends AbstractEntity {
             if (!(entity instanceof Enemy)) {
                 entity.addDamage(5 * delta);
             }
-            position = position.add(antiForce(delta, entity));
+        }
+        for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this,
+                repulsionRadius)) {
+
+            velocity = velocity.add(repulsion(delta, entity));
         }
     }
 
-    private Vector2 antiForce(float delta, AbstractEntity entity) {
-        return position.sub(entity.getPosition()).mul(delta * speed / position.sub(entity.getPosition()).magn());
+    private Vector2 repulsion(float delta, AbstractEntity entity) {
+        return position.sub(entity.getPosition())
+                .mul(20 * delta * speed / (float) Math.pow(position.dst(entity.getPosition()), 3));
     }
 
     private void splashEffectSelf() {
-        ParticleEmitter pe = GameScreen.INSTANCE.particleManager.createEmitter(
-                new ParticleEmitter((int) position.x, (int) position.y, 50, 5,
+        ParticleEmitter pe = GameScreen.INSTANCE.particleManager
+                .createEmitter(new ParticleEmitter((int) position.x, (int) position.y, 50, 5,
                         ParticleUtils.generateParticleTexture(ParticleUtils.averageColor(texture)),
-                        -180, 180, 10, 150,
-                        1, 5, 1f, 1f, .5f, .1f, true));
+                        -180, 180, 10, 150, 1, 5, 1f, 1f, .5f, .1f, true));
         pe.attach(this.sprite, 0, 0, this);
     }
 
 
     private void updateVelocity(float delta) {
         Vector2 playerPos = GameScreen.INSTANCE.player.getPosition();
-        if ((position.dst2(playerPos) > haloRange)
-                && (position.dst2(playerPos) < sightRange)) {
+        if ((position.dst2(playerPos) > haloRange) && (position.dst2(playerPos) < sightRange)) {
             moveDirection = playerPos.sub(position).nor();
-            velocity = moveDirection.mul(speed);
+            velocity = velocity.add(moveDirection.mul(playerAttraction));
         } else if (position.dst2(playerPos) < respectDistance) {
             moveDirection = playerPos.sub(position).nor().mul(-1);
-            velocity = moveDirection.mul(speed);
-        } else if ((position.dst2(playerPos) > respectDistance)
-                && (position.dst2(playerPos) < sightRange)) {
-            velocity = new Vector2(0, 0);
+            velocity = velocity.add(moveDirection.mul(playerRepulsion));
+        }
+        if (position.dst2(playerPos) < sightRange) {
+            velocity = velocity.sub(velocity.mul(tractionCoeff * delta));
         }
     }
 
