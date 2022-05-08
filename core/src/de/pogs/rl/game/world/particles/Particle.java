@@ -29,7 +29,7 @@ public class Particle {
             float maxAngle, float minSpeed, float maxSpeed, float minSize, float maxSize, float alpha,
             float duration, float timeAlpha, float timeSize) {
         sprite = new Sprite(texture);
-        sprite.setPosition(source.x, source.y);
+        sprite.setPosition(source.getX(), source.getY());
         sprite.setAlpha(0);
         this.size = getSize(minSize, maxSize);
         if (texture.getWidth() >= texture.getHeight()) {
@@ -45,7 +45,7 @@ public class Particle {
         this.angle = getAngle(minAngle, maxAngle);
         this.velocity = velocity;
         sprite.setRotation(this.angle + offsetAngle + textureCorrectionAngle);
-        this.position = new Vector2(source.x, source.y);
+        this.position = new Vector2(source.getX(), source.getY());
         this.speed = getSpeed(minSpeed, maxSpeed);
         this.duration = duration;
         this.timeAlpha = timeAlpha;
@@ -76,7 +76,7 @@ public class Particle {
             sprite.setScale(time / timeSize);
         }
         // float currentSize = (time / duration) * (size - startSize + 1) + startSize;
-        sprite.setPosition(position.x - (sprite.getWidth() / 2), position.y - sprite.getHeight() / 2);
+        sprite.setPosition(position.getX() - (sprite.getWidth() / 2), position.getY() - sprite.getHeight() / 2);
         // System.out.println(time);
     }
 

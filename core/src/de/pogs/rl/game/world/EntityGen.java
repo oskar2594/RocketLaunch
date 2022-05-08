@@ -25,9 +25,9 @@ public class EntityGen {
         int renderPosY;
         for (int x = -renderDistance; x < renderDistance; x += chunkSize) {
             for (int y = -renderDistance; y < renderDistance; y += chunkSize) {
-                renderPosX = (int) pos.x + x;
+                renderPosX = (int) pos.getX() + x;
                 renderPosX -= SpecialMath.modulus(renderPosX, chunkSize);
-                renderPosY = (int) pos.y + y;
+                renderPosY = (int) pos.getY() + y;
                 renderPosY -= SpecialMath.modulus(renderPosY, chunkSize);
                 ArrayList<Integer> renderPos = new ArrayList<Integer>(Arrays.asList(new Integer[] {renderPosX, renderPosY}));
                 if (!generatedChunks.contains(renderPos)) {
@@ -36,7 +36,7 @@ public class EntityGen {
                 }
             }
         }
-        generatedChunks.removeIf((chunk) -> Math.pow(chunk.get(0) - pos.x, 2) + Math.pow(chunk.get(1) - pos.y, 2) > removeDistance2);
+        generatedChunks.removeIf((chunk) -> Math.pow(chunk.get(0) - pos.getX(), 2) + Math.pow(chunk.get(1) - pos.getY(), 2) > removeDistance2);
     }
 
     private void spawn(ArrayList<Integer> chunk) {

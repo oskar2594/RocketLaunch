@@ -9,6 +9,7 @@ public class SpecialMath {
         }
         return r;
     }
+
     public static float angleDifferenceSmaller(float angle1, float angle2, float angleBase) {
         angle1 = angle1 + angleBase / 2f;
         angle2 = angle2 + angleBase / 2f;
@@ -26,15 +27,26 @@ public class SpecialMath {
         }
         return diff1;
     }
+
     public static Vector2 angleToVector(float angle) {
         return new Vector2(((float) Math.cos((angle + 90) * Math.PI / 180)),
-        ((float) Math.sin((angle + 90) * (Math.PI / 180))));
+                ((float) Math.sin((angle + 90) * (Math.PI / 180))));
     }
 
+    public static float VectorToAngle(Vector2 vector) {
+        float angle = (float) Math.toDegrees((float) (Math.atan(vector.x / vector.y)));
+        if (vector.x >= 0 && vector.y >= 0) {
+            angle = -180 + angle;
+        }
+        if (vector.x < 0 && vector.y >= 0) {
+            angle = 180 + angle;
+        }
+        return angle;
+    }
 
     public static class Vector2 {
-        public float x;
-        public float y;
+        private float x;
+        private float y;
 
         public Vector2(float x, float y) {
             this.x = x;
@@ -71,6 +83,19 @@ public class SpecialMath {
 
         public float toAngle() {
             return (float) Math.acos(nor().x * 180 / Math.PI);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("Vector2<%f, %f>", x, y);
+        }
+
+        public float getX() {
+            return x;
+        }
+
+        public float getY() {
+            return y;
         }
     }
 }
