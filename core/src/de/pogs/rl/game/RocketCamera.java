@@ -23,8 +23,8 @@ public class RocketCamera extends OrthographicCamera {
     }
 
     public void render(float delta) {
-        this.position.set(GameScreen.INSTANCE.player.getPosition().x,
-                GameScreen.INSTANCE.player.getPosition().y, 0);
+        this.position.set(GameScreen.INSTANCE.player.getPosition().getX(),
+                GameScreen.INSTANCE.player.getPosition().getY(), 0);
         Vector2 shake = CameraShake.getShake();
         this.translate(shake);
 

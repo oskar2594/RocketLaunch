@@ -132,8 +132,8 @@ public class Player extends AbstractEntity {
         flame.updateVelocity(velocity);
         overheat.updateVelocity(velocity);
 
-        sprite.setPosition(position.x - (sprite.getWidth() / 2),
-                position.y - sprite.getHeight() / 2);
+        sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
+                position.getY() - sprite.getHeight() / 2);
         sprite.setRotation(angle);
         shoot();
     }
@@ -159,8 +159,7 @@ public class Player extends AbstractEntity {
         if (Gdx.input.isButtonPressed(Buttons.LEFT) || Gdx.input.isKeyPressed(Keys.SPACE)) {
             if ((TimeUtils.millis() - lastBulletTime) >= shotCooldown) {
                 Bullet bullet = new Bullet(position, this, bulletDamage,
-                        velocity.add(SpecialMath.angleToVector(angle).mul(bulletSpeed)), angle);
-                bullet.update(0);
+                        velocity.add(SpecialMath.angleToVector(angle).mul(bulletSpeed)));
                 shootId = shootSound.play(shootVolume);
                 shootSound.setVolume(shootId, shootVolume);
                 GameScreen.INSTANCE.entityManager.addEntity(bullet);
@@ -171,17 +170,10 @@ public class Player extends AbstractEntity {
     }
 
     private void updateAimedAngle() {
-        aimedAngle = (float) Math
-                .toDegrees((float) (Math.atan(mouseXfromPlayer() / mouseYfromPlayer())));
-        if (mouseXfromPlayer() >= 0 && mouseYfromPlayer() >= 0) {
-            aimedAngle = -180 + aimedAngle;
-        }
-        if (mouseXfromPlayer() < 0 && mouseYfromPlayer() >= 0) {
-            aimedAngle = 180 + aimedAngle;
-        }
+        aimedAngle = SpecialMath.VectorToAngle(new Vector2(mouseXfromPlayer(), mouseYfromPlayer()));
 
     }
-
+    //TODO auslagern zu utils
     private float mouseXfromPlayer() {
         return Gdx.input.getX() - (float) (Gdx.graphics.getWidth() / 2);
     }
@@ -267,7 +259,7 @@ public class Player extends AbstractEntity {
     }
 
     public float getSpeed() {
-        return (float) Math.sqrt(Math.pow(velocity.x, 2) + Math.pow(velocity.y, 2));
+        return (float) Math.sqrt(Math.pow(velocity.getX(), 2) + Math.pow(velocity.getY(), 2));
     }
 
     public float getMaxSpeed() {

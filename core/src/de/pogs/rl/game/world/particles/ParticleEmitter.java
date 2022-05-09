@@ -55,10 +55,10 @@ public class ParticleEmitter {
             Vector2 relativeOffset = new Vector2((float) (offset * Math.cos(Math.toRadians(angle + offsetAngle))),
                     (float) (offset * Math.sin(Math.toRadians(angle + offsetAngle))));
             if (attachedEntity == null) {
-                position = new Vector2(attachedTo.getX() + relativeOffset.x, attachedTo.getY() + relativeOffset.y);
+                position = new Vector2(attachedTo.getX() + relativeOffset.getX(), attachedTo.getY() + relativeOffset.getY());
             } else {
                 Vector2 pos = attachedEntity.getPosition();
-                position = new Vector2(pos.x + relativeOffset.x, pos.y + relativeOffset.y);
+                position = new Vector2(pos.getX() + relativeOffset.getX(), pos.getY() + relativeOffset.getY());
             }
         }
         if (((this.particles.size() < this.count) || (this.count < 0)) && isActive) {

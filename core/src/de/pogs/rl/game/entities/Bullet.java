@@ -24,9 +24,9 @@ public class Bullet extends AbstractEntity {
 
     private Vector2 velocity;
 
-    public Bullet(Vector2 position, AbstractEntity sender, float damage, Vector2 velocity, float angle) {
+    public Bullet(Vector2 position, AbstractEntity sender, float damage, Vector2 velocity) {
         sprite = new Sprite(texture);
-        this.angle = angle;
+        this.angle = 180 - SpecialMath.VectorToAngle(velocity);
         sprite.setSize(texture.getWidth() / texture.getHeight() * radius, radius);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
         this.position = position;
@@ -34,6 +34,8 @@ public class Bullet extends AbstractEntity {
         sprite.setRotation(this.angle + 90);
         this.sender = sender;
         this.damage = damage;
+        sprite.setPosition(position.getX() - (sprite.getWidth() / 2), position.getY() - sprite.getHeight() / 2);
+        
         radius = 2;
     }
 
@@ -46,7 +48,7 @@ public class Bullet extends AbstractEntity {
     @Override
     public void update(float delta) {
         updatePosition(delta);
-        sprite.setPosition(position.x - (sprite.getWidth() / 2), position.y - sprite.getHeight() / 2);
+        sprite.setPosition(position.getX() - (sprite.getWidth() / 2), position.getY() - sprite.getHeight() / 2);
         for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this)) {
             if (entity != sender) {
                 entity.addDamage(damage);
@@ -63,5 +65,9 @@ public class Bullet extends AbstractEntity {
     @Override
     public void addDamage(float damage) {
         this.alive = false;
+    }
+
+    public Vector2 getVelocity() {
+        return velocity;
     }
 }
