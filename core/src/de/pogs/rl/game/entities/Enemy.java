@@ -33,7 +33,7 @@ public class Enemy extends AbstractEntity {
 
     private Vector2 velocity = moveDirection.mul(speed);
 
-    private float repulsionRadius = 20;
+    private float repulsionRadius = 50;
 
     private float playerAttraction = 0.5f;
     private float playerRepulsion = 1;
