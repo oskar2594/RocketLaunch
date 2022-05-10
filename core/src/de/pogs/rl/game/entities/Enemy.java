@@ -94,11 +94,11 @@ public class Enemy extends AbstractEntity {
     }
 
     private void splashEffectSelf() {
+        System.out.println("dd");
         ParticleEmitter pe = GameScreen.INSTANCE.particleManager.createEmitter(
                 new ParticleEmitter((int) position.getX(), (int) position.getY(), 50, 5,
                         ParticleUtils.generateParticleTexture(ParticleUtils.averageColor(texture)),
                         -180, 180, 10, 150, 1, 5, 1f, 1f, .5f, .1f, true));
-        pe.attach(this.sprite, 0, 0, this);
     }
 
 
