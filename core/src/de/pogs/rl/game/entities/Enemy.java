@@ -44,7 +44,7 @@ public class Enemy extends AbstractEntity {
     private Vector2 constAcceleration =
             new Vector2(random.nextFloat() - 0.5f, random.nextFloat() - 0.5f).nor().mul(10);
 
-    private float shootingCoeff = 0.1f;
+    private float shootingCoeff = 1f;
     private float bulletDamage = 1;
     private float bulletSpeed = 500;
 
@@ -84,7 +84,10 @@ public class Enemy extends AbstractEntity {
     }
 
     private void shoot() {
-        Bullet bullet = new Bullet(position, this, bulletDamage, GameScreen.INSTANCE.player.getPosition().sub(position).nor().mul(bulletSpeed), new Color(0xd46178));
+        float flightTime = GameScreen.INSTANCE.player.getPosition().dst(position) / bulletSpeed;
+        Vector2 playerPosPredicted = GameScreen.INSTANCE.player.getPosition().add(GameScreen.INSTANCE.player.getVelocity().mul(flightTime));
+        Vector2 bulletVelocity = playerPosPredicted.sub(position).nor().mul(bulletSpeed);
+        Bullet bullet = new Bullet(position, this, bulletDamage, bulletVelocity, new Color(0xd46178));
         GameScreen.INSTANCE.entityManager.addEntity(bullet);
     }
 
