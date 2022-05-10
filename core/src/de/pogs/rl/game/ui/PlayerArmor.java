@@ -29,7 +29,7 @@ public class PlayerArmor extends HUDComponent {
     @Override
     public void render(SpriteBatch batch) {
         font.setColor(Color.WHITE);
-        font.draw(batch, Math.round(GameScreen.INSTANCE.player.getHealth()) + " | " + Math.round(GameScreen.INSTANCE.player.getMaxHealth()), position.x + width * 0.02f, position.y + height - ((height - (font.getCapHeight())) / 2));
+        font.draw(batch, Math.round(GameScreen.INSTANCE.player.getArmor()) + " | " + Math.round(GameScreen.INSTANCE.player.getMaxArmor()), position.x + width * 0.02f, position.y + height - ((height - (font.getCapHeight())) / 2));
 
     }
 

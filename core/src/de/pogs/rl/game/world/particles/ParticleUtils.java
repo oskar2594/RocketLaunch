@@ -20,6 +20,18 @@ public class ParticleUtils {
         return new Texture(pixmap);
     }
 
+    public static Texture generateParticleTexture(Color color, int width, int height) {
+        int idx = 0;
+        Pixmap pixmap = new Pixmap(width, height, Format.RGBA8888);
+        for (int i = 0; i < width * height; i++) {
+            pixmap.getPixels().put(idx++, (byte) (color.getRed()));
+            pixmap.getPixels().put(idx++, (byte) (color.getGreen()));
+            pixmap.getPixels().put(idx++, (byte) (color.getBlue()));
+            pixmap.getPixels().put(idx++, (byte) (color.getAlpha()));
+        }
+        return new Texture(pixmap);
+    }
+
     public static Color averageColor(Texture t) {
         t.getTextureData().prepare();
         Pixmap bi = t.getTextureData().consumePixmap();

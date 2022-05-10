@@ -50,6 +50,10 @@ public class ParticleEmitter {
             isDead = true;
             return;
         }
+        if(isAttached && !attachedEntity.getAlive()) {
+            isDead = true;
+            return;
+        }
         if (isAttached) {
             angle = attachedTo.getRotation() - 90;
             Vector2 relativeOffset = new Vector2((float) (offset * Math.cos(Math.toRadians(angle + offsetAngle))),

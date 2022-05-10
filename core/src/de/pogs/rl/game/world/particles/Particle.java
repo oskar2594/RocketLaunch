@@ -37,7 +37,7 @@ public class Particle {
             this.textureCorrectionAngle = 0;
         } else {
             sprite.setSize(size, texture.getHeight() / texture.getWidth() * size);
-            this.textureCorrectionAngle = 0;
+            this.textureCorrectionAngle = 90;
         }
         this.timeSize = timeSize;
         this.offsetAngle = offsetAngle;

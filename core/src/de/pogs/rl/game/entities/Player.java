@@ -59,7 +59,7 @@ public class Player extends AbstractEntity {
     
     private Sound shootSound;
     private long shootId;
-    private float shootVolume = 0.3f;
+    private float shootVolume = 0.1f;
 
     float bulletDamage = 10;
 
@@ -123,9 +123,9 @@ public class Player extends AbstractEntity {
         updateAngle(delta);
         updatePosition(delta);
         updateVelocity(delta);
-        updateParticles();
         updateSounds(delta);
-
+        updateParticles();
+        
         dust.updateVelocity(velocity);
         sparks.updateVelocity(velocity);
         hot.updateVelocity(velocity);
@@ -159,8 +159,8 @@ public class Player extends AbstractEntity {
         if (Gdx.input.isButtonPressed(Buttons.LEFT) || Gdx.input.isKeyPressed(Keys.SPACE)) {
             if ((TimeUtils.millis() - lastBulletTime) >= shotCooldown) {
                 Bullet bullet = new Bullet(position, this, bulletDamage,
-                        velocity.add(SpecialMath.angleToVector(angle).mul(bulletSpeed)));
-                shootId = shootSound.play(shootVolume);
+                        velocity.add(SpecialMath.angleToVector(angle).mul(bulletSpeed)), new Color(0xffffff));
+                shootId = shootSound.play(0f);
                 shootSound.setVolume(shootId, shootVolume);
                 GameScreen.INSTANCE.entityManager.addEntity(bullet);
                 lastBulletTime = TimeUtils.millis();
@@ -196,7 +196,7 @@ public class Player extends AbstractEntity {
     }
 
     private void updateVelocity(float delta) {
-        if (Gdx.input.isButtonPressed(Buttons.RIGHT)) {
+        if (Gdx.input.isButtonPressed(Buttons.RIGHT) || Gdx.input.isKeyPressed(Keys.M)) {
             isAccelerating = true;
             velocity =
                     velocity.add(SpecialMath.angleToVector(this.angle).mul(delta * acceleration));
@@ -211,7 +211,7 @@ public class Player extends AbstractEntity {
     }
 
     private void updateParticles() {
-        if (Gdx.input.isButtonPressed(Buttons.RIGHT)) {
+        if (isAccelerating) {
             dust.isActive = true;
             sparks.isActive = true;
             hot.isActive = true;

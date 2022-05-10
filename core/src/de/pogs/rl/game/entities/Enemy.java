@@ -84,7 +84,7 @@ public class Enemy extends AbstractEntity {
     }
 
     private void shoot() {
-        Bullet bullet = new Bullet(position, this, bulletDamage, GameScreen.INSTANCE.player.getPosition().sub(position).nor().mul(bulletSpeed));
+        Bullet bullet = new Bullet(position, this, bulletDamage, GameScreen.INSTANCE.player.getPosition().sub(position).nor().mul(bulletSpeed), new Color(0xd46178));
         GameScreen.INSTANCE.entityManager.addEntity(bullet);
     }
 
