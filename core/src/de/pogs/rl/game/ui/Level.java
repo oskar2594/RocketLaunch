@@ -44,14 +44,12 @@ public class Level extends HUDComponent {
                 (int) Math.ceil(this.width * 0.1));
     }
 
-    private int i = 0;
     private int oldLength = 0;
 
     @Override
     public void update(float delta) {
         position.set(HUDUtils.getBottomLeft().x + width / 2, HUDUtils.getBottomLeft().y + height / 2);
-        i++;
-        levelString = "" + i;
+        levelString = RocketLauncher.INSTANCE.config.getValue("exp");
         if (oldLength != levelString.length()) {
             stringLength = levelString.length();
             updateFonts();

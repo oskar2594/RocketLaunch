@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.pogs.rl.utils.AssetHelper;
+import de.pogs.rl.utils.ConfigLoader;
 
 
 public class RocketLauncher extends Game {
@@ -11,6 +12,7 @@ public class RocketLauncher extends Game {
 	public static RocketLauncher INSTANCE;
 	
 	public AssetHelper assetHelper;
+	public ConfigLoader config;
 
 	public RocketLauncher() {
 		super();
@@ -20,6 +22,7 @@ public class RocketLauncher extends Game {
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
+		config = new ConfigLoader();
 		assetHelper = new AssetHelper();
 		assetHelper.loadAll();
 		assetHelper.assetManager.finishLoading();
