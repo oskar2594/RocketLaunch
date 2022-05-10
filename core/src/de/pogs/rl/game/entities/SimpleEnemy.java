@@ -17,7 +17,7 @@ import de.pogs.rl.game.world.particles.ParticleUtils;
 import de.pogs.rl.utils.SpecialMath;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
-public class Enemy extends AbstractEntity {
+public class SimpleEnemy extends AbstractEntity {
     private Random random = new Random();
     private float sightRange = (float) Math.pow(500, 2);
     private float haloRange = (float) Math.pow(200, 2);
@@ -48,14 +48,14 @@ public class Enemy extends AbstractEntity {
     private float bulletDamage = 1;
     private float bulletSpeed = 500;
 
-    public Enemy(Vector2 position) {
+    public SimpleEnemy(Vector2 position) {
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
         this.position = position;
     }
 
-    public Enemy(float posX, float posY) {
+    public SimpleEnemy(float posX, float posY) {
         this(new Vector2(posX, posY));
     }
 
@@ -71,7 +71,7 @@ public class Enemy extends AbstractEntity {
         updateVelocity(delta);
 
         for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this)) {
-            if (!(entity instanceof Enemy || entity instanceof Bullet)) {
+            if (!(entity instanceof SimpleEnemy || entity instanceof Bullet)) {
                 entity.addDamage(5 * delta);
             }
         }
@@ -87,7 +87,7 @@ public class Enemy extends AbstractEntity {
         float flightTime = GameScreen.INSTANCE.player.getPosition().dst(position) / bulletSpeed;
         Vector2 playerPosPredicted = GameScreen.INSTANCE.player.getPosition().add(GameScreen.INSTANCE.player.getVelocity().mul(flightTime));
         Vector2 bulletVelocity = playerPosPredicted.sub(position).nor().mul(bulletSpeed);
-        Bullet bullet = new Bullet(position, this, bulletDamage, bulletVelocity, new Color(0xd46178));
+        Bullet bullet = new Bullet(position, this, bulletDamage, bulletVelocity, new Color(0xd46178), 20000);
         GameScreen.INSTANCE.entityManager.addEntity(bullet);
     }
 
@@ -117,7 +117,7 @@ public class Enemy extends AbstractEntity {
 
         for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this,
                 repulsionRadius)) {
-            if (entity instanceof Enemy) {
+            if (entity instanceof SimpleEnemy) {
                 velocity = velocity.add(repulsion(delta, entity));
             }
         }
