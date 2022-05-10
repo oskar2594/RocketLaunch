@@ -173,7 +173,7 @@ public class Player extends AbstractEntity {
         if (Gdx.input.isButtonPressed(Buttons.LEFT) || Gdx.input.isKeyPressed(Keys.SPACE)) {
             if ((TimeUtils.millis() - lastBulletTime) >= shotCooldown) {
                 Bullet bullet = new Bullet(position, this, bulletDamage,
-                        velocity.add(SpecialMath.angleToVector(angle).mul(bulletSpeed)), new Color(0xffffff));
+                        velocity.add(SpecialMath.angleToVector(angle).mul(bulletSpeed)), new Color(0xffffff), 20000);
                 shootId = shootSound.play(0f);
                 shootSound.setVolume(shootId, shootVolume);
                 GameScreen.INSTANCE.entityManager.addEntity(bullet);

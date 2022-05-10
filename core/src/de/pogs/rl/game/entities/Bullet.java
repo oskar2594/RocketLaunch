@@ -4,7 +4,7 @@ import java.awt.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
+import com.badlogic.gdx.utils.TimeUtils;
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.game.world.particles.ParticleEmitter;
@@ -23,7 +23,7 @@ public class Bullet extends AbstractEntity {
     private float speed;
     private float angle;
 
-
+    private float deathTime;
     private AbstractEntity sender;
 
     private float damage;
@@ -31,7 +31,7 @@ public class Bullet extends AbstractEntity {
     private Vector2 velocity;
 
     public Bullet(Vector2 position, AbstractEntity sender, float damage, Vector2 velocity,
-            Color color) {
+            Color color, float lifeTime) {
         texture = ParticleUtils.generateParticleTexture(color, (int) width, (int) width * 3);
         sprite = new Sprite(texture);
         this.angle = 180 - SpecialMath.VectorToAngle(velocity);
@@ -42,6 +42,7 @@ public class Bullet extends AbstractEntity {
         sprite.setRotation(this.angle + 90);
         this.sender = sender;
         this.damage = damage;
+        this.deathTime = TimeUtils.millis() + lifeTime;
         sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
                 position.getY() - sprite.getHeight() / 2);
 
