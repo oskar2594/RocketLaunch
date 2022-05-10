@@ -41,6 +41,10 @@ public class Player extends AbstractEntity {
     private float maxArmor = 100;
     private float maxHealth = 100;
 
+    private double healingTime = 2000;
+    private double lastTimeDamaged = 0;
+    private float regeneration = 0.5f;
+
     private float acceleration = 200;
 
     private float tractionCoeff = 0.5f;
@@ -70,6 +74,7 @@ public class Player extends AbstractEntity {
     private ParticleEmitter hot;
     private ParticleEmitter flame;
     private ParticleEmitter overheat;
+
 
 
     public Player() {
@@ -123,6 +128,7 @@ public class Player extends AbstractEntity {
         updateAngle(delta);
         updatePosition(delta);
         updateVelocity(delta);
+        regenArmor(delta);
         updateSounds(delta);
         updateParticles();
         
@@ -136,6 +142,12 @@ public class Player extends AbstractEntity {
                 position.getY() - sprite.getHeight() / 2);
         sprite.setRotation(angle);
         shoot();
+    }
+
+    private void regenArmor(float delta) {
+        if (((TimeUtils.millis() - lastTimeDamaged) > healingTime) && (armor < maxArmor)) {
+            armor += delta * regeneration;
+        }
     }
 
     private void updateSounds(float delta) {
@@ -256,6 +268,7 @@ public class Player extends AbstractEntity {
         if (health < 0) {
             health = 0;
         }
+        lastTimeDamaged = TimeUtils.millis();
     }
 
     public float getSpeed() {
