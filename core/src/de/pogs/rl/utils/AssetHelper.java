@@ -20,18 +20,15 @@ public class AssetHelper {
 
     private HashMap<String, AssetDescriptor> images = new HashMap<String, AssetDescriptor>();
     private HashMap<String, AssetDescriptor> sounds = new HashMap<String, AssetDescriptor>();
-    private HashMap<String, FreeTypeFontGenerator> fonts = new HashMap<String, FreeTypeFontGenerator>();
+    private HashMap<String, FreeTypeFontGenerator> fonts =
+            new HashMap<String, FreeTypeFontGenerator>();
     // private String[] dirs = { "images", "sounds", "fonts", "particles" };
 
     private FileHandle baseDir;
 
     public AssetHelper() {
         assetManager = new AssetManager();
-        // Gdx.files.internal("dd/");
-        // baseDir = Gdx.files.getFileHandle("", FileType.Internal);
         baseDir = Gdx.files.getFileHandle("assets/", FileType.Local);
-        System.out.println("dddd");
-        System.out.println(baseDir.file().getAbsolutePath());
     }
 
     public void loadAll() {
@@ -67,7 +64,8 @@ public class AssetHelper {
 
     public BitmapFont getFont(String name, int size) {
         try {
-            FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+            FreeTypeFontGenerator.FreeTypeFontParameter parameter =
+                    new FreeTypeFontGenerator.FreeTypeFontParameter();
             parameter.size = size;
             BitmapFont font = fonts.get(name).generateFont(parameter);
             return font;
