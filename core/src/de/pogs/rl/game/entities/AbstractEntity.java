@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.pogs.rl.utils.SpecialMath.Vector2;;
 
 /**
- * Eine Entität mit dem der Spieler interagiert.
+ * Eine Entität die in der Spielwelt interagiert.
  */
 public abstract class AbstractEntity {
     /**
