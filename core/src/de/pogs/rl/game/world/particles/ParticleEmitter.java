@@ -6,8 +6,7 @@ import java.util.LinkedList;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import de.pogs.rl.game.entities.AbstractEntity;
+import de.pogs.rl.game.world.entities.AbstractEntity;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class ParticleEmitter {

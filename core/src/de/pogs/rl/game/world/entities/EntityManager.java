@@ -1,4 +1,4 @@
-package de.pogs.rl.game.entities;
+package de.pogs.rl.game.world.entities;
 
 import java.util.Collection;
 import java.util.LinkedList;

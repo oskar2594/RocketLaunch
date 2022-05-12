@@ -1,4 +1,4 @@
-package de.pogs.rl.game.entities;
+package de.pogs.rl.game.world.entities;
 
 import java.awt.Color;
 import com.badlogic.gdx.graphics.Texture;

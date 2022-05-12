@@ -2,8 +2,7 @@ package de.pogs.rl.game.world;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
-import de.pogs.rl.game.entities.AbstractEntity;
+import de.pogs.rl.game.world.entities.AbstractEntity;
 
 /**
  * Abstrakte Klasse für Spawner

@@ -1,4 +1,4 @@
-package de.pogs.rl.game.entities;
+package de.pogs.rl.game.world.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.pogs.rl.utils.SpecialMath.Vector2;;
