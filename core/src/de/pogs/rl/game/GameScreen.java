@@ -11,13 +11,13 @@ import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.background.BackgroundLayer;
 import de.pogs.rl.game.ui.HUD;
 import de.pogs.rl.game.ui.HUDCamera;
-import de.pogs.rl.game.world.SpawnManager;
 import de.pogs.rl.game.world.entities.EntityManager;
 import de.pogs.rl.game.world.entities.Player;
 import de.pogs.rl.game.world.entities.SimpleEnemy;
+import de.pogs.rl.game.world.generation.SpawnManager;
+import de.pogs.rl.game.world.generation.spawners.SimpleSpawner;
 import de.pogs.rl.game.world.particles.ParticleManager;
 import de.pogs.rl.game.world.particles.ParticleEmitter;
-import de.pogs.rl.game.world.spawners.SimpleSpawner;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class GameScreen extends ScreenAdapter {
