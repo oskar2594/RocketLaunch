@@ -1,11 +1,11 @@
-package de.pogs.rl.game.world.spawners;
+package de.pogs.rl.game.world.generation.spawners;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
-import de.pogs.rl.game.world.AbstractSpawner;
 import de.pogs.rl.game.world.entities.AbstractEntity;
 import de.pogs.rl.game.world.entities.SimpleEnemy;
+import de.pogs.rl.game.world.generation.AbstractSpawner;
 
 /**
  * Erzeugt SimpleEntities

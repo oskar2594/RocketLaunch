@@ -1,4 +1,4 @@
-package de.pogs.rl.game.world;
+package de.pogs.rl.game.world.generation;
 
 import java.util.ArrayList;
 import java.util.Collection;
