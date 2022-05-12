@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Player extends AbstractEntity {
+    private static Player instance = new Player();
     private Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("rakete");
     private Sprite sprite;
 
@@ -78,9 +79,11 @@ public class Player extends AbstractEntity {
 
     public long experiencePoints = 0;
 
+    public static Player get() {
+        return instance;
+    }
 
-
-    public Player() {
+    private Player() {
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);

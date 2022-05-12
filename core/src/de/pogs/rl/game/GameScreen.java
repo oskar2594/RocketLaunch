@@ -45,7 +45,7 @@ public class GameScreen extends ScreenAdapter {
         particleManager = new ParticleManager();
         camera = new RocketCamera();
         hudCamera = new HUDCamera();
-        player = new Player();
+        player = Player.get();
         background = new BackgroundLayer();
         hud = new HUD();
         entityManager.addEntity(player);
