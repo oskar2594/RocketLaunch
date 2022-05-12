@@ -1,7 +1,7 @@
 package de.pogs.rl.game.world.entities;
 
 import java.util.Random;
-
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -70,7 +70,7 @@ public class SimpleEnemy extends AbstractEntity {
                 position.getY() - sprite.getHeight() / 2);
         updateVelocity(delta);
 
-        for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this)) {
+        for (AbstractEntity entity : EntityManager.get().getCollidingEntities(this)) {
             if (!(entity instanceof SimpleEnemy || entity instanceof Bullet)) {
                 entity.addDamage(5 * delta);
             }
@@ -78,19 +78,19 @@ public class SimpleEnemy extends AbstractEntity {
 
 
         updatePos(delta);
-        if (GameScreen.INSTANCE.player.getPosition().dst2(position) < sightRange
+        if (Player.get().getPosition().dst2(position) < sightRange
                 && random.nextFloat() < delta * shootingCoeff) {
             shoot();
         }
     }
 
     private void shoot() {
-        float flightTime = GameScreen.INSTANCE.player.getPosition().dst(position) / bulletSpeed;
-        Vector2 playerPosPredicted = GameScreen.INSTANCE.player.getPosition()
-                .add(GameScreen.INSTANCE.player.getVelocity().mul(flightTime));
+        float flightTime = Player.get().getPosition().dst(position) / bulletSpeed;
+        Vector2 playerPosPredicted = Player.get().getPosition()
+                .add(Player.get().getVelocity().mul(flightTime));
         Vector2 bulletVelocity = playerPosPredicted.sub(position).nor().mul(bulletSpeed);
         Bullet bullet = new Bullet(position, this, bulletDamage, bulletVelocity, new Color(0xd46178), 20000);
-        GameScreen.INSTANCE.entityManager.addEntity(bullet);
+        EntityManager.get().addEntity(bullet);
     }
 
     private Vector2 repulsion(float delta, AbstractEntity entity) {
@@ -107,7 +107,7 @@ public class SimpleEnemy extends AbstractEntity {
 
 
     private void updateVelocity(float delta) {
-        Vector2 playerPos = GameScreen.INSTANCE.player.getPosition();
+        Vector2 playerPos = Player.get().getPosition();
         if ((position.dst2(playerPos) > haloRange) && (position.dst2(playerPos) < sightRange)) {
             moveDirection = playerPos.sub(position).nor();
             velocity = velocity.add(moveDirection.mul(playerAttraction * delta));
@@ -116,7 +116,7 @@ public class SimpleEnemy extends AbstractEntity {
             velocity = velocity.add(moveDirection.mul(playerRepulsion * delta));
         }
 
-        for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this,
+        for (AbstractEntity entity : EntityManager.get().getCollidingEntities(this,
                 repulsionRadius)) {
             if (entity instanceof SimpleEnemy) {
                 velocity = velocity.add(repulsion(delta, entity));

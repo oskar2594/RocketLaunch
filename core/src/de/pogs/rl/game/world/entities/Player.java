@@ -181,7 +181,7 @@ public class Player extends AbstractEntity {
                         new Color(0xffffff), 20000);
                 shootId = shootSound.play(0f);
                 shootSound.setVolume(shootId, shootVolume);
-                GameScreen.INSTANCE.entityManager.addEntity(bullet);
+                EntityManager.get().addEntity(bullet);
                 lastBulletTime = TimeUtils.millis();
 
             }
