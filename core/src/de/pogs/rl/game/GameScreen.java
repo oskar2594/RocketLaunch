@@ -41,7 +41,7 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen() {
         INSTANCE = this;
         batch = RocketLauncher.INSTANCE.batch;
-        entityManager = new EntityManager();
+        entityManager = EntityManager.get();
         particleManager = new ParticleManager();
         camera = new RocketCamera();
         hudCamera = new HUDCamera();

@@ -12,10 +12,14 @@ import de.pogs.rl.utils.SpecialMath.Vector2;
  * Verwaltet Entitäten.
  */
 public class EntityManager {
+    private static EntityManager instance = new EntityManager();
     private LinkedList<AbstractEntity> entities = new LinkedList<AbstractEntity>();
     private LinkedList<AbstractEntity> entityQueue = new LinkedList<AbstractEntity>();
 
-    public EntityManager() {}
+    private EntityManager() {}
+    public static EntityManager get() {
+        return instance;
+    }
 
     /**
      * Fügt neue Entität der Warteschlange hinzu.
