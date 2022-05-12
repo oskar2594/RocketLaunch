@@ -23,7 +23,7 @@ public class Bullet extends AbstractEntity {
     private float speed;
     private float angle;
 
-    private double deathTime;
+    private long deathTime;
     private AbstractEntity sender;
 
     private float damage;
@@ -41,7 +41,7 @@ public class Bullet extends AbstractEntity {
      * @return Das erzeugte Bullet.
      */
     public static Bullet createBullet(Vector2 position, AbstractEntity sender, float damage,
-            Vector2 velocity, Color color, float lifeTime) {
+            Vector2 velocity, Color color, long lifeTime) {
                 Bullet bullet = new Bullet(position, sender, damage, velocity, color, lifeTime);
                 bullet.update(0);
                 EntityManager.get().addEntity(bullet);
@@ -49,7 +49,7 @@ public class Bullet extends AbstractEntity {
     }
 
     public Bullet(Vector2 position, AbstractEntity sender, float damage, Vector2 velocity,
-            Color color, float lifeTime) {
+            Color color, long lifeTime) {
         texture = ParticleUtils.generateParticleTexture(color, (int) width, (int) width * 3);
         sprite = new Sprite(texture);
         this.angle = 180 - SpecialMath.VectorToAngle(velocity);
@@ -88,6 +88,9 @@ public class Bullet extends AbstractEntity {
                 this.alive = false;
                 break;
             }
+        }
+        if (TimeUtils.millis() > deathTime) {
+            this.alive = false;
         }
     }
 
