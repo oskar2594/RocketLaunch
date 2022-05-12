@@ -11,8 +11,7 @@ public class EntityManager {
     private LinkedList<AbstractEntity> entities = new LinkedList<AbstractEntity>();
     private LinkedList<AbstractEntity> entityQueue = new LinkedList<AbstractEntity>();
 
-    public EntityManager() {
-    }
+    public EntityManager() {}
 
     public void addEntity(AbstractEntity newEntity) {
         entityQueue.add(newEntity);
@@ -25,10 +24,13 @@ public class EntityManager {
     public LinkedList<AbstractEntity> getCollidingEntities(AbstractEntity entity) {
         return getCollidingEntities(entity, entity.getRadius());
     }
+
     public LinkedList<AbstractEntity> getCollidingEntities(AbstractEntity entity, float radius) {
         LinkedList<AbstractEntity> result = new LinkedList<AbstractEntity>();
         for (AbstractEntity entityChecked : entities) {
-            if (entityChecked.getPosition().dst(entity.getPosition()) <= (radius + entityChecked.getRadius()) && !entityChecked.equals(entity)) {
+            if (entityChecked.getPosition()
+                    .dst(entity.getPosition()) <= (radius + entityChecked.getRadius())
+                    && !entityChecked.equals(entity)) {
                 result.add(entityChecked);
             }
         }
@@ -43,6 +45,9 @@ public class EntityManager {
         if (entityQueue.size() != 0) {
             flush();
         }
+        entities.stream()
+                .filter(entity -> !entity.getAlive())
+                .forEach(entity -> entity.dispose());
         entities.removeIf((entity) -> !entity.getAlive());
     }
 
