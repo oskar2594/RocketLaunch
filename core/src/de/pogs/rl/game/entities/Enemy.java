@@ -78,16 +78,19 @@ public class Enemy extends AbstractEntity {
 
 
         updatePos(delta);
-        if (GameScreen.INSTANCE.player.getPosition().dst2(position) < sightRange && random.nextFloat() < delta * shootingCoeff) {
+        if (GameScreen.INSTANCE.player.getPosition().dst2(position) < sightRange
+                && random.nextFloat() < delta * shootingCoeff) {
             shoot();
         }
     }
 
     private void shoot() {
         float flightTime = GameScreen.INSTANCE.player.getPosition().dst(position) / bulletSpeed;
-        Vector2 playerPosPredicted = GameScreen.INSTANCE.player.getPosition().add(GameScreen.INSTANCE.player.getVelocity().mul(flightTime));
+        Vector2 playerPosPredicted = GameScreen.INSTANCE.player.getPosition()
+                .add(GameScreen.INSTANCE.player.getVelocity().mul(flightTime));
         Vector2 bulletVelocity = playerPosPredicted.sub(position).nor().mul(bulletSpeed);
-        Bullet bullet = new Bullet(position, this, bulletDamage, bulletVelocity, new Color(0xd46178));
+        Bullet bullet =
+                new Bullet(position, this, bulletDamage, bulletVelocity, new Color(0xd46178));
         GameScreen.INSTANCE.entityManager.addEntity(bullet);
     }
 
@@ -97,8 +100,7 @@ public class Enemy extends AbstractEntity {
     }
 
     private void splashEffectSelf() {
-        System.out.println("dd");
-        ParticleEmitter pe = GameScreen.INSTANCE.particleManager.createEmitter(
+        GameScreen.INSTANCE.particleManager.createEmitter(
                 new ParticleEmitter((int) position.getX(), (int) position.getY(), 50, 5,
                         ParticleUtils.generateParticleTexture(ParticleUtils.averageColor(texture)),
                         -180, 180, 10, 150, 1, 5, 1f, 1f, .5f, .1f, true));

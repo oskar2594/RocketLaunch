@@ -22,6 +22,10 @@ public class Level extends HUDComponent {
     private String levelString = "test";
     private int stringLength = 2;
 
+    private int level = 0;
+    private int exp = 0;
+    private int needExp = 0;
+
     Level() {
         super();
     }
@@ -45,17 +49,32 @@ public class Level extends HUDComponent {
     }
 
     private int oldLength = 0;
-
     @Override
     public void update(float delta) {
-        position.set(HUDUtils.getBottomLeft().x + width / 2, HUDUtils.getBottomLeft().y + height / 2);
-        levelString = RocketLauncher.INSTANCE.config.getValue("exp");
+        this.exp++;
+        this.level = getLevel(exp);
+        this.needExp = getNeededExp(level);
+        position.set(HUDUtils.getBottomLeft().x + width / 2,
+                HUDUtils.getBottomLeft().y + height / 2);
+        levelString = Integer.toString(level);
         if (oldLength != levelString.length()) {
             stringLength = levelString.length();
             updateFonts();
         }
         oldLength = levelString.length();
 
+    }
+
+    public int getLevel(int exp) {
+        return (int) Math.floor(2 * Math.sqrt(exp));
+    }
+
+    public int getNeededExp(int level) {
+        return ((level - 1) * 100) + 100;
+    }
+
+    public int getCurrentLevelExp(int level, int exp) {
+        return (exp - (level * 100)) % level;
     }
 
     @Override
@@ -70,28 +89,19 @@ public class Level extends HUDComponent {
                 Align.center, false);
     }
 
-    private float d = 0;
-    private float c = 1;
-
     @Override
     public void shapeRender(ShapeRenderer shapeRenderer) {
-        d += c;
-        if (d == 360)
-            c = -1;
-        if (d == 0)
-            c = 1;
         shapeRenderer.setColor(new Color(0x2626261d));
         partialCircle(shapeRenderer, position.x, position.y, radius, 0, 360, 2, 3);
         shapeRenderer.setColor(Color.WHITE);
-        partialCircle(shapeRenderer, position.x, position.y, radius, 0, d, 2, 5);
+        partialCircle(shapeRenderer, position.x, position.y, radius, 0, (getCurrentLevelExp(level, exp) / getNeededExp(level)) * 360, 2, 5);
     }
 
-    private void partialCircle(ShapeRenderer shapeRenderer, float x, float y, float radius, float start, float degrees,
-            float space, float width) {
+    private void partialCircle(ShapeRenderer shapeRenderer, float x, float y, float radius,
+            float start, float degrees, float space, float width) {
         for (float i = start; i < degrees; i += space) {
             shapeRenderer.circle(x + Math.round(Math.cos(Math.toRadians(i)) * radius),
-                    y + Math.round(Math.sin(Math.toRadians(i)) * radius),
-                    width);
+                    y + Math.round(Math.sin(Math.toRadians(i)) * radius), width);
         }
     }
 

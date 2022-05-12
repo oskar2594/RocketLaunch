@@ -75,7 +75,7 @@ public class Player extends AbstractEntity {
     private ParticleEmitter flame;
     private ParticleEmitter overheat;
 
-    long experiencePoints = 0;
+    public long experiencePoints = 0;
 
 
 
