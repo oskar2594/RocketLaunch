@@ -7,6 +7,7 @@ import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.game.world.particles.ParticleEmitter;
 import de.pogs.rl.game.world.particles.ParticleUtils;
+import de.pogs.rl.utils.InteractionUtils;
 import de.pogs.rl.utils.SpecialMath;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
@@ -60,7 +61,7 @@ public class Player extends AbstractEntity {
     private Sound startSound;
     private long startId;
     private float startVolume = 0.5f;
-    
+
     private Sound shootSound;
     private long shootId;
     private float shootVolume = 0.1f;
@@ -133,7 +134,7 @@ public class Player extends AbstractEntity {
         regenArmor(delta);
         updateSounds(delta);
         updateParticles();
-        
+
         dust.updateVelocity(velocity);
         sparks.updateVelocity(velocity);
         hot.updateVelocity(velocity);
@@ -173,7 +174,8 @@ public class Player extends AbstractEntity {
         if (Gdx.input.isButtonPressed(Buttons.LEFT) || Gdx.input.isKeyPressed(Keys.SPACE)) {
             if ((TimeUtils.millis() - lastBulletTime) >= shotCooldown) {
                 Bullet bullet = new Bullet(position, this, bulletDamage,
-                        velocity.add(SpecialMath.angleToVector(angle).mul(bulletSpeed)), new Color(0xffffff), 20000);
+                        velocity.add(SpecialMath.angleToVector(angle).mul(bulletSpeed)),
+                        new Color(0xffffff), 20000);
                 shootId = shootSound.play(0f);
                 shootSound.setVolume(shootId, shootVolume);
                 GameScreen.INSTANCE.entityManager.addEntity(bullet);
@@ -184,16 +186,9 @@ public class Player extends AbstractEntity {
     }
 
     private void updateAimedAngle() {
-        aimedAngle = SpecialMath.VectorToAngle(new Vector2(mouseXfromPlayer(), mouseYfromPlayer()));
+        aimedAngle = SpecialMath.VectorToAngle(new Vector2(InteractionUtils.mouseXfromPlayer(),
+                InteractionUtils.mouseYfromPlayer()));
 
-    }
-    //TODO auslagern zu utils
-    private float mouseXfromPlayer() {
-        return Gdx.input.getX() - (float) (Gdx.graphics.getWidth() / 2);
-    }
-
-    private float mouseYfromPlayer() {
-        return (float) (Gdx.input.getY() - (float) (Gdx.graphics.getHeight() / 2));
     }
 
     private void updateAngle(float delta) {
