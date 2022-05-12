@@ -24,10 +24,12 @@ public class Particle {
     private float angle;
     private float offsetAngle = 0;
     private float textureCorrectionAngle = 0;
+    private Texture texture;
 
-    public Particle(Texture texture, Vector2 source, Vector2 velocity, float offsetAngle, float minAngle,
-            float maxAngle, float minSpeed, float maxSpeed, float minSize, float maxSize, float alpha,
-            float duration, float timeAlpha, float timeSize) {
+    public Particle(Texture texture, Vector2 source, Vector2 velocity, float offsetAngle,
+            float minAngle, float maxAngle, float minSpeed, float maxSpeed, float minSize,
+            float maxSize, float alpha, float duration, float timeAlpha, float timeSize) {
+        this.texture = texture;
         sprite = new Sprite(texture);
         sprite.setPosition(source.getX(), source.getY());
         sprite.setAlpha(0);
@@ -67,7 +69,8 @@ public class Particle {
         }
         if (time > timeAlpha) {
             float alp = alpha - alpha * (time - timeAlpha / duration - timeAlpha);
-            if(alp > 1) alp = 0;
+            if (alp > 1)
+                alp = 0;
             sprite.setAlpha(alp);
         } else {
             sprite.setAlpha(alpha);
@@ -76,16 +79,18 @@ public class Particle {
             sprite.setScale(time / timeSize);
         }
         // float currentSize = (time / duration) * (size - startSize + 1) + startSize;
-        sprite.setPosition(position.getX() - (sprite.getWidth() / 2), position.getY() - sprite.getHeight() / 2);
+        sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
+                position.getY() - sprite.getHeight() / 2);
         // System.out.println(time);
     }
 
     private Vector2 angleToVector(float angle) {
-        return new Vector2((float) Math.cos(Math.toRadians(angle)), (float) Math.sin(Math.toRadians(angle)));
+        return new Vector2((float) Math.cos(Math.toRadians(angle)),
+                (float) Math.sin(Math.toRadians(angle)));
     }
 
     public void dispose() {
-
+        texture.dispose();
     }
 
     public float getAngle(float min, float max) {
