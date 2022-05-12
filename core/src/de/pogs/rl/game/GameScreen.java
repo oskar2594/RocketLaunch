@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.background.BackgroundLayer;
-import de.pogs.rl.game.entities.Enemy;
+import de.pogs.rl.game.entities.SimpleEnemy;
 import de.pogs.rl.game.entities.EntityManager;
 import de.pogs.rl.game.entities.Player;
 import de.pogs.rl.game.ui.HUD;
