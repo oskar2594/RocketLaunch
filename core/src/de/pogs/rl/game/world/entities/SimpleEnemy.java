@@ -89,8 +89,7 @@ public class SimpleEnemy extends AbstractEntity {
         Vector2 playerPosPredicted = Player.get().getPosition()
                 .add(Player.get().getVelocity().mul(flightTime));
         Vector2 bulletVelocity = playerPosPredicted.sub(position).nor().mul(bulletSpeed);
-        Bullet bullet = new Bullet(position, this, bulletDamage, bulletVelocity, new Color(0xd46178), 20000);
-        EntityManager.get().addEntity(bullet);
+        Bullet.createBullet(position, this, bulletDamage, bulletVelocity, new Color(0xd46178), 20000);
     }
 
     private Vector2 repulsion(float delta, AbstractEntity entity) {
