@@ -42,6 +42,7 @@ public class Bullet extends AbstractEntity {
         sprite.setRotation(this.angle + 90);
         this.sender = sender;
         this.damage = damage;
+        this.radius = 1;
         this.deathTime = TimeUtils.millis() + lifeTime;
         sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
                 position.getY() - sprite.getHeight() / 2);
@@ -83,5 +84,10 @@ public class Bullet extends AbstractEntity {
 
     public Vector2 getVelocity() {
         return velocity;
+    }
+    
+    @Override
+    public void dispose() {
+        texture.dispose();
     }
 }

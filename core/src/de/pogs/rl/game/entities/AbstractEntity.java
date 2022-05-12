@@ -27,4 +27,8 @@ public abstract class AbstractEntity {
     public boolean getAlive(){
         return alive;
     }
+
+    public void dispose() {
+        
+    }
 }
