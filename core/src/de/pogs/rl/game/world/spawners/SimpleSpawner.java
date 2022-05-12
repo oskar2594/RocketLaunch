@@ -8,6 +8,9 @@ import de.pogs.rl.game.entities.AbstractEntity;
 import de.pogs.rl.game.entities.SimpleEnemy;
 import de.pogs.rl.game.world.AbstractSpawner;
 
+/**
+ * Erzeugt SimpleEntities
+ */
 public class SimpleSpawner extends AbstractSpawner {
     Random random = new Random();
 
