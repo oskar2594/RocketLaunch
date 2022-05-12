@@ -12,13 +12,15 @@ import de.pogs.rl.utils.SpecialMath.Vector2;
  * Verwaltet die Generation neuer Entities
  */
 public class SpawnManager {
-    private EntityManager entityManager;
+    private static SpawnManager instance = new SpawnManager();
     private HashSet<ArrayList<Integer>> generatedChunks = new HashSet<ArrayList<Integer>>();
     private int chunkSize = 50;
     private LinkedList<AbstractSpawner> spawners = new LinkedList<AbstractSpawner>();
 
-    public SpawnManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public static SpawnManager get() {
+        return instance;
+    }
+    private SpawnManager() {
     }
 
     /**
@@ -53,7 +55,7 @@ public class SpawnManager {
      */
     private void spawn(ArrayList<Integer> chunk) {
         for (AbstractSpawner spawner : spawners) {
-            entityManager.addEntities(spawner.spawn(chunk));
+            EntityManager.get().addEntities(spawner.spawn(chunk));
         }
     }
 
