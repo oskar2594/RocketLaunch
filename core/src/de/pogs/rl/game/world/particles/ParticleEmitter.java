@@ -48,10 +48,12 @@ public class ParticleEmitter {
         LinkedList<Particle> remParticles = new LinkedList<Particle>();
         if (willDie && this.particles.size() == 0) {
             isDead = true;
+            this.dispose();
             return;
         }
         if(isAttached && !attachedEntity.getAlive()) {
             isDead = true;
+            this.dispose();
             return;
         }
         if (isAttached) {
@@ -89,7 +91,6 @@ public class ParticleEmitter {
         }
         for (Particle particle : particles) {
             if (particle.isDead) {
-                particle.dispose();
                 remParticles.add(particle);
             } else {
                 particle.update(delta);
@@ -97,6 +98,10 @@ public class ParticleEmitter {
         }
         particles.addAll(addParticles);
         particles.removeAll(remParticles);
+    }
+
+    private void dispose() {
+        this.texture.dispose();
     }
 
     public void render(SpriteBatch batch) {

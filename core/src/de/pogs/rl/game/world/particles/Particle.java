@@ -24,12 +24,10 @@ public class Particle {
     private float angle;
     private float offsetAngle = 0;
     private float textureCorrectionAngle = 0;
-    private Texture texture;
 
     public Particle(Texture texture, Vector2 source, Vector2 velocity, float offsetAngle,
             float minAngle, float maxAngle, float minSpeed, float maxSpeed, float minSize,
             float maxSize, float alpha, float duration, float timeAlpha, float timeSize) {
-        this.texture = texture;
         sprite = new Sprite(texture);
         sprite.setPosition(source.getX(), source.getY());
         sprite.setAlpha(0);
@@ -90,7 +88,6 @@ public class Particle {
     }
 
     public void dispose() {
-        texture.dispose();
     }
 
     public float getAngle(float min, float max) {
