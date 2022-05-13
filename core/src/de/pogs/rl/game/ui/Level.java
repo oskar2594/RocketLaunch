@@ -1,16 +1,12 @@
 package de.pogs.rl.game.ui;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.Align;
 
 import de.pogs.rl.RocketLauncher;
-import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.game.PlayerStats;
 
 public class Level extends HUDComponent {

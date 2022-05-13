@@ -1,6 +1,5 @@
 package de.pogs.rl.game.world.particles;
 
-import java.lang.reflect.Executable;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -128,9 +127,4 @@ public class ParticleEmitter {
     public void updateVelocity(Vector2 vel) {
         this.velocity = vel;
     }
-
-    private Vector2 angleToVector(float angle) {
-        return new Vector2((float) Math.cos(Math.toRadians(angle)), (float) Math.sin(Math.toRadians(angle)));
-    }
-
 }

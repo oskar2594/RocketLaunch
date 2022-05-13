@@ -1,7 +1,5 @@
 package de.pogs.rl.game.ui;
 
-import javax.swing.text.Position;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

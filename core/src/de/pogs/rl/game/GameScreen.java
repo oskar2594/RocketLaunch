@@ -3,8 +3,6 @@ package de.pogs.rl.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.pogs.rl.RocketLauncher;
@@ -13,12 +11,9 @@ import de.pogs.rl.game.ui.HUD;
 import de.pogs.rl.game.ui.HUDCamera;
 import de.pogs.rl.game.world.entities.EntityManager;
 import de.pogs.rl.game.world.entities.Player;
-import de.pogs.rl.game.world.entities.SimpleEnemy;
 import de.pogs.rl.game.world.generation.SpawnManager;
 import de.pogs.rl.game.world.generation.spawners.SimpleSpawner;
 import de.pogs.rl.game.world.particles.ParticleManager;
-import de.pogs.rl.game.world.particles.ParticleEmitter;
-import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class GameScreen extends ScreenAdapter {
     public static GameScreen INSTANCE;

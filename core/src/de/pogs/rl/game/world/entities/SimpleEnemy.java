@@ -1,11 +1,7 @@
 package de.pogs.rl.game.world.entities;
 
 import java.util.Random;
-import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -14,7 +10,6 @@ import java.awt.Color;
 import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.game.world.particles.ParticleEmitter;
 import de.pogs.rl.game.world.particles.ParticleUtils;
-import de.pogs.rl.utils.SpecialMath;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class SimpleEnemy extends AbstractEntity {

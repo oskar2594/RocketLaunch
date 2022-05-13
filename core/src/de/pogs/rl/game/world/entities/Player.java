@@ -13,7 +13,6 @@ import de.pogs.rl.utils.SpecialMath;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 import java.awt.Color;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
@@ -32,7 +31,6 @@ public class Player extends AbstractEntity {
     private float aimedAngle = 0;
     private float angle_response = 7;
 
-    private float speed = 100;
     private float bulletSpeed = 1500;
     private float maxSpeed = 500;
 

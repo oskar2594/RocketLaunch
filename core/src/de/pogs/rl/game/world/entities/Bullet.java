@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
-import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.game.world.particles.ParticleEmitter;
 import de.pogs.rl.game.world.particles.ParticleUtils;
@@ -18,9 +17,7 @@ public class Bullet extends AbstractEntity {
     private ParticleEmitter glow;
     private Sprite sprite;
 
-    private float scale = 0.1f;
     private float width = 2f;
-    private float speed;
     private float angle;
 
     private long deathTime;

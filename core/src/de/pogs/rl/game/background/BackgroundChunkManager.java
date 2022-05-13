@@ -21,7 +21,6 @@ public final class BackgroundChunkManager {
     public static FastNoiseLite COLORNOISE_PURPLE;
     public static FastNoiseLite COLORNOISE_BLUE;
 
-    private int chunkRadius;
     private int realChunkRadius;
     private int renderDistance;
     private float scaling = 2;
@@ -31,7 +30,6 @@ public final class BackgroundChunkManager {
     private static Color[][] colorCache;
 
     public BackgroundChunkManager(int chunkRadius, double seed) {
-        this.chunkRadius = chunkRadius;
         this.realChunkRadius = (int) (chunkRadius * scaling);
 
         // NoiseMaps
