@@ -47,9 +47,10 @@ public abstract class AbstractEntity {
 
     /**
      * Fügt der Entität Schaden hinzu, beispielsweise durch Geschosse.
+     * 
      * @param damage Die Höhe des Schadens.
      */
-    public abstract void addDamage(float damage);
+    public abstract void addDamage(float damage, AbstractEntity source);
 
     /**
      * Der Radius der Entität bei der Berechnung von Kollisionen.
@@ -58,6 +59,7 @@ public abstract class AbstractEntity {
 
     /**
      * Der Radius der Entität bei der Berechnung von Kollisionen.
+     * 
      * @return
      */
     public float getRadius() {
@@ -65,9 +67,11 @@ public abstract class AbstractEntity {
     }
 
     protected boolean alive = true;
+
     /**
      * Gibt zurück, ob die Entität getötet wurde und somit gelöscht werden kann.
-     * @return 
+     * 
+     * @return
      */
     public boolean getAlive() {
         return alive;
@@ -77,6 +81,21 @@ public abstract class AbstractEntity {
      * Wird beim Löschen der Entität aufgerufen, damit diese zum Beispiel Ressourcen freigeben kann.
      */
     public void dispose() {
+
+    }
+
+    /**
+     * Wird aufgerufen, wenn das Entity ein anderes Entity tötet
+     */
+    public void kill(AbstractEntity victim) {
+
+    }
+
+
+    /**
+     * Wird aufgerufen, wenn das Entity getötet wird.
+     */
+    public void killed(AbstractEntity killer) {
 
     }
 }
