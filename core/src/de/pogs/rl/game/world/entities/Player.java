@@ -33,7 +33,7 @@ public class Player extends AbstractEntity {
     private float angle_response = 7;
 
     private float speed = 100;
-    private float bulletSpeed = 1000;
+    private float bulletSpeed = 1500;
     private float maxSpeed = 500;
 
     private double shotCooldown = 200;

@@ -52,7 +52,7 @@ public final class BackgroundChunkManager {
 
         // Render Distance calculated based on zoom and screen dimensions
         renderDistance = (int) Math
-                .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 0.7) / chunkRadius);
+                .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 1) / chunkRadius);
         // chunks calculated per frame based on ratios
         chunksPerFrame = (int) Math.ceil(Math.pow(renderDistance, 2) * Math.PI / 140);
         chunks = new LinkedList<BackgroundChunk>();
@@ -70,7 +70,7 @@ public final class BackgroundChunkManager {
         if (newChunkRadius > width / 2)
             newChunkRadius = width / 2;
         int newRenderDistance = (int) Math
-                .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 0.7) / newChunkRadius);
+                .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 1) / newChunkRadius);
         int newChunksPerFrame = (int) Math.floor(Math.pow(newRenderDistance, 2) * Math.PI / 150);
         // check if new chunkradius is needed, because
         // changing the chunkradius leads to recreating all
@@ -87,7 +87,7 @@ public final class BackgroundChunkManager {
         } else {
             // setting new generating values
             this.renderDistance = (int) Math
-                    .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 0.7) / this.realChunkRadius);
+                    .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 1) / this.realChunkRadius);
             this.chunksPerFrame = (int) Math.floor(Math.pow(this.renderDistance, 2) * Math.PI / 150);
         }
         oldWidth = width;

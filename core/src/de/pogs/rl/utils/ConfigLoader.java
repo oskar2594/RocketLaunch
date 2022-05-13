@@ -16,24 +16,22 @@ public class ConfigLoader {
     private static double lastSave = TimeUtils.millis();
 
     private static JsonReader json = new JsonReader();
-    private static FileHandle config =
-            Gdx.files.absolute(OsUtils.getUserConfigDirectory() + "/RocketLauncher/storage.rl");
+    private static FileHandle config = Gdx.files.absolute(OsUtils.getUserConfigDirectory() + "/RocketLauncher/storage.rl");
     private static FileHandle defaultConfig = Gdx.files.internal("config.json");
     public static JsonValue data;
 
     static {
-        System.out.println(OsUtils.getUserConfigDirectory());
         readStorage();
     }
 
     private static void createDefaultStorage() {
-        config.writeString(defaultConfig.readString(), false);
+        config.writeString(encrypt(defaultConfig.readString()), false);
         readStorage();
     }
 
     private static void readStorage() {
         try {
-            data = json.parse(config);
+            data = json.parse(decrypt(config.readString()));
             if(data.get("preferences") == null && json.parse(defaultConfig).get("preferences") != null) {
                 throw new Exception();
             }
@@ -72,7 +70,6 @@ public class ConfigLoader {
                 }
             }
         } catch (Exception e) {
-            System.out.println("dd");
             return;
         }
     }
@@ -84,7 +81,6 @@ public class ConfigLoader {
         try {
             for (int i = 0; i < navs.length; i++) {
                 String nav = navs[i];
-                System.out.println(i);
                 if (navs.length == 1) {
                     if (data.get(nav) == null) {
                         data.addChild(nav, new JsonValue(""));
@@ -106,7 +102,6 @@ public class ConfigLoader {
             }
         } catch (Exception e) {
         }
-        System.out.println(data.prettyPrint(OutputType.json, 1));
     }
 
 
@@ -158,6 +153,14 @@ public class ConfigLoader {
 
     public static void save() {
         // file.writeString("test", false);
-        config.writeString(data.prettyPrint(OutputType.json, 1), false);
+        config.writeString(encrypt(data.prettyPrint(OutputType.json, 1)), false);
+    }
+
+    private static String decrypt(String content) {
+        return Crypt.decrypt(content, HWID.getHWID());
+    }
+
+    private static String encrypt(String content) {
+        return Crypt.encrypt(content, HWID.getHWID());
     }
 }
