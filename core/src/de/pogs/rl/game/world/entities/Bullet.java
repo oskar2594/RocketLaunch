@@ -1,4 +1,4 @@
-package de.pogs.rl.game.entities;
+package de.pogs.rl.game.world.entities;
 
 import java.awt.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,15 +23,33 @@ public class Bullet extends AbstractEntity {
     private float speed;
     private float angle;
 
-    private double deathTime;
+    private long deathTime;
     private AbstractEntity sender;
 
     private float damage;
 
     private Vector2 velocity;
 
+    /**
+     * Factory Methode, die ein Bullet erzeugt und registriert.
+     * @param position Initiale Position des Bullet.
+     * @param sender Entität, welche das Bullet verschossen hat und dadurch immun gegen das Bullet ist.
+     * @param damage Schaden, den das Bullet bei einem Treffer verursachen soll.
+     * @param velocity Geschwindigkeitsvektor nach dem Bullet sich bewegt.
+     * @param color Farbe des Bullet.
+     * @param lifeTime Zeit, nach der Bullet gelöscht wird.
+     * @return Das erzeugte Bullet.
+     */
+    public static Bullet createBullet(Vector2 position, AbstractEntity sender, float damage,
+            Vector2 velocity, Color color, long lifeTime) {
+                Bullet bullet = new Bullet(position, sender, damage, velocity, color, lifeTime);
+                bullet.update(0);
+                EntityManager.get().addEntity(bullet);
+                return bullet;
+    }
+
     public Bullet(Vector2 position, AbstractEntity sender, float damage, Vector2 velocity,
-            Color color, float lifeTime) {
+            Color color, long lifeTime) {
         texture = ParticleUtils.generateParticleTexture(color, (int) width, (int) width * 3);
         sprite = new Sprite(texture);
         this.angle = 180 - SpecialMath.VectorToAngle(velocity);
@@ -64,12 +82,15 @@ public class Bullet extends AbstractEntity {
         updatePosition(delta);
         sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
                 position.getY() - sprite.getHeight() / 2);
-        for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this)) {
+        for (AbstractEntity entity : EntityManager.get().getCollidingEntities(this)) {
             if (entity != sender) {
                 entity.addDamage(damage, sender);
                 this.alive = false;
                 break;
             }
+        }
+        if (TimeUtils.millis() > deathTime) {
+            this.alive = false;
         }
     }
 
@@ -85,7 +106,7 @@ public class Bullet extends AbstractEntity {
     public Vector2 getVelocity() {
         return velocity;
     }
-    
+
     @Override
     public void dispose() {
         texture.dispose();

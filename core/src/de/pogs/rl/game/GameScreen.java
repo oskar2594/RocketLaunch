@@ -9,15 +9,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.background.BackgroundLayer;
-import de.pogs.rl.game.entities.SimpleEnemy;
-import de.pogs.rl.game.entities.EntityManager;
-import de.pogs.rl.game.entities.Player;
 import de.pogs.rl.game.ui.HUD;
 import de.pogs.rl.game.ui.HUDCamera;
-import de.pogs.rl.game.world.EntityGen;
+import de.pogs.rl.game.world.entities.EntityManager;
+import de.pogs.rl.game.world.entities.Player;
+import de.pogs.rl.game.world.entities.SimpleEnemy;
+import de.pogs.rl.game.world.generation.SpawnManager;
+import de.pogs.rl.game.world.generation.spawners.SimpleSpawner;
 import de.pogs.rl.game.world.particles.ParticleManager;
 import de.pogs.rl.game.world.particles.ParticleEmitter;
-import de.pogs.rl.game.world.spawners.SimpleSpawner;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class GameScreen extends ScreenAdapter {
@@ -32,7 +32,7 @@ public class GameScreen extends ScreenAdapter {
     public EntityManager entityManager;
     public ParticleManager particleManager;
     public HUD hud;
-    public EntityGen entityGen;
+    public SpawnManager entityGen;
 
     private int renderDistance2 = (int) Math.pow(1000, 2);
     private int updateDistance2 = (int) Math.pow(2000, 2);
@@ -41,16 +41,16 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen() {
         INSTANCE = this;
         batch = RocketLauncher.INSTANCE.batch;
-        entityManager = new EntityManager();
+        entityManager = EntityManager.get();
         particleManager = new ParticleManager();
         camera = new RocketCamera();
         hudCamera = new HUDCamera();
-        player = new Player();
+        player = Player.get();
         background = new BackgroundLayer();
         hud = new HUD();
         entityManager.addEntity(player);
         entityManager.flush();
-        entityGen = new EntityGen(entityManager);
+        entityGen = SpawnManager.get();
         entityGen.addSpawner(new SimpleSpawner());
 
     }
