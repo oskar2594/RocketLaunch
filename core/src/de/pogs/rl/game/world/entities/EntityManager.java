@@ -76,7 +76,7 @@ public class EntityManager {
      * @param playerPosition Position des Spielers, von der aus die Simulationsweite gemessen wird.
      * @param updateDistance2 Quadrat der Simulationsweite, in der simuliert werden soll.
      */
-    public void update(float delta, Vector2 playerPosition, int updateDistance2) {
+    public void update(float delta, Vector2 playerPosition, int updateDistance2, int removeDistance2) {
         for (AbstractEntity entity : entities) {
             if (entity.getPosition().dst2(playerPosition) < updateDistance2)
                 entity.update(delta);
@@ -86,6 +86,8 @@ public class EntityManager {
         }
         entities.stream().filter(entity -> !entity.getAlive()).forEach(entity -> entity.dispose());
         entities.removeIf((entity) -> !entity.getAlive());
+
+        removeOutOfRange(playerPosition, removeDistance2);
     }
 
     /**

@@ -20,7 +20,6 @@ public class AssetHelper {
     private HashMap<String, AssetDescriptor> sounds = new HashMap<String, AssetDescriptor>();
     private HashMap<String, FreeTypeFontGenerator> fonts =
             new HashMap<String, FreeTypeFontGenerator>();
-    // private String[] dirs = { "images", "sounds", "fonts", "particles" };
 
     private FileHandle baseDir;
 

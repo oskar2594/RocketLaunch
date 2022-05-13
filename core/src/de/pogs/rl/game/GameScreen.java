@@ -29,9 +29,13 @@ public class GameScreen extends ScreenAdapter {
     public HUD hud;
     public SpawnManager entityGen;
 
-    private int renderDistance2 = (int) Math.pow(1000, 2);
-    private int updateDistance2 = (int) Math.pow(2000, 2);
-    private int removeDistance2 = (int) Math.pow(5000, 2);
+    private int renderDistance = (int) Math.pow(500, 2);
+    private int updateDistance = (int) Math.pow(1500, 2);
+    private int removeDistance = (int) Math.pow(2500, 2);
+
+    private int renderDistance2 = renderDistance;
+    private int updateDistance2 = updateDistance;
+    private int removeDistance2 = removeDistance;
 
     public GameScreen() {
         INSTANCE = this;
@@ -52,20 +56,22 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        entityGen.generateChunks(player.getPosition(), renderDistance2, removeDistance2);
-        entityManager.removeOutOfRange(player.getPosition(), removeDistance2);
-        entityManager.update(delta, player.getPosition(), updateDistance2);
         Gdx.gl.glClearColor(0.0f, 1.0f, 0.0f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0));
-        camera.render(delta);
-        camera.update();
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT
+                | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV
+                        : 0));
         hudCamera.update();
 
+        // UPDATE
         hud.update(delta);
         particleManager.update(delta);
         background.update();
-        batch.setProjectionMatrix(camera.combined);
+        entityGen.update(player.getPosition(), renderDistance2, removeDistance2);
+        entityManager.update(delta, player.getPosition(), updateDistance2, removeDistance2);
+        camera.refresh(delta);
+
         // DRAW
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
         background.render(delta, batch);
         particleManager.render(batch);
@@ -102,11 +108,19 @@ public class GameScreen extends ScreenAdapter {
         camera.resize(width, height);
         hudCamera.resize(width, height);
         background.resize(width, height);
+        resizeDistance();
     }
 
     public void resizeZoom(int width, int height) {
         camera.resize(width, height);
         background.resize(width, height);
+        resizeDistance();
+    }
+
+    private void resizeDistance() {
+        renderDistance2 = (int) (removeDistance * camera.zoom);
+        updateDistance2 = (int) (updateDistance * camera.zoom);
+        removeDistance2 = (int) (removeDistance * camera.zoom);
     }
 
 }

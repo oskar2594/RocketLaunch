@@ -1,6 +1,5 @@
 package de.pogs.rl.utils;
 
-import java.io.File;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
@@ -152,7 +151,6 @@ public class ConfigLoader {
     }
 
     public static void save() {
-        // file.writeString("test", false);
         config.writeString(encrypt(data.prettyPrint(OutputType.json, 1)), false);
     }
 

@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import de.pogs.rl.utils.SpecialMath;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class Particle {
