@@ -12,7 +12,6 @@ public class RocketLauncher extends Game {
 	public static RocketLauncher INSTANCE;
 	
 	public AssetHelper assetHelper;
-	public ConfigLoader config;
 
 	public RocketLauncher() {
 		super();
@@ -22,7 +21,6 @@ public class RocketLauncher extends Game {
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		config = new ConfigLoader();
 		assetHelper = new AssetHelper();
 		assetHelper.loadAll();
 		assetHelper.assetManager.finishLoading();
@@ -33,6 +31,7 @@ public class RocketLauncher extends Game {
 	@Override
 	public void render() {
 		super.render();
+		ConfigLoader.update();
 	}
 
 	@Override

@@ -12,10 +12,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
-import org.w3c.dom.Text;
 
 public class AssetHelper {
-
     public final AssetManager assetManager;
 
     private HashMap<String, AssetDescriptor> images = new HashMap<String, AssetDescriptor>();

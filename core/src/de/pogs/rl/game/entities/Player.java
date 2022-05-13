@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
+import de.pogs.rl.game.PlayerStats;
 import de.pogs.rl.game.world.particles.ParticleEmitter;
 import de.pogs.rl.game.world.particles.ParticleUtils;
 import de.pogs.rl.utils.SpecialMath;
@@ -27,7 +28,7 @@ public class Player extends AbstractEntity {
 
     private float angle = 0;
     private float aimedAngle = 0;
-    private float angle_response = 5;
+    private float angle_response = 7;
 
     private float speed = 100;
     private float bulletSpeed = 1000;
@@ -74,10 +75,6 @@ public class Player extends AbstractEntity {
     private ParticleEmitter hot;
     private ParticleEmitter flame;
     private ParticleEmitter overheat;
-
-    public long experiencePoints = 0;
-
-
 
     public Player() {
         sprite = new Sprite(texture);
@@ -126,6 +123,7 @@ public class Player extends AbstractEntity {
 
     @Override
     public void update(float delta) {
+        PlayerStats.update();
         updateAimedAngle();
         updateAngle(delta);
         updatePosition(delta);
@@ -204,8 +202,6 @@ public class Player extends AbstractEntity {
     }
 
     private void updatePosition(float delta) {
-        // position = position.add(SpecialMath.angleToVector(this.angle).mul(delta *
-        // speed));
         position = position.add(velocity.mul(delta));
     }
 
@@ -261,7 +257,7 @@ public class Player extends AbstractEntity {
     }
 
     @Override
-    public void addDamage(float damage) {
+    public void addDamage(float damage, AbstractEntity source) {
         armor -= damage;
         if (armor < 0) {
             health += armor;
@@ -287,5 +283,11 @@ public class Player extends AbstractEntity {
 
     public boolean isAccelerating() {
         return isAccelerating;
+    }
+
+    @Override
+    public void kill(AbstractEntity victim) {
+        System.out.println("kill");
+        PlayerStats.addExp(25);
     }
 }

@@ -66,7 +66,7 @@ public class Bullet extends AbstractEntity {
                 position.getY() - sprite.getHeight() / 2);
         for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this)) {
             if (entity != sender) {
-                entity.addDamage(damage);
+                entity.addDamage(damage, sender);
                 this.alive = false;
                 break;
             }
@@ -78,7 +78,7 @@ public class Bullet extends AbstractEntity {
     }
 
     @Override
-    public void addDamage(float damage) {
+    public void addDamage(float damage, AbstractEntity source) {
         this.alive = false;
     }
 

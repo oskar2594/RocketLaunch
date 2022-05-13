@@ -1,5 +1,6 @@
 package de.pogs.rl.game.entities;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.pogs.rl.utils.SpecialMath.Vector2;;
 
@@ -15,7 +16,7 @@ public abstract class AbstractEntity {
         return renderPriority;
     }
 
-    public abstract void addDamage(float damage);
+    public abstract void addDamage(float damage, AbstractEntity source);
 
     protected float radius = 10;
     
@@ -30,5 +31,13 @@ public abstract class AbstractEntity {
 
     public void dispose() {
         
+    }
+
+    public void kill(AbstractEntity victim) {
+
+    }
+
+    public void killed(AbstractEntity killer) {
+
     }
 }

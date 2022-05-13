@@ -1,5 +1,6 @@
 package de.pogs.rl.game.ui;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.utils.Align;
 
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
+import de.pogs.rl.game.PlayerStats;
 
 public class Level extends HUDComponent {
 
@@ -19,12 +21,8 @@ public class Level extends HUDComponent {
 
     private BitmapFont levelFont;
     private BitmapFont lvlFont;
-    private String levelString = "test";
+    private String levelString = "";
     private int stringLength = 2;
-
-    private int level = 0;
-    private int exp = 0;
-    private int needExp = 0;
 
     Level() {
         super();
@@ -49,14 +47,13 @@ public class Level extends HUDComponent {
     }
 
     private int oldLength = 0;
+
     @Override
     public void update(float delta) {
-        this.exp++;
-        this.level = getLevel(exp);
-        this.needExp = getNeededExp(level);
         position.set(HUDUtils.getBottomLeft().x + width / 2,
                 HUDUtils.getBottomLeft().y + height / 2);
-        levelString = Integer.toString(level);
+        float level = PlayerStats.getLevel();
+        levelString = Integer.toString((int) Math.floor(level));
         if (oldLength != levelString.length()) {
             stringLength = levelString.length();
             updateFonts();
@@ -65,22 +62,8 @@ public class Level extends HUDComponent {
 
     }
 
-    public int getLevel(int exp) {
-        return (int) Math.floor(2 * Math.sqrt(exp));
-    }
-
-    public int getNeededExp(int level) {
-        return ((level - 1) * 100) + 100;
-    }
-
-    public int getCurrentLevelExp(int level, int exp) {
-        return (exp - (level * 100)) % level;
-    }
-
     @Override
     public void render(SpriteBatch batch) {
-        // font.draw(batch, str, x, y, targetWidth, halign, wrap)
-        // font.draw(batch, str, x, y, start, end, targetWidth, halign, wrap, truncate)
         levelFont.draw(batch, levelString, position.x - width / 2,
                 position.y + levelFont.getCapHeight() / 2 + lvlFont.getCapHeight() / 2, width,
                 Align.center, false);
@@ -91,10 +74,12 @@ public class Level extends HUDComponent {
 
     @Override
     public void shapeRender(ShapeRenderer shapeRenderer) {
+        float percentage = PlayerStats.getCurrentLevelPercentag();
+
         shapeRenderer.setColor(new Color(0x2626261d));
         partialCircle(shapeRenderer, position.x, position.y, radius, 0, 360, 2, 3);
         shapeRenderer.setColor(Color.WHITE);
-        partialCircle(shapeRenderer, position.x, position.y, radius, 0, (getCurrentLevelExp(level, exp) / getNeededExp(level)) * 360, 2, 5);
+        partialCircle(shapeRenderer, position.x, position.y, radius, 0, percentage * 360, 2, 5);
     }
 
     private void partialCircle(ShapeRenderer shapeRenderer, float x, float y, float radius,

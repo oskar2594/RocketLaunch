@@ -49,6 +49,7 @@ public class SimpleEnemy extends AbstractEntity {
     private float bulletSpeed = 500;
 
     public SimpleEnemy(Vector2 position) {
+        this.radius = 20;
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
@@ -72,7 +73,7 @@ public class SimpleEnemy extends AbstractEntity {
 
         for (AbstractEntity entity : GameScreen.INSTANCE.entityManager.getCollidingEntities(this)) {
             if (!(entity instanceof SimpleEnemy || entity instanceof Bullet)) {
-                entity.addDamage(5 * delta);
+                entity.addDamage(5 * delta, this);
             }
         }
 
@@ -133,8 +134,9 @@ public class SimpleEnemy extends AbstractEntity {
     }
 
     @Override
-    public void addDamage(float damage) {
+    public void addDamage(float damage, AbstractEntity source) {
         this.alive = false;
+        source.kill(this);
         splashEffectSelf();
     }
 
