@@ -122,4 +122,8 @@ public class EntityManager {
     public void removeOutOfRange(Vector2 pos, float range2) {
         entities.removeIf((entity) -> entity.getPosition().dst2(pos) > range2);
     }
+
+    public LinkedList<AbstractEntity> getEntities() {
+        return new LinkedList<AbstractEntity>(entities);
+    }
 }

@@ -1,5 +1,6 @@
 package de.pogs.rl.game;
 
+import java.util.HashSet;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -14,6 +15,7 @@ import de.pogs.rl.game.world.entities.Player;
 import de.pogs.rl.game.world.generation.SpawnManager;
 import de.pogs.rl.game.world.generation.spawners.SimpleSpawner;
 import de.pogs.rl.game.world.particles.ParticleManager;
+import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class GameScreen extends ScreenAdapter {
     public static GameScreen INSTANCE;
@@ -29,13 +31,13 @@ public class GameScreen extends ScreenAdapter {
     public HUD hud;
     public SpawnManager entityGen;
 
-    private int renderDistance = (int) Math.pow(500, 2);
-    private int updateDistance = (int) Math.pow(1500, 2);
-    private int removeDistance = (int) Math.pow(2500, 2);
+    private int renderDistanceBase = 1500;
+    private int updateDistanceBase = 1500;
+    private int removeDistanceBase = 2000;
 
-    private int renderDistance2 = renderDistance;
-    private int updateDistance2 = updateDistance;
-    private int removeDistance2 = removeDistance;
+    private int renderDistance2 = (int) Math.pow(renderDistanceBase, 2);
+    private int updateDistance2 = (int) Math.pow(updateDistanceBase, 2);
+    private int removeDistance2 = (int) Math.pow(removeDistanceBase, 2);
 
     public GameScreen() {
         INSTANCE = this;
@@ -118,9 +120,9 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void resizeDistance() {
-        renderDistance2 = (int) (removeDistance * camera.zoom);
-        updateDistance2 = (int) (updateDistance * camera.zoom);
-        removeDistance2 = (int) (removeDistance * camera.zoom);
+        renderDistance2 = (int) Math.pow(renderDistanceBase * camera.zoom, 2);
+        updateDistance2 = (int) Math.pow(updateDistanceBase * camera.zoom, 2);
+        removeDistance2 = (int) Math.pow(removeDistanceBase * camera.zoom, 2);
     }
 
 }

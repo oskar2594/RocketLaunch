@@ -13,7 +13,7 @@ import de.pogs.rl.utils.SpecialMath.Vector2;
  */
 public class SpawnManager {
     private static SpawnManager instance = new SpawnManager();
-    private HashSet<ArrayList<Integer>> generatedChunks = new HashSet<ArrayList<Integer>>();
+    private HashSet<Vector2> generatedChunks = new HashSet<Vector2>();
     private int chunkSize = 50;
     private LinkedList<AbstractSpawner> spawners = new LinkedList<AbstractSpawner>();
 
@@ -39,21 +39,21 @@ public class SpawnManager {
                 renderPosX -= SpecialMath.modulus(renderPosX, chunkSize);
                 renderPosY = (int) pos.getY() + y;
                 renderPosY -= SpecialMath.modulus(renderPosY, chunkSize);
-                ArrayList<Integer> renderPos = new ArrayList<Integer>(Arrays.asList(new Integer[] {renderPosX, renderPosY}));
+                Vector2 renderPos = new Vector2(renderPosX, renderPosY);
                 if (!generatedChunks.contains(renderPos)) {
                     generatedChunks.add(renderPos);
                     spawn(renderPos);
                 }
             }
         }
-        generatedChunks.removeIf((chunk) -> Math.pow(chunk.get(0) - pos.getX(), 2) + Math.pow(chunk.get(1) - pos.getY(), 2) > removeDistance2);
+        generatedChunks.removeIf((chunk) -> chunk.dst2(pos) > removeDistance2);
     }
 
     /**
      * Ruft alle Spawner auf einen Chunk auf und registriert diese
      * @param chunk Koordinaten des Chunks
      */
-    private void spawn(ArrayList<Integer> chunk) {
+    private void spawn(Vector2 chunk) {
         for (AbstractSpawner spawner : spawners) {
             EntityManager.get().addEntities(spawner.spawn(chunk));
         }
