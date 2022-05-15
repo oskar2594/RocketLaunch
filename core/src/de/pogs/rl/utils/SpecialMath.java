@@ -97,5 +97,19 @@ public class SpecialMath {
         public float getY() {
             return y;
         }
+
+        @Override
+        public int hashCode() {
+            return (Float.valueOf(x).hashCode() * 257) ^ Float.valueOf(y).hashCode();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o instanceof Vector2) {
+                Vector2 v = (Vector2) o;
+                return (v.getX() == x) && (v.getY() == y);
+            }
+            return false;
+        }
     }
 }
