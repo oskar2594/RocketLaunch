@@ -285,7 +285,6 @@ public class Player extends AbstractEntity {
 
     @Override
     public void kill(AbstractEntity victim) {
-        System.out.println("kill");
         PlayerStats.addExp(25);
     }
 }
