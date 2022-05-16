@@ -60,15 +60,19 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT
                 | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV
                         : 0));
-        hudCamera.update();
 
         // UPDATE
-        hud.update(delta);
-        particleManager.update(delta);
-        background.update();
-        entityGen.update(player.getPosition(), renderDistance2, removeDistance2);
-        entityManager.update(delta, player.getPosition(), updateDistance2, removeDistance2);
-        camera.refresh(delta);
+        new Thread(new Runnable() {
+            public void run() {
+                entityGen.update(player.getPosition(), renderDistance2, removeDistance2);
+                entityManager.update(delta, player.getPosition(), updateDistance2, removeDistance2);
+                particleManager.update(delta);
+                background.update();
+                hudCamera.update();
+                hud.update(delta);
+                camera.refresh(delta);
+            }
+        }).run();
 
         // DRAW
         batch.setProjectionMatrix(camera.combined);
@@ -104,23 +108,22 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void resize(int width, int height) {
-        hud.resize(width, height);
-        camera.resize(width, height);
-        hudCamera.resize(width, height);
-        background.resize(width, height);
-        resizeDistance();
+        new Thread(new Runnable() {
+            public void run() {
+                hud.resize(width, height);
+                camera.resize(width, height);
+                hudCamera.resize(width, height);
+                background.resize(width, height);
+            }
+        }).run();
     }
 
     public void resizeZoom(int width, int height) {
-        camera.resize(width, height);
-        background.resize(width, height);
-        resizeDistance();
+        new Thread(new Runnable() {
+            public void run() {
+                camera.resize(width, height);
+                background.resize(width, height);
+            }
+        }).run();
     }
-
-    private void resizeDistance() {
-        renderDistance2 = (int) (removeDistance * camera.zoom);
-        updateDistance2 = (int) (updateDistance * camera.zoom);
-        removeDistance2 = (int) (removeDistance * camera.zoom);
-    }
-
 }
