@@ -49,7 +49,8 @@ public class ParticleEmitter {
             this.dispose();
             return;
         }
-        if(isAttached && !attachedEntity.getAlive()) {
+
+        if((isAttached && !attachedEntity.getAlive()) || (isAttached && attachedEntity == null)) {
             isDead = true;
             this.dispose();
             return;

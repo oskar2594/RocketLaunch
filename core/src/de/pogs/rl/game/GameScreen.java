@@ -66,15 +66,15 @@ public class GameScreen extends ScreenAdapter {
         // UPDATE
         new Thread(new Runnable() {
             public void run() {
+                particleManager.update(delta);
                 entityGen.update(player.getPosition(), renderDistance2, removeDistance2);
                 entityManager.update(delta, player.getPosition(), updateDistance2, removeDistance2);
-                particleManager.update(delta);
                 background.update();
-                hudCamera.update();
                 hud.update(delta);
-                camera.refresh(delta);
             }
         }).run();
+        hudCamera.update();
+        camera.refresh(delta);
 
         // DRAW
         batch.setProjectionMatrix(camera.combined);
@@ -110,22 +110,22 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void resize(int width, int height) {
-        new Thread(new Runnable() {
-            public void run() {
-                hud.resize(width, height);
-                camera.resize(width, height);
-                hudCamera.resize(width, height);
-                background.resize(width, height);
-            }
-        }).run();
+        hud.resize(width, height);
+        camera.resize(width, height);
+        hudCamera.resize(width, height);
+        background.resize(width, height);
+        resizeDistance();
     }
 
     public void resizeZoom(int width, int height) {
-        new Thread(new Runnable() {
-            public void run() {
-                camera.resize(width, height);
-                background.resize(width, height);
-            }
-        }).run();
+        camera.resize(width, height);
+        background.resize(width, height);
+        resizeDistance();
+    }
+
+    private void resizeDistance() {
+        renderDistance2 = (int) Math.pow(renderDistanceBase * camera.zoom, 2);
+        updateDistance2 = (int) Math.pow(updateDistanceBase * camera.zoom, 2);
+        removeDistance2 = (int) Math.pow(removeDistanceBase * camera.zoom, 2);
     }
 }
