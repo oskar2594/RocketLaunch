@@ -63,16 +63,11 @@ public class GameScreen extends ScreenAdapter {
                 | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV
                         : 0));
 
-        // UPDATE
-        new Thread(new Runnable() {
-            public void run() {
-                particleManager.update(delta);
-                entityGen.update(player.getPosition(), renderDistance2, removeDistance2);
-                entityManager.update(delta, player.getPosition(), updateDistance2, removeDistance2);
-                background.update();
-                hud.update(delta);
-            }
-        }).run();
+        entityGen.update(player.getPosition(), renderDistance2, removeDistance2);
+        entityManager.update(delta, player.getPosition(), updateDistance2, removeDistance2);
+        background.update();
+        particleManager.update(delta);
+        hud.update(delta);
         hudCamera.update();
         camera.refresh(delta);
 

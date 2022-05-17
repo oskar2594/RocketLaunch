@@ -1,6 +1,9 @@
 package de.pogs.rl.game.background;
 
 import java.util.LinkedList;
+
+import javax.swing.plaf.synth.SynthStyle;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -62,7 +65,7 @@ public final class BackgroundChunkManager {
         // possible recalculations
         if (oldWidth < 0)
             oldWidth = width;
-        int newChunkRadius = (int) (width * height * GameScreen.INSTANCE.camera.zoom / 14000);
+        int newChunkRadius = (int) (Gdx.graphics.getHeight() * Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom / 14000);
         if (newChunkRadius < width / 10)
             newChunkRadius = width / 10;
         if (newChunkRadius > width / 2)
@@ -73,11 +76,12 @@ public final class BackgroundChunkManager {
         // check if new chunkradius is needed, because
         // changing the chunkradius leads to recreating all
         // chunks
-        newChunkRadius *= scaling;
+        // newChunkRadius *= scaling;
         if (Math.abs(oldWidth - width) > width * 0.2 || Math.abs(oldWidth - width) > oldWidth * 0.2) {
             // for better performance collecting current color
-            collectCache(newChunkRadius);
-            this.realChunkRadius = newChunkRadius;
+            int one = collectCache(newChunkRadius * 2);
+                        System.out.println(one);
+            this.realChunkRadius = newChunkRadius * 2;
             this.renderDistance = newRenderDistance;
             this.chunksPerFrame = newChunksPerFrame;
             // removing all current chunks
@@ -97,21 +101,29 @@ public final class BackgroundChunkManager {
     // TODO: calculate max cacheRadius based on ComputerSpecs?
     int i = 0;
 
-    private void collectCache(int newChR) {
+    private int collectCache(int newChR) {
         int cacheRadius = (int) (this.realChunkRadius * this.renderDistance * 2);
         colorCache = new Color[cacheRadius][cacheRadius];
         cacheStart.set(GameScreen.INSTANCE.camera.position.x - cacheRadius / 2,
                 GameScreen.INSTANCE.camera.position.y - cacheRadius / 2);
         // looping through all chunks to place their data on cacheMap
+        for (int x = 0; x < colorCache.length; x++) {
+            for (int y = 0; y < colorCache.length; y++) {
+                // colorCache[x][y] = Color.BLUE;
+            }
+        }
         for (BackgroundChunk chunk : chunks) {
             Color[][] data = chunk.fieldCache;
             i++;
+            Color col = new Color((int) (Math.random() * 0x1000000));
             for (int x = 0; x < data.length; x++) {
                 for (int y = 0; y < data.length; y++) {
-                    Vector2 realPosition = new Vector2(chunk.position.x / scaling + x / scaling - cacheStart.x,
-                            chunk.position.y / scaling - y / scaling - cacheStart.y);
+                    // Vector2 realPosition = chunk.getRelativePosition(new Vector2(x, y));
+                    Vector2 realPosition = new Vector2(chunk.start.x / scaling+ x / scaling - cacheStart.x,
+                            chunk.start.y / scaling - y / scaling  - cacheStart.y);
                     try {
-                        colorCache[(int) realPosition.x][(int) realPosition.y] = data[x][y];
+                        colorCache[(int) realPosition.x][(int) realPosition.y] = col;
+                        // colorCache[(int) realPosition.x][(int) realPosition.y] = data[x][y];
                     } catch (Exception e) {
                         // pixel is out of range
                     }
@@ -120,6 +132,7 @@ public final class BackgroundChunkManager {
         }
         System.out.println(i);
         i = 0;
+        return 1;
     }
 
     // for individual chunk get cached color on position
