@@ -136,4 +136,9 @@ public class SimpleEnemy extends AbstractEntity {
         splashEffectSelf();
     }
 
+    @Override
+    public void dispose() {
+        EntityManager.get().addEntity(new XpOrb(position, 10));
+    }
+
 }
