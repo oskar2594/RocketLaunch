@@ -24,7 +24,7 @@ public final class BackgroundChunk {
 
     public Vector2 position;
 
-    private Vector2 start;
+    public Vector2 start;
     private int radius;
 
     private float scaling;
@@ -174,7 +174,7 @@ public final class BackgroundChunk {
     }
 
     // get position in normal coordination system
-    private Vector2 getRelativePosition(Vector2 position) {
+    public Vector2 getRelativePosition(Vector2 position) {
         return new Vector2(position.x * scaling + start.x, position.y * scaling - start.y);
     }
 

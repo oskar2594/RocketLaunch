@@ -49,7 +49,9 @@ public class ParticleEmitter {
             this.dispose();
             return;
         }
-
+        if(isAttached && attachedEntity == null ) {
+            System.out.println("AAAAALAAAARM! [--] BUGGED PARTICLE EMITTER");
+        }
         if((isAttached && !attachedEntity.getAlive()) || (isAttached && attachedEntity == null)) {
             isDead = true;
             this.dispose();
