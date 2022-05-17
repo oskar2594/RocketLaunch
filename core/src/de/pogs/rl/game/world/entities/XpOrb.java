@@ -16,7 +16,8 @@ public class XpOrb extends AbstractEntity {
     private int xpPoints;
     private Vector2 velocity;
     private float attractionRange = 500;
-    private float attractionForce = 100;
+    private float attractionForce = 1000;
+    private float maxVelocity = 100;
 
     public XpOrb(Vector2 position, int xpPoints) {
         this.position = position;
@@ -32,13 +33,16 @@ public class XpOrb extends AbstractEntity {
 
     @Override
     public void update(float delta) {
-        sprite.setAlpha((float) Math.sin(TimeUtils.millis() / 100));
+        sprite.setAlpha(0.7f + (float) Math.sin(TimeUtils.millis() / 100) * 0.3f);
         sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
                 position.getY() - sprite.getHeight() / 2);
         position = position.add(velocity.mul(delta));
         if (Player.get().getPosition().dst(position) < attractionRange) {
             velocity = velocity.add(
                     position.sub(Player.get().getPosition()).nor().mul(-attractionForce * delta));
+        }
+        if (velocity.magn() > maxVelocity) {
+            velocity = velocity.mul(maxVelocity / velocity.magn());
         }
         if (Player.get().getPosition().dst(position) < Player.get().getRadius()) {
             PlayerStats.addExp(xpPoints);
