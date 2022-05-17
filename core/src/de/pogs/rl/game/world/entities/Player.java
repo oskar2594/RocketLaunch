@@ -29,7 +29,7 @@ public class Player extends AbstractEntity {
 
     private float angle = 0;
     private float aimedAngle = 0;
-    private float angle_response = 7;
+    private float angleResponse = 7;
 
     private float bulletSpeed = 1500;
     private float maxSpeed = 500;
@@ -76,7 +76,10 @@ public class Player extends AbstractEntity {
     private ParticleEmitter flame;
     private ParticleEmitter overheat;
 
-    public long experiencePoints = 0;
+    public long experiencePoints = 1;
+    private float baseAcceleration = 200;
+    private float baseTractionCoeff = 0.5f;
+    private float baseAngleResponse = 7;
 
     public static Player get() {
         return instance;
@@ -88,6 +91,7 @@ public class Player extends AbstractEntity {
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
         position = new Vector2(0, 0);
         renderPriority = 1;
+        radius = 20;
 
         thrustSound = RocketLauncher.INSTANCE.assetHelper.getSound("thrust");
         thrustId = thrustSound.loop(thrustVolume);
@@ -138,6 +142,8 @@ public class Player extends AbstractEntity {
         updateSounds(delta);
         updateParticles();
 
+        updateStats();
+
         dust.updateVelocity(velocity);
         sparks.updateVelocity(velocity);
         hot.updateVelocity(velocity);
@@ -148,6 +154,13 @@ public class Player extends AbstractEntity {
                 position.getY() - sprite.getHeight() / 2);
         sprite.setRotation(angle);
         shoot();
+        System.out.println(PlayerStats.getExp());
+    }
+
+    private void updateStats() {
+        acceleration = 200 + (float) Math.log(PlayerStats.getExp());
+        angleResponse = 5 + (float) Math.log(PlayerStats.getExp()) / 10;
+        tractionCoeff = baseTractionCoeff / (float) Math.log(PlayerStats.getExp());
     }
 
     private void regenArmor(float delta) {
@@ -195,7 +208,7 @@ public class Player extends AbstractEntity {
     private void updateAngle(float delta) {
 
         angle = angle + (SpecialMath.angleDifferenceSmaller(aimedAngle, angle, 360)) * delta
-                * angle_response;
+                * angleResponse;
         angle = SpecialMath.modulus(angle + 180, 360) - 180;
     }
 

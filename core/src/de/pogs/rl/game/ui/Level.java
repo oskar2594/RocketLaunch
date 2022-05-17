@@ -70,7 +70,7 @@ public class Level extends HUDComponent {
 
     @Override
     public void shapeRender(ShapeRenderer shapeRenderer) {
-        float percentage = PlayerStats.getCurrentLevelPercentag();
+        float percentage = PlayerStats.getCurrentLevelPercentage();
 
         shapeRenderer.setColor(new Color(0x2626261d));
         partialCircle(shapeRenderer, position.x, position.y, radius, 0, 360, 2, 3);

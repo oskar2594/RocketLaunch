@@ -23,7 +23,7 @@ public class PlayerStats {
         ConfigLoader.setValue(exp, "exp");
     }
 
-    public static float getCurrentLevelPercentag() {
+    public static float getCurrentLevelPercentage() {
         if(accessExp == 0 || needExp == 0) return 0;
         return (float) accessExp / (float)needExp;
     }
