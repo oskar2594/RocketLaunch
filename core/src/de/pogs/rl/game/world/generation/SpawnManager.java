@@ -17,6 +17,10 @@ public class SpawnManager {
     private int chunkSize = 50;
     private LinkedList<AbstractSpawner> spawners = new LinkedList<AbstractSpawner>();
 
+    /**
+     * Getter für die Instanz von SpawnManager.
+     * @return Die Instanz.
+     */
     public static SpawnManager get() {
         return instance;
     }

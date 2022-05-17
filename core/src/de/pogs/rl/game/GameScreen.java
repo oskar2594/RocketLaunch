@@ -33,7 +33,7 @@ public class GameScreen extends ScreenAdapter {
 
     private int renderDistanceBase = 1500;
     private int updateDistanceBase = 1500;
-    private int removeDistanceBase = 2000;
+    private int removeDistanceBase = 2500;
 
     private int renderDistance2 = (int) Math.pow(renderDistanceBase, 2);
     private int updateDistance2 = (int) Math.pow(updateDistanceBase, 2);

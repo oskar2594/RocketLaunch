@@ -24,7 +24,7 @@ public abstract class AbstractEntity {
      * 
      * @param batch geöffnetes SpriteBatch, auf dem die Entität gezeichnet werden soll.
      */
-    public abstract void render(SpriteBatch batch);
+    public void render(SpriteBatch batch) {};
 
     /**
      * Gibt die Position der Entität zurück.
@@ -50,7 +50,7 @@ public abstract class AbstractEntity {
      * 
      * @param damage Die Höhe des Schadens.
      */
-    public abstract void addDamage(float damage, AbstractEntity source);
+    public void addDamage(float damage, AbstractEntity source) {};
 
     /**
      * Der Radius der Entität bei der Berechnung von Kollisionen.

@@ -49,6 +49,8 @@ public class SimpleEnemy extends AbstractEntity {
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
         this.position = position;
+        sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
+                position.getY() - sprite.getHeight() / 2);
     }
 
     public SimpleEnemy(float posX, float posY) {
@@ -132,6 +134,11 @@ public class SimpleEnemy extends AbstractEntity {
         this.alive = false;
         source.kill(this);
         splashEffectSelf();
+    }
+
+    @Override
+    public void dispose() {
+        EntityManager.get().addEntity(new XpOrb(position, 10));
     }
 
 }
