@@ -19,7 +19,7 @@ public class Menu extends ScreenAdapter {
 	@Override
 	public void render(float delta) {
 		if (Gdx.input.isTouched()) {
-			RocketLauncher.INSTANCE.setScreen(new GameScreen());
+			RocketLauncher.INSTANCE.setScreen(new Loader());
 			dispose();
 		}
 	}
