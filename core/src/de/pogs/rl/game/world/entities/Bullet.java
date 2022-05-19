@@ -80,7 +80,7 @@ public class Bullet extends AbstractEntity {
         sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
                 position.getY() - sprite.getHeight() / 2);
         for (AbstractEntity entity : EntityManager.get().getCollidingEntities(this)) {
-            if (entity != sender) {
+            if (entity != sender && !(entity instanceof XpOrb)) {
                 entity.addDamage(damage, sender);
                 this.alive = false;
                 break;
