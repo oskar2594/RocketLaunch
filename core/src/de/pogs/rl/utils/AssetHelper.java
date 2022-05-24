@@ -27,8 +27,11 @@ public class AssetHelper {
         assetManager = new AssetManager();
         baseDir = Gdx.files.getFileHandle("assets/", FileType.Local);
     }
+    
+    public boolean isFinished = false;
 
     public void loadAll() {
+        System.out.println("dd");
         for (FileHandle entry : baseDir.list()) {
             System.out.println(entry.name());
             if (entry.isDirectory()) {
@@ -47,7 +50,9 @@ public class AssetHelper {
                 }
             }
         }
+        System.out.println(assetManager.getProgress());
     }
+
 
     private void loadFonts(FileHandle[] list) {
         for (FileHandle file : list) {
