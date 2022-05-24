@@ -87,7 +87,7 @@ public abstract class AbstractEntity {
     /**
      * Wird aufgerufen, wenn das Entity ein anderes Entity tötet
      */
-    public void kill(AbstractEntity victim) {
+    public void killOtherEvent(AbstractEntity victim) {
 
     }
 
@@ -95,7 +95,11 @@ public abstract class AbstractEntity {
     /**
      * Wird aufgerufen, wenn das Entity getötet wird.
      */
-    public void killed(AbstractEntity killer) {
+    public void killSelfEvent(AbstractEntity killer) {
 
+    }
+
+    public void kill() {
+        alive = false;
     }
 }

@@ -20,7 +20,7 @@ public class ParticleManager {
     public void update(float delta) {
         LinkedList<ParticleEmitter> remEmitters = new LinkedList<ParticleEmitter>();
         for (ParticleEmitter particleEmitter : emitters) {
-            if(particleEmitter.isDead) {
+            if(particleEmitter.getDead()) {
                 remEmitters.add(particleEmitter);
                 continue;
             }
