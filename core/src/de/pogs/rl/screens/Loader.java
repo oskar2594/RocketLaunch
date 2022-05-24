@@ -23,7 +23,7 @@ public class Loader extends ScreenAdapter {
     private BitmapFont font;
     private float scaleOne = 0.001f;
 
-    private int minDuration = 5000;
+    private int minDuration = 2000;
     private long start;
 
     private Color white = Color.WHITE;
@@ -49,7 +49,7 @@ public class Loader extends ScreenAdapter {
         RocketLauncher.INSTANCE.assetHelper.assetManager.update();
         if(RocketLauncher.INSTANCE.assetHelper.assetManager.isFinished()) {
             if((TimeUtils.millis() - start) > minDuration) {
-                RocketLauncher.INSTANCE.setScreen(new GameScreen());
+                RocketLauncher.INSTANCE.setScreen(new Menu());
                 return;
             }
         }
@@ -86,7 +86,13 @@ public class Loader extends ScreenAdapter {
     }
 
     @Override
-    public void dispose() {
+    public void resize(int width, int height) {
+        camera.viewportWidth = width;
+        camera.viewportHeight = height;
+    }
 
+    @Override
+    public void dispose() {
+        font.dispose();
     }
 }

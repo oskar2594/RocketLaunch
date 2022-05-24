@@ -37,7 +37,7 @@ public class XpOrb extends AbstractEntity {
 
     @Override
     public void update(float delta) {
-        sprite.setTexture(colorizeTexture(texture, mix(Color.BLUE, Color.RED,
+        sprite.setTexture(colorizeTexture(texture, mix(new Color(0x8ef5aaff), new Color(0x01661cff),
                 0.5 + (float) Math.sin((((float) (TimeUtils.millis() % 20000)) / 500f)) * 0.5f)));
         sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
                 position.getY() - sprite.getHeight() / 2);

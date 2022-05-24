@@ -23,7 +23,7 @@ public class RocketLauncher extends Game {
 	public void create() {
 		batch = new SpriteBatch();
 		assetHelper = new AssetHelper();
-		this.setScreen(new Menu());
+		this.setScreen(new Loader());
 	}
 
 
