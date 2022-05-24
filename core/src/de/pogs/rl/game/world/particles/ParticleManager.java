@@ -19,14 +19,8 @@ public class ParticleManager {
 
     public void update(float delta) {
         LinkedList<ParticleEmitter> remEmitters = new LinkedList<ParticleEmitter>();
-        for (ParticleEmitter particleEmitter : emitters) {
-            if(particleEmitter.getDead()) {
-                remEmitters.add(particleEmitter);
-                continue;
-            }
-            particleEmitter.update(delta);
-        }
-        emitters.removeAll(remEmitters);
+        emitters.removeIf(e -> e.getDead());
+        emitters.stream().forEach(e -> e.update(delta));
     }
 
     public void render(SpriteBatch batch) {
