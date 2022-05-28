@@ -1,21 +1,19 @@
 package de.pogs.rl.game.world.entities;
 
-
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.TextureData;
-import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.PlayerStats;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class XpOrb extends AbstractEntity {
 
-    private Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("xporb");
+    private Texture originTexture = RocketLauncher.INSTANCE.assetHelper.getImage("xporb");
+    private TextureRegion[][] textureRegion;
+    private float currentTexture = 0;
+    private Texture animatedTexture;
     private Sprite sprite;
     private int xpPoints;
     private Vector2 velocity;
@@ -26,8 +24,10 @@ public class XpOrb extends AbstractEntity {
     public XpOrb(Vector2 position, int xpPoints) {
         this.position = position;
         this.xpPoints = xpPoints;
+        textureRegion = TextureRegion.split(originTexture, 25, 25);
+        animatedTexture = textureRegion[0][0].getTexture();
         velocity = new Vector2(0, 0);
-        sprite = new Sprite(texture);
+        sprite = new Sprite(animatedTexture);
         sprite.setSize(10, 10);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
         this.position = position;
@@ -37,8 +37,11 @@ public class XpOrb extends AbstractEntity {
 
     @Override
     public void update(float delta) {
-        sprite.setTexture(colorizeTexture(texture, mix(new Color(0x8ef5aaff), new Color(0x01661cff),
-                0.5 + (float) Math.sin((((float) (TimeUtils.millis() % 20000)) / 500f)) * 0.5f)));
+        currentTexture += .1;
+        if(currentTexture > 4) {
+            currentTexture = 0;
+        }
+        sprite.setRegion(textureRegion[(int)Math.floor(currentTexture)][0]);
         sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
                 position.getY() - sprite.getHeight() / 2);
         position = position.add(velocity.mul(delta));
@@ -53,34 +56,6 @@ public class XpOrb extends AbstractEntity {
             PlayerStats.addExp(xpPoints);
             alive = false;
         }
-    }
-
-    private Texture colorizeTexture(Texture t, Color color) {
-        TextureData tData = t.getTextureData();
-        if (!tData.isPrepared())
-            tData.prepare();
-        Pixmap sourcePixmap = tData.consumePixmap();
-        Pixmap rPixmap = new Pixmap(t.getWidth(), t.getHeight(), Format.RGBA8888);
-        int idx = 0;
-        for (int x = 0; x < t.getWidth(); x++) {
-            for (int y = 0; y < t.getHeight(); y++) {
-                Color pCol = new Color(sourcePixmap.getPixel(x, y));
-                rPixmap.getPixels().put(idx++, (byte) (pCol.r * color.r * 255));
-                rPixmap.getPixels().put(idx++, (byte) (pCol.g * color.g * 255));
-                rPixmap.getPixels().put(idx++, (byte) (pCol.b * color.b * 255));
-                rPixmap.getPixels().put(idx++, (byte) (pCol.a * color.a *255));
-            }
-        
-        }
-        return new Texture(rPixmap);
-    }
-
-    private Color mix(Color a, Color b, double ratio) {
-        ratio = Math.max(Math.min(ratio, 1), 0);
-        Color color = new Color((float) (a.r * ratio + b.r * (1.0 - ratio)),
-                (float) (a.g * ratio + b.g * (1.0 - ratio)),
-                (float) (a.b * ratio + b.b * (1.0 - ratio)), 1f);
-        return color;
     }
 
     @Override

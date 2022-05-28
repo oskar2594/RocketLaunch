@@ -8,7 +8,7 @@ import java.awt.Color;
 
 public class ParticleUtils {
     public static Texture generateParticleTexture(Color color) {
-        int size = 50;
+        int size = 1;
         int idx = 0;
         Pixmap pixmap = new Pixmap(size, size, Format.RGBA8888);
         for (int i = 0; i < Math.pow(size, 2); i++) {

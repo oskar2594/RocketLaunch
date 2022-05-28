@@ -1,6 +1,5 @@
 package de.pogs.rl.game.world.generation.spawners;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 import de.pogs.rl.game.world.entities.AbstractEntity;

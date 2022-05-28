@@ -23,6 +23,8 @@ public class RocketCamera extends OrthographicCamera {
     public void resize(int width, int height) {
         this.viewportHeight = height;
         this.viewportWidth = width;
+
+        this.zoom = 1f;
     }
 
     private float beforeZoom = 0;

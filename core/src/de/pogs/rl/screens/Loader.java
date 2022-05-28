@@ -1,10 +1,7 @@
 package de.pogs.rl.screens;
 
-import java.sql.Time;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -15,7 +12,6 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import de.pogs.rl.RocketLauncher;
-import de.pogs.rl.game.GameScreen;
 
 public class Loader extends ScreenAdapter {
     private SpriteBatch batch;

@@ -77,9 +77,7 @@ public class Player extends AbstractEntity {
     private ParticleEmitter overheat;
 
     public long experiencePoints = 1;
-    private float baseAcceleration = 200;
     private float baseTractionCoeff = 0.5f;
-    private float baseAngleResponse = 7;
 
     public static Player get() {
         return instance;

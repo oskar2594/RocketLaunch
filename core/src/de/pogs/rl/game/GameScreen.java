@@ -1,6 +1,5 @@
 package de.pogs.rl.game;
 
-import java.util.HashSet;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -15,7 +14,6 @@ import de.pogs.rl.game.world.entities.Player;
 import de.pogs.rl.game.world.generation.SpawnManager;
 import de.pogs.rl.game.world.generation.spawners.SimpleSpawner;
 import de.pogs.rl.game.world.particles.ParticleManager;
-import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class GameScreen extends ScreenAdapter {
     public static GameScreen INSTANCE;
