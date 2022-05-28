@@ -230,17 +230,17 @@ public class Player extends AbstractEntity {
 
     private void updateParticles() {
         if (isAccelerating) {
-            dust.isActive = true;
-            sparks.isActive = true;
-            hot.isActive = true;
-            flame.isActive = true;
-            overheat.isActive = true;
+            dust.setActive(true);
+            sparks.setActive(true);
+            hot.setActive(true);
+            flame.setActive(true);
+            overheat.setActive(true);
         } else {
-            dust.isActive = false;
-            sparks.isActive = false;
-            hot.isActive = false;
-            flame.isActive = false;
-            overheat.isActive = false;
+            dust.setActive(false);
+            sparks.setActive(false);
+            hot.setActive(false);
+            flame.setActive(false);
+            overheat.setActive(false);
         }
     }
 
@@ -294,7 +294,7 @@ public class Player extends AbstractEntity {
     }
 
     @Override
-    public void kill(AbstractEntity victim) {
+    public void killOtherEvent(AbstractEntity victim) {
         PlayerStats.addExp(25);
     }
 }

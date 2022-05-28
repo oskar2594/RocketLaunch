@@ -16,8 +16,8 @@ public class ParticleEmitter {
     private float[] particleSettings;
     private int count;
     private float perFrame;
-    public boolean isActive = true;
-    public boolean isDead = false;
+    private boolean isActive = true;
+    private boolean isDead = false;
     private boolean willDie = false;
     private boolean isAttached = false;
     private Sprite attachedTo;
@@ -129,5 +129,21 @@ public class ParticleEmitter {
 
     public void updateVelocity(Vector2 vel) {
         this.velocity = vel;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public boolean getActive() {
+        return isActive;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
+
+    public boolean getDead() {
+        return isDead;
     }
 }

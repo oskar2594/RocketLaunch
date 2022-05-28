@@ -107,5 +107,6 @@ public class Bullet extends AbstractEntity {
     @Override
     public void dispose() {
         texture.dispose();
+        glow.setDead(true);
     }
 }
