@@ -1,9 +1,6 @@
 package de.pogs.rl.game.background;
 
 import java.util.LinkedList;
-
-import javax.swing.plaf.synth.SynthStyle;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -52,8 +49,8 @@ public final class BackgroundChunkManager {
         BackgroundChunkManager.COLORNOISE_BLUE.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
 
         // Render Distance calculated based on zoom and screen dimensions
-        renderDistance = (int) Math
-                .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 1) / chunkRadius);
+        renderDistance = (int) Math.ceil(
+                (Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 1) / chunkRadius);
         // chunks calculated per frame based on ratios
         chunksPerFrame = (int) Math.ceil(Math.pow(renderDistance, 2) * Math.PI / 140);
         chunks = new LinkedList<BackgroundChunk>();
@@ -65,19 +62,21 @@ public final class BackgroundChunkManager {
         // possible recalculations
         if (oldWidth < 0)
             oldWidth = width;
-        int newChunkRadius = (int) (Gdx.graphics.getHeight() * Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom / 14000);
+        int newChunkRadius = (int) (Gdx.graphics.getHeight() * Gdx.graphics.getWidth()
+                * GameScreen.INSTANCE.camera.zoom / 14000);
         if (newChunkRadius < width / 10)
             newChunkRadius = width / 10;
         if (newChunkRadius > width / 2)
             newChunkRadius = width / 2;
-        int newRenderDistance = (int) Math
-                .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 1) / newChunkRadius);
+        int newRenderDistance = (int) Math.ceil(
+                (Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 1) / newChunkRadius);
         int newChunksPerFrame = (int) Math.floor(Math.pow(newRenderDistance, 2) * Math.PI / 150);
         // check if new chunkradius is needed, because
         // changing the chunkradius leads to recreating all
         // chunks
         // newChunkRadius *= scaling;
-        if (Math.abs(oldWidth - width) > width * 0.2 || Math.abs(oldWidth - width) > oldWidth * 0.2) {
+        if (Math.abs(oldWidth - width) > width * 0.2
+                || Math.abs(oldWidth - width) > oldWidth * 0.2) {
             // for better performance collecting current color
             int one = collectCache(newChunkRadius, this.renderDistance, this.chunkRadius);
             this.chunkRadius = newChunkRadius * 2;
@@ -87,9 +86,11 @@ public final class BackgroundChunkManager {
             chunks.clear();
         } else {
             // setting new generating values
-            this.renderDistance = (int) Math
-                    .ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 1) / this.chunkRadius);
-            this.chunksPerFrame = (int) Math.floor(Math.pow(this.renderDistance, 2) * Math.PI / 150);
+            this.renderDistance =
+                    (int) Math.ceil((Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom * 1)
+                            / this.chunkRadius);
+            this.chunksPerFrame =
+                    (int) Math.floor(Math.pow(this.renderDistance, 2) * Math.PI / 150);
         }
         oldWidth = width;
     }
@@ -111,8 +112,8 @@ public final class BackgroundChunkManager {
             i++;
             for (int x = 0; x < data.length; x++) {
                 for (int y = 0; y < data.length; y++) {
-                    Vector2 realPosition = new Vector2(chunk.start.x / scaling+ x - cacheStart.x,
-                            chunk.start.y / scaling - y  - cacheStart.y);
+                    Vector2 realPosition = new Vector2(chunk.start.x / scaling + x - cacheStart.x,
+                            chunk.start.y / scaling - y - cacheStart.y);
                     try {
                         colorCache[(int) realPosition.x][(int) realPosition.y] = data[x][y];
                     } catch (Exception e) {
@@ -128,7 +129,8 @@ public final class BackgroundChunkManager {
 
     // for individual chunk get cached color on position
     public Color getCachedColor(int x, int y, Vector2 start) {
-        Vector2 relPos = new Vector2((start.x / scaling + x)  - cacheStart.x, (start.y / scaling - y) - cacheStart.y);
+        Vector2 relPos = new Vector2((start.x / scaling + x) - cacheStart.x,
+                (start.y / scaling - y) - cacheStart.y);
         try {
             return colorCache[(int) relPos.x][(int) relPos.y];
         } catch (Exception e) {
@@ -138,13 +140,15 @@ public final class BackgroundChunkManager {
 
     public void update() {
         LinkedList<BackgroundChunk> addChunks = new LinkedList<BackgroundChunk>();
-        Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
+        Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x,
+                GameScreen.INSTANCE.camera.position.y);
         int pixelChunkRadius = chunkRadius * renderDistance;
         xLoop: for (int x = (int) getNumInGrid(camPos.x, chunkRadius)
                 - pixelChunkRadius; x < (int) getNumInGrid(camPos.x, chunkRadius)
                         + pixelChunkRadius; x += chunkRadius) {
             // only skip if enough chunks are created
-            if (addChunks.size() > chunksPerFrame && chunks.size() > Math.pow(renderDistance, 2) * Math.PI) {
+            if (addChunks.size() > chunksPerFrame
+                    && chunks.size() > Math.pow(renderDistance, 2) * Math.PI) {
                 break xLoop;
             }
             yLoop: for (int y = (int) getNumInGrid(camPos.y, chunkRadius)
@@ -158,7 +162,8 @@ public final class BackgroundChunkManager {
                     addChunks.add(chunk);
                 }
                 // only skip if enough chunks are created
-                if (addChunks.size() > chunksPerFrame && chunks.size() > Math.pow(renderDistance, 2) * Math.PI) {
+                if (addChunks.size() > chunksPerFrame
+                        && chunks.size() > Math.pow(renderDistance, 2) * Math.PI) {
                     break yLoop;
                 }
             }
@@ -190,10 +195,11 @@ public final class BackgroundChunkManager {
     // check if chunks are out of render distance
     private LinkedList<BackgroundChunk> removeChunksOutOfRenderDistance() {
         LinkedList<BackgroundChunk> removeChunks = new LinkedList<BackgroundChunk>();
-        Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
+        Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x,
+                GameScreen.INSTANCE.camera.position.y);
         for (BackgroundChunk chunk : chunks) {
-            if (distance(new Vector2(chunk.position.x, chunk.position.y),
-                    camPos) > renderDistance * chunkRadius * 2) {
+            if (distance(new Vector2(chunk.position.x, chunk.position.y), camPos) > renderDistance
+                    * chunkRadius * 2) {
                 chunk.dispose();
                 removeChunks.add(chunk);
             }
@@ -203,10 +209,10 @@ public final class BackgroundChunkManager {
 
     // check if there is a chunk at the position
     private boolean checkForChunkAtPosition(int x, int y) {
-        Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x, GameScreen.INSTANCE.camera.position.y);
+        Vector2 camPos = new Vector2(GameScreen.INSTANCE.camera.position.x,
+                GameScreen.INSTANCE.camera.position.y);
         for (BackgroundChunk chunk : chunks) {
-            if (distance(new Vector2(x, y),
-                    camPos) > renderDistance * chunkRadius * 1) {
+            if (distance(new Vector2(x, y), camPos) > renderDistance * chunkRadius * 1) {
                 return true;
             }
             if (distance(chunk.position, new Vector2(x, y)) < chunkRadius) {
@@ -217,7 +223,8 @@ public final class BackgroundChunkManager {
     }
 
     private double distance(Vector2 start, Vector2 end) {
-        return Math.sqrt((end.y - start.y) * (end.y - start.y) + (end.x - start.x) * (end.x - start.x));
+        return Math.sqrt(
+                (end.y - start.y) * (end.y - start.y) + (end.x - start.x) * (end.x - start.x));
     }
 
 }
