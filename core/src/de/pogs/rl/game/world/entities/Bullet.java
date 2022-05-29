@@ -34,7 +34,7 @@ public class Bullet extends AbstractEntity {
      * @param damage Schaden, den das Bullet bei einem Treffer verursachen soll.
      * @param velocity Geschwindigkeitsvektor nach dem Bullet sich bewegt.
      * @param color Farbe des Bullet.
-     * @param lifeTime Zeit, nach der Bullet gelöscht wird.
+     * @param lifeTime Zeit, nach der Bullet gelöscht wird, in ms.
      * @return Das erzeugte Bullet.
      */
     public static Bullet createBullet(Vector2 position, AbstractEntity sender, float damage,

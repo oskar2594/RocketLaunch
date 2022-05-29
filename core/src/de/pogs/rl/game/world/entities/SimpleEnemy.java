@@ -13,8 +13,8 @@ import de.pogs.rl.game.world.particles.ParticleUtils;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class SimpleEnemy extends AbstractEntity {
-    private Random random = new Random();
-    private float sightRange = (float) Math.pow(500, 2);
+    protected Random random = new Random();
+    protected float sightRange = (float) Math.pow(500, 2);
     private float haloRange = (float) Math.pow(200, 2);
 
     private float respectDistance = (float) Math.pow(180, 2);
@@ -27,7 +27,7 @@ public class SimpleEnemy extends AbstractEntity {
     private Vector2 moveDirection =
             new Vector2(random.nextFloat() - 0.5f, random.nextFloat() - 0.5f).nor();
 
-    private Vector2 velocity = moveDirection.mul(speed);
+    protected Vector2 velocity = moveDirection.mul(speed);
 
     private float repulsionRadius = 50;
 
@@ -47,6 +47,7 @@ public class SimpleEnemy extends AbstractEntity {
     public SimpleEnemy(Vector2 position) {
         this(position, RocketLauncher.INSTANCE.assetHelper.getImage("monster1"));
     }
+
     public SimpleEnemy(Vector2 position, Texture texture) {
         this.radius = 20;
         this.texture = texture;
@@ -57,6 +58,7 @@ public class SimpleEnemy extends AbstractEntity {
         sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
                 position.getY() - sprite.getHeight() / 2);
     }
+
     public SimpleEnemy(float posX, float posY) {
         this(new Vector2(posX, posY));
     }
@@ -80,18 +82,20 @@ public class SimpleEnemy extends AbstractEntity {
 
 
         updatePos(delta);
-        if (Player.get().getPosition().dst2(position) < sightRange
-                && random.nextFloat() < delta * shootingCoeff) {
-            shoot();
-        }
+        shoot(delta);
+
     }
 
-    private void shoot() {
-        float flightTime = Player.get().getPosition().dst(position) / bulletSpeed;
-        Vector2 playerPosPredicted = Player.get().getPosition()
-                .add(Player.get().getVelocity().mul(flightTime));
-        Vector2 bulletVelocity = playerPosPredicted.sub(position).nor().mul(bulletSpeed);
-        Bullet.createBullet(position, this, bulletDamage, bulletVelocity, bulletColor, 20000);
+    protected void shoot(float delta) {
+
+        if (Player.get().getPosition().dst2(position) < sightRange
+                && random.nextFloat() < delta * shootingCoeff) {
+            float flightTime = Player.get().getPosition().dst(position) / bulletSpeed;
+            Vector2 playerPosPredicted =
+                    Player.get().getPosition().add(Player.get().getVelocity().mul(flightTime));
+            Vector2 bulletVelocity = playerPosPredicted.sub(position).nor().mul(bulletSpeed);
+            Bullet.createBullet(position, this, bulletDamage, bulletVelocity, bulletColor, 20000);
+        }
     }
 
     private Vector2 repulsion(float delta, AbstractEntity entity) {
