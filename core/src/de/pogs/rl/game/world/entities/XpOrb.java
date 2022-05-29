@@ -18,7 +18,7 @@ public class XpOrb extends AbstractEntity {
     private int xpPoints;
     private Vector2 velocity;
     private float attractionRange = 500;
-    private float attractionForce = 1000;
+    private float attractionForce = 2000;
     private float maxVelocity = 500;
 
     public XpOrb(Vector2 position, int xpPoints) {
