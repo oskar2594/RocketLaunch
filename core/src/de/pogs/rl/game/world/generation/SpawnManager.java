@@ -1,7 +1,5 @@
 package de.pogs.rl.game.world.generation;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import de.pogs.rl.game.world.entities.EntityManager;

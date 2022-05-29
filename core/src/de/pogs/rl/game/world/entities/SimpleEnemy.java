@@ -133,7 +133,7 @@ public class SimpleEnemy extends AbstractEntity {
     @Override
     public void addDamage(float damage, AbstractEntity source) {
         this.alive = false;
-        source.kill(this);
+        source.killOtherEvent(this);
         splashEffectSelf();
     }
 

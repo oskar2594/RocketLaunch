@@ -120,6 +120,7 @@ public class EntityManager {
      * @param range2 Quadrat der Entfernung, ab der Entitäten entfernt werden.
      */
     public void removeOutOfRange(Vector2 pos, float range2) {
+        entities.stream().filter(e -> e.getPosition().dst2(pos) > range2).forEach(e -> e.dispose());
         entities.removeIf((entity) -> entity.getPosition().dst2(pos) > range2);
     }
 

@@ -34,7 +34,7 @@ public final class BackgroundChunk {
         this.scaling = scaling;
         position = new Vector2();
         position.set(x, y);
-        fieldCache = new Color[(int) (radius * scaling)][(int) (radius * scaling)];
+        fieldCache = new Color[(int) (radius)][(int) (radius)];
         this.start = new Vector2(x - radius, y - radius);
         this.create();
     }
@@ -80,7 +80,7 @@ public final class BackgroundChunk {
         int idx = 1;
         for (int y = 0; y < radius; y++) {
             for (int x = 0; x < radius; x++) {
-                Color color = BackgroundLayer.INSTANCE.chunkManager.getCachedColor(x, y, position);
+                Color color = BackgroundLayer.INSTANCE.chunkManager.getCachedColor(x, y, start);
                 if (color == null) { // if there is no cached color
 
                     double baseValue = getBaseValue(x, y); // get light value
@@ -96,7 +96,7 @@ public final class BackgroundChunk {
                     }
                 }
                 bytes[idx++] = color;
-                fieldCache[(int) (x * scaling) ][(int) (y* scaling)] = color;
+                fieldCache[(int) (x) ][(int) (y)] = color;
             }
         }
         return bytes;

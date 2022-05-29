@@ -1,6 +1,5 @@
 package de.pogs.rl.game.world.generation;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import de.pogs.rl.game.world.entities.AbstractEntity;
 import de.pogs.rl.utils.SpecialMath.Vector2;

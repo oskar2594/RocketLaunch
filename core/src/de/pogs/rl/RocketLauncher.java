@@ -2,7 +2,8 @@ package de.pogs.rl;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
+import de.pogs.rl.screens.Loader;
+import de.pogs.rl.screens.Menu;
 import de.pogs.rl.utils.AssetHelper;
 import de.pogs.rl.utils.ConfigLoader;
 
@@ -22,9 +23,7 @@ public class RocketLauncher extends Game {
 	public void create() {
 		batch = new SpriteBatch();
 		assetHelper = new AssetHelper();
-		assetHelper.loadAll();
-		assetHelper.assetManager.finishLoading();
-		this.setScreen(new de.pogs.rl.game.GameScreen());
+		this.setScreen(new Loader());
 	}
 
 
