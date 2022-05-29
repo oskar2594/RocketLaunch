@@ -154,7 +154,6 @@ public class Player extends AbstractEntity {
                 position.getY() - sprite.getHeight() / 2);
         sprite.setRotation(angle);
         shoot();
-        System.out.println(PlayerStats.getExp());
     }
 
     private void updateStats() {

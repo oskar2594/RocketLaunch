@@ -18,8 +18,8 @@ public class SimpleEnemy extends AbstractEntity {
     private float haloRange = (float) Math.pow(200, 2);
 
     private float respectDistance = (float) Math.pow(180, 2);
-    private Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("monster1");
-    private Sprite sprite;
+    protected Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("monster1");
+    protected Sprite sprite;
     private float speed = 100;
 
     private float scale = 0.1f;
@@ -39,9 +39,10 @@ public class SimpleEnemy extends AbstractEntity {
     private Vector2 constAcceleration =
             new Vector2(random.nextFloat() - 0.5f, random.nextFloat() - 0.5f).nor().mul(10);
 
-    private float shootingCoeff = 1f;
-    private float bulletDamage = 1;
-    private float bulletSpeed = 500;
+    protected float shootingCoeff = 1f;
+    protected float bulletDamage = 1;
+    protected float bulletSpeed = 500;
+    protected Color bulletColor = new Color(0xd46178);
 
     public SimpleEnemy(Vector2 position) {
         this.radius = 20;
@@ -87,7 +88,7 @@ public class SimpleEnemy extends AbstractEntity {
         Vector2 playerPosPredicted = Player.get().getPosition()
                 .add(Player.get().getVelocity().mul(flightTime));
         Vector2 bulletVelocity = playerPosPredicted.sub(position).nor().mul(bulletSpeed);
-        Bullet.createBullet(position, this, bulletDamage, bulletVelocity, new Color(0xd46178), 20000);
+        Bullet.createBullet(position, this, bulletDamage, bulletVelocity, bulletColor, 20000);
     }
 
     private Vector2 repulsion(float delta, AbstractEntity entity) {

@@ -14,6 +14,7 @@ import de.pogs.rl.game.world.entities.EntityManager;
 import de.pogs.rl.game.world.entities.Player;
 import de.pogs.rl.game.world.generation.SpawnManager;
 import de.pogs.rl.game.world.generation.spawners.SimpleSpawner;
+import de.pogs.rl.game.world.generation.spawners.TankSpawner;
 import de.pogs.rl.game.world.particles.ParticleManager;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
@@ -53,6 +54,7 @@ public class GameScreen extends ScreenAdapter {
         entityManager.flush();
         entityGen = SpawnManager.get();
         entityGen.addSpawner(new SimpleSpawner());
+        entityGen.addSpawner(new TankSpawner());
 
     }
 
