@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import de.pogs.rl.RocketLauncher;
+import de.pogs.rl.screens.Menu.Menu;
 
 public class Loader extends ScreenAdapter {
     private SpriteBatch batch;

@@ -3,7 +3,6 @@ package de.pogs.rl;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.pogs.rl.screens.Loader;
-import de.pogs.rl.screens.Menu;
 import de.pogs.rl.utils.AssetHelper;
 import de.pogs.rl.utils.ConfigLoader;
 

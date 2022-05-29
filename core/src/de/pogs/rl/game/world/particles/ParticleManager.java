@@ -18,7 +18,6 @@ public class ParticleManager {
     }
 
     public void update(float delta) {
-        LinkedList<ParticleEmitter> remEmitters = new LinkedList<ParticleEmitter>();
         emitters.removeIf(e -> e.getDead());
         emitters.stream().forEach(e -> e.update(delta));
     }

@@ -1,18 +1,21 @@
-package de.pogs.rl.screens;
+package de.pogs.rl.screens.Menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.TimeUtils;
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
+import de.pogs.rl.utils.menu.Button;
 
 public class Menu extends ScreenAdapter {
 
@@ -25,12 +28,13 @@ public class Menu extends ScreenAdapter {
 	private Texture logo = RocketLauncher.INSTANCE.assetHelper.getImage("logo");
 	private Sprite logoSprite;
 
-	private BitmapFont font = RocketLauncher.INSTANCE.assetHelper.getFont("roboto", 20);
-
 	private long finished = -1;
 	private float alpha = 1f;
 
 	private int fadeOutTime = 2000;
+
+	private Button testButton;
+	private ShapeRenderer shapeRenderer;
 
 
 	public Menu() {
@@ -38,6 +42,10 @@ public class Menu extends ScreenAdapter {
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		backgroundSprite = new Sprite(background);
 		logoSprite = new Sprite(logo);
+
+		testButton = new Button(0, -150, 100, 50, Color.BLACK, Color.YELLOW, Color.BLUE, "Starten");
+		shapeRenderer = new ShapeRenderer();
+		shapeRenderer.setAutoShapeType(true);
 
 		updateBackground();
 	}
@@ -87,7 +95,7 @@ public class Menu extends ScreenAdapter {
 			return;
 		}
 		update();
-		if ((Gdx.input.isKeyJustPressed(Keys.ANY_KEY) || Gdx.input.isTouched()) && finished == -1)
+		if (testButton.active && finished == -1)
 			next();
 
 		Gdx.gl.glClearColor(0, 0, 0, 1f);
@@ -95,16 +103,21 @@ public class Menu extends ScreenAdapter {
 				| (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV
 						: 0));
 		camera.update();
-		batch.setProjectionMatrix(camera.combined);
+		testButton.update(delta);
 		batch.begin();
 		backgroundSprite.draw(batch);
 		logoSprite.draw(batch);
-
-		font.draw(batch, "Drücke jegliche Taste, um das Spiel zu starten...",
-				-Gdx.graphics.getWidth() / 2, -logoSprite.getHeight() / 2 - 20,
-				Gdx.graphics.getWidth(), Align.center, false);
-
 		batch.end();
+
+		shapeRenderer.setProjectionMatrix(camera.combined);
+		shapeRenderer.begin();
+		testButton.shapeRender(shapeRenderer);
+		shapeRenderer.end();
+
+		batch.begin();
+		testButton.render(batch);
+		batch.end();
+		
 	}
 
 	private void next() {
@@ -116,8 +129,6 @@ public class Menu extends ScreenAdapter {
 		if (finished != -1) {
 			alpha = 1 - (TimeUtils.millis() - finished) / (float) fadeOutTime;
 		}
-		font.setColor(1, 1, 1,
-				(float) (alpha * (1.1f + Math.sin(TimeUtils.millis() * Math.pow(10, -2)) * 0.8f)));
 		updateLogo();
 		updateBackground();
 	}
