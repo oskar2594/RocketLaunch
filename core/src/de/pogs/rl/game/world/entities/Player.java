@@ -25,7 +25,7 @@ public class Player extends AbstractEntity {
     private Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("rakete");
     private Sprite sprite;
 
-    private float scale = 0.1f;
+    private float scale = 0.05f;
 
     private float angle = 0;
     private float aimedAngle = 0;
@@ -89,7 +89,7 @@ public class Player extends AbstractEntity {
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
         position = new Vector2(0, 0);
         renderPriority = 1;
-        radius = 20;
+        radius = 10;
 
         thrustSound = RocketLauncher.INSTANCE.assetHelper.getSound("thrust");
         thrustId = thrustSound.loop(thrustVolume);

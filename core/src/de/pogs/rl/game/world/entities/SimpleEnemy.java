@@ -18,7 +18,7 @@ public class SimpleEnemy extends AbstractEntity {
     private float haloRange = (float) Math.pow(200, 2);
 
     private float respectDistance = (float) Math.pow(180, 2);
-    protected Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("monster1");
+    protected Texture texture;
     protected Sprite sprite;
     private float speed = 100;
 
@@ -45,7 +45,11 @@ public class SimpleEnemy extends AbstractEntity {
     protected Color bulletColor = new Color(0xd46178);
 
     public SimpleEnemy(Vector2 position) {
+        this(position, RocketLauncher.INSTANCE.assetHelper.getImage("monster1"));
+    }
+    public SimpleEnemy(Vector2 position, Texture texture) {
         this.radius = 20;
+        this.texture = texture;
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
@@ -53,7 +57,6 @@ public class SimpleEnemy extends AbstractEntity {
         sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
                 position.getY() - sprite.getHeight() / 2);
     }
-
     public SimpleEnemy(float posX, float posY) {
         this(new Vector2(posX, posY));
     }
@@ -96,7 +99,7 @@ public class SimpleEnemy extends AbstractEntity {
                 .mul(20 * delta * speed / (float) Math.pow(position.dst(entity.getPosition()), 3));
     }
 
-    private void splashEffectSelf() {
+    protected void splashEffectSelf() {
         GameScreen.INSTANCE.particleManager.createEmitter(
                 new ParticleEmitter((int) position.getX(), (int) position.getY(), 50, 5,
                         ParticleUtils.generateParticleTexture(ParticleUtils.averageColor(texture)),
