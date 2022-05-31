@@ -14,6 +14,7 @@ import de.pogs.rl.game.ui.HUDCamera;
 import de.pogs.rl.game.world.entities.EntityManager;
 import de.pogs.rl.game.world.entities.Player;
 import de.pogs.rl.game.world.generation.SpawnManager;
+import de.pogs.rl.game.world.generation.spawners.AsteroidSpawner;
 import de.pogs.rl.game.world.generation.spawners.SimpleSpawner;
 import de.pogs.rl.game.world.generation.spawners.TankSpawner;
 import de.pogs.rl.game.world.particles.ParticleManager;
@@ -59,6 +60,7 @@ public class GameScreen extends ScreenAdapter {
         entityGen = SpawnManager.get();
         entityGen.addSpawner(new SimpleSpawner());
         entityGen.addSpawner(new TankSpawner());
+        entityGen.addSpawner(new AsteroidSpawner());
 
     }
 
