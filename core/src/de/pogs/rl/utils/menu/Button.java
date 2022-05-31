@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import de.pogs.rl.RocketLauncher;
-import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.utils.InteractionUtils;
 
 public class Button {
@@ -24,6 +23,7 @@ public class Button {
     private Color border;
     private Color textColor;
     private String content;
+    private float alpha = 1f;
 
     public boolean hover = false;
     public boolean active = false;
@@ -68,18 +68,19 @@ public class Button {
     }
 
     public void shapeRender(ShapeRenderer shapeRenderer) {
-        shapeRenderer.setColor(background);
+        shapeRenderer.setColor(new Color(background.r, background.g, background.b, alpha));
         shapeRenderer.set(ShapeType.Filled);
         shapeRenderer.rect(position.x - width / 2, position.y - height / 2, width, height);
-        shapeRenderer.setColor(border);
+        shapeRenderer.setColor(new Color(border.r, border.g, border.b, alpha));
         shapeRenderer.set(ShapeType.Filled);
         if (hover) {
             int borderWidth = 3;
-            shapeRenderer.rectLine(position.x - width / 2,
-                    position.y - height / 2 - borderWidth / 2, position.x - width / 2,
+            //TODO: FIX
+            shapeRenderer.rectLine(position.x - width / 2 - borderWidth/2,
+                    position.y - height / 2 + borderWidth, position.x - width / 2 + borderWidth/2,
                     position.y + height / 2 + borderWidth / 2, borderWidth);
-            shapeRenderer.rectLine(position.x + width / 2, position.y + height / 2,
-                    position.x - width / 2, position.y + height / 2, borderWidth);
+            shapeRenderer.rectLine(position.x - width / 2 - borderWidth/2, position.y + height / 2,
+                    position.x - width / 2 - borderWidth/2, position.y + height / 2, borderWidth);
             shapeRenderer.rectLine(position.x + width / 2,
                     position.y - height / 2 + borderWidth / 2 - borderWidth / 2,
                     position.x + width / 2, position.y + height / 2 + borderWidth / 2, borderWidth);
@@ -125,6 +126,18 @@ public class Button {
 
     public int getHeight() {
         return this.height;
+    }
+
+    public void dispose() {
+        font.dispose();
+    }
+
+    public void setAlpha(float alpha) {
+        this.alpha = alpha;
+    }
+
+    public float getAlpha() {
+        return this.alpha;
     }
 
 }

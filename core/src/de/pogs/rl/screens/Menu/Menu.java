@@ -2,16 +2,13 @@ package de.pogs.rl.screens.Menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.TimeUtils;
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
@@ -103,7 +100,6 @@ public class Menu extends ScreenAdapter {
 		}
 		update();
 		if (testButton.active && finished == -1) next();
-
 		Gdx.gl.glClearColor(0, 0, 0, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT
 				| (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV
@@ -152,7 +148,8 @@ public class Menu extends ScreenAdapter {
 
 	@Override
 	public void dispose() {
-
+		background.dispose();
+		testButton.dispose();
 	}
 
 }

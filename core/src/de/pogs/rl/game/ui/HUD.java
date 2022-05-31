@@ -77,4 +77,6 @@ public class HUD {
             component.resize(this.width, this.height);
         });
     }
+
+    public void dipose() {}
 }

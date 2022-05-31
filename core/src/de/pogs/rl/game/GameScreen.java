@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.background.BackgroundLayer;
+import de.pogs.rl.game.overlay.DeathOverlay;
+import de.pogs.rl.game.overlay.OverlayHandler;
 import de.pogs.rl.game.ui.HUD;
 import de.pogs.rl.game.ui.HUDCamera;
 import de.pogs.rl.game.world.entities.EntityManager;
@@ -28,6 +30,7 @@ public class GameScreen extends ScreenAdapter {
     public EntityManager entityManager;
     public ParticleManager particleManager;
     public HUD hud;
+    public OverlayHandler overlayHandler;
     public SpawnManager entityGen;
 
     private int renderDistanceBase = 1500;
@@ -48,6 +51,9 @@ public class GameScreen extends ScreenAdapter {
         player = Player.get();
         background = new BackgroundLayer();
         hud = new HUD();
+        overlayHandler = new OverlayHandler();
+        overlayHandler.setOverlay(new DeathOverlay());
+
         entityManager.addEntity(player);
         entityManager.flush();
         entityGen = SpawnManager.get();
@@ -91,6 +97,20 @@ public class GameScreen extends ScreenAdapter {
         hud.render(batch);
         batch.end();
 
+        // UPDATE OVERLAY
+        overlayHandler.update(delta);
+        // OVERLAY SHAPES
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        overlayHandler.shapeRender(hudCamera.combined);
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+
+        // OVERLAY SPRITES
+        batch.setProjectionMatrix(hudCamera.combined);
+        batch.begin();
+        overlayHandler.render(batch);
+        batch.end();
+
     }
 
     @Override
@@ -100,7 +120,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        this.dispose();
+        background.dispose();
     }
 
     @Override

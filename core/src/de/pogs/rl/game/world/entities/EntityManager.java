@@ -127,4 +127,5 @@ public class EntityManager {
     public LinkedList<AbstractEntity> getEntities() {
         return new LinkedList<AbstractEntity>(entities);
     }
+    public void dispose() {}
 }

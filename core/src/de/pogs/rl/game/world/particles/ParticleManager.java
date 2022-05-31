@@ -28,4 +28,6 @@ public class ParticleManager {
         }
     }
 
+    public void dispose() {}
+
 }
