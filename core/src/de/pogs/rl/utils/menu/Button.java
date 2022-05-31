@@ -94,4 +94,37 @@ public class Button {
     }
 
 
+    public void setPosition(int x, int y) {
+        position.set(x, y);
+    }
+
+    public Vector2 getPosition() {
+        return position;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getContent() {
+        return this.content;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+    
+    public void setHeight(int height) {
+        this.height = height;
+        updateFont();
+    }
+
+    public int getHeight() {
+        return this.height;
+    }
+
 }

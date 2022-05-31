@@ -43,7 +43,7 @@ public class Menu extends ScreenAdapter {
 		backgroundSprite = new Sprite(background);
 		logoSprite = new Sprite(logo);
 
-		testButton = new Button(0, -150, 100, 50, Color.BLACK, Color.YELLOW, Color.BLUE, "Starten");
+		testButton = new Button(0, 0, (int)(Gdx.graphics.getWidth() * 0.1), (int) ((Gdx.graphics.getWidth() * 0.1) / 2), Color.BLACK, Color.YELLOW, Color.BLUE, "Starten");
 		shapeRenderer = new ShapeRenderer();
 		shapeRenderer.setAutoShapeType(true);
 
@@ -80,11 +80,18 @@ public class Menu extends ScreenAdapter {
 	}
 
 	private void updateLogo() {
+		System.out.println(logoSprite.getHeight());
 		logoSprite.setSize(Gdx.graphics.getWidth() * 0.5f,
 				((float) logo.getHeight() / (float) logo.getWidth())
 						* (float) Gdx.graphics.getWidth() * 0.5f);
 		logoSprite.setPosition(-logoSprite.getWidth() / 2, -logoSprite.getHeight() / 2);
 		logoSprite.setAlpha(alpha);
+	}
+
+	private void updateButton() {
+		testButton.setWidth((int)(Gdx.graphics.getWidth() * 0.1));
+		testButton.setHeight((int) ((Gdx.graphics.getWidth() * 0.1) / 2));
+		testButton.setPosition(0, (int) - (logoSprite.getHeight() / 2) - testButton.getHeight());
 	}
 
 	@Override
@@ -95,8 +102,7 @@ public class Menu extends ScreenAdapter {
 			return;
 		}
 		update();
-		if (testButton.active && finished == -1)
-			next();
+		if (testButton.active && finished == -1) next();
 
 		Gdx.gl.glClearColor(0, 0, 0, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT
@@ -114,6 +120,7 @@ public class Menu extends ScreenAdapter {
 		testButton.shapeRender(shapeRenderer);
 		shapeRenderer.end();
 
+		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		testButton.render(batch);
 		batch.end();
@@ -131,12 +138,15 @@ public class Menu extends ScreenAdapter {
 		}
 		updateLogo();
 		updateBackground();
+		updateButton();
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		camera.viewportHeight = height;
 		camera.viewportWidth = width;
+		updateBackground();
+		testButton.resize(width, height);
 
 	}
 
