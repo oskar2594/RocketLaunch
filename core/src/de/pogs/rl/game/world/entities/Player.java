@@ -25,7 +25,7 @@ public class Player extends AbstractEntity {
     private Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("rakete");
     private Sprite sprite;
 
-    private float scale = 0.05f;
+    private float scale = 0.075f;
 
     private float angle = 0;
     private float aimedAngle = 0;
@@ -101,27 +101,27 @@ public class Player extends AbstractEntity {
         dust = GameScreen.INSTANCE.particleManager.createEmitter(new ParticleEmitter(0, 0, -1, 10,
                 ParticleUtils.generateParticleTexture(new Color(0x808080)), -10, 10, 150, 250, 5,
                 10, .2f, 1f, 0f, .5f, false));
-        dust.attach(this.getSprite(), 20, 0, this);
+        dust.attach(this.getSprite(), 15, 0, this);
 
         flame = GameScreen.INSTANCE.particleManager.createEmitter(new ParticleEmitter(0, 0, -1, 3,
                 ParticleUtils.generateParticleTexture(new Color(0xd63636)), -10, 10, 150, 250, 5, 5,
                 .6f, .5f, 0f, 0, false));
-        flame.attach(this.getSprite(), 20, 0, this);
+        flame.attach(this.getSprite(), 15, 0, this);
 
         hot = GameScreen.INSTANCE.particleManager.createEmitter(new ParticleEmitter(0, 0, -1, 2,
                 ParticleUtils.generateParticleTexture(new Color(0xd9851e)), -10, 10, 150, 250, 5, 5,
                 .6f, .3f, 0f, 0, false));
-        hot.attach(this.getSprite(), 20, 0, this);
+        hot.attach(this.getSprite(), 15, 0, this);
 
         overheat = GameScreen.INSTANCE.particleManager.createEmitter(new ParticleEmitter(0, 0, -1,
                 1, ParticleUtils.generateParticleTexture(new Color(0xffeba8)), -10, 10, 150, 250, 5,
                 5, .6f, .1f, 0f, 0, false));
-        overheat.attach(this.getSprite(), 20, 0, this);
+        overheat.attach(this.getSprite(), 15, 0, this);
 
         sparks = GameScreen.INSTANCE.particleManager.createEmitter(new ParticleEmitter(0, 0, -1,
                 0.3f, RocketLauncher.INSTANCE.assetHelper.getImage("spark"), -5, 5, 200, 300, 5, 5,
                 .8f, 0.4f, .9f, 0, false));
-        sparks.attach(this.getSprite(), 20, 0, this);
+        sparks.attach(this.getSprite(), 15, 0, this);
     }
 
     @Override

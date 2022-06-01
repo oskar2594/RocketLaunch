@@ -1,6 +1,7 @@
 package de.pogs.rl.utils.menu;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -60,7 +61,7 @@ public class Button {
         if (mouseX > position.x - width / 2 && mouseX < position.x + width / 2
                 && mouseY > position.y - height / 2 && mouseY < position.y + height / 2) {
             this.hover = true;
-            if (Gdx.input.isTouched()) {
+            if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
                 this.active = true;
             } else {
                 this.active = false;
