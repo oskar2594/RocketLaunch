@@ -89,6 +89,7 @@ public class Menu extends ScreenAdapter {
 		testButton.setWidth((int)(Gdx.graphics.getWidth() * 0.1));
 		testButton.setHeight((int) ((Gdx.graphics.getWidth() * 0.1) / 2));
 		testButton.setPosition(0, (int) - (logoSprite.getHeight() / 2) - testButton.getHeight());
+		testButton.setAlpha(alpha);
 	}
 
 	@Override
@@ -110,11 +111,14 @@ public class Menu extends ScreenAdapter {
 		backgroundSprite.draw(batch);
 		logoSprite.draw(batch);
 		batch.end();
-
+		
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		shapeRenderer.begin();
 		testButton.shapeRender(shapeRenderer);
 		shapeRenderer.end();
+		Gdx.gl.glDisable(GL20.GL_BLEND);
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();

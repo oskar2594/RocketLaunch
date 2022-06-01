@@ -28,7 +28,8 @@ public class Button {
     public boolean hover = false;
     public boolean active = false;
 
-    public Button(int x, int y, int width, int height, Color textColor, Color background, Color border, String content) {
+    public Button(int x, int y, int width, int height, Color textColor, Color background,
+            Color border, String content) {
         position = new Vector2(x, y);
         this.width = width;
         this.height = height;
@@ -42,15 +43,16 @@ public class Button {
     private void updateFont() {
         font = RocketLauncher.INSTANCE.assetHelper.getFont("roboto",
                 (int) Math.ceil(this.height * 0.3));
-        font.setColor(textColor);
+        font.setColor(new Color(textColor.r, textColor.g, textColor.b, alpha));
     }
 
     public void update(float delta) {
         float mouseX = InteractionUtils.mouseXfromPlayer();
         float mouseY = InteractionUtils.mouseYfromPlayer() * -1;
-        if (mouseX > position.x - width / 2 && mouseX < position.x + width / 2 && mouseY > position.y - height / 2 && mouseY < position.y + height / 2) {
+        if (mouseX > position.x - width / 2 && mouseX < position.x + width / 2
+                && mouseY > position.y - height / 2 && mouseY < position.y + height / 2) {
             this.hover = true;
-            if(Gdx.input.isTouched()) {
+            if (Gdx.input.isTouched()) {
                 this.active = true;
             } else {
                 this.active = false;
@@ -75,18 +77,22 @@ public class Button {
         shapeRenderer.set(ShapeType.Filled);
         if (hover) {
             int borderWidth = 3;
-            //TODO: FIX
-            shapeRenderer.rectLine(position.x - width / 2 - borderWidth/2,
-                    position.y - height / 2 + borderWidth, position.x - width / 2 + borderWidth/2,
-                    position.y + height / 2 + borderWidth / 2, borderWidth);
-            shapeRenderer.rectLine(position.x - width / 2 - borderWidth/2, position.y + height / 2,
-                    position.x - width / 2 - borderWidth/2, position.y + height / 2, borderWidth);
-            shapeRenderer.rectLine(position.x + width / 2,
-                    position.y - height / 2 + borderWidth / 2 - borderWidth / 2,
-                    position.x + width / 2, position.y + height / 2 + borderWidth / 2, borderWidth);
-            shapeRenderer.rectLine(position.x - width / 2, position.y - height / 2,
-                    position.x + width / 2 + borderWidth / 2, position.y - height / 2, borderWidth);
-
+            // TOP
+            shapeRenderer.rectLine(position.x - width / 2,
+                    position.y + height / 2 - borderWidth / 2, position.x + width / 2,
+                    position.y + height / 2 - borderWidth / 2, borderWidth);
+            // BOTTOM
+            shapeRenderer.rectLine(position.x - width / 2,
+                    position.y - height / 2 + borderWidth / 2, position.x + width / 2,
+                    position.y - height / 2 + borderWidth / 2, borderWidth);
+            // LEFT
+            shapeRenderer.rectLine(position.x - width / 2 + borderWidth / 2,
+                    position.y + height / 2, position.x - width / 2 + borderWidth / 2,
+                    position.y - height / 2, borderWidth);
+            // RIGHT
+            shapeRenderer.rectLine(position.x + width / 2 + borderWidth / 2,
+                    position.y + height / 2, position.x + width / 2 + borderWidth / 2,
+                    position.y - height / 2 , borderWidth);
         }
     }
 
@@ -118,7 +124,7 @@ public class Button {
     public int getWidth() {
         return this.width;
     }
-    
+
     public void setHeight(int height) {
         this.height = height;
         updateFont();
