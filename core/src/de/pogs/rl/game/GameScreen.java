@@ -9,6 +9,7 @@ import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.background.BackgroundLayer;
 import de.pogs.rl.game.overlay.DeathOverlay;
 import de.pogs.rl.game.overlay.OverlayHandler;
+import de.pogs.rl.game.overlay.Pause;
 import de.pogs.rl.game.ui.HUD;
 import de.pogs.rl.game.ui.HUDCamera;
 import de.pogs.rl.game.world.entities.EntityManager;
@@ -55,7 +56,7 @@ public class GameScreen extends ScreenAdapter {
         background = new BackgroundLayer();
         hud = new HUD();
         overlayHandler = new OverlayHandler();
-        // overlayHandler.setOverlay(new DeathOverlay());
+        overlayHandler.setOverlay(new Pause());
 
         entityManager.addEntity(player);
         entityManager.flush();
