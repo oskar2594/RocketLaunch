@@ -1,3 +1,28 @@
+/**
+ * 
+ * MIT LICENSE
+ * 
+ * Copyright 2022 Philip Gilde & Oskar Stanschus
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * 
+ * @author Philip Gilde & Oskar Stanschus
+ * 
+ */
+
 package de.pogs.rl.game.background;
 
 import java.util.LinkedList;
@@ -62,8 +87,8 @@ public final class BackgroundChunkManager {
         BackgroundChunkManager.COLORNOISE_BLUE.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
 
         // Render Distance nach größe des Bildschirms und Zoom der Kamera berechnen
-        renderDistance = (int) Math.ceil(
-                (Gdx.graphics.getWidth() * GameScreen.getCamera().zoom * 1) / chunkRadius);
+        renderDistance = (int) Math
+                .ceil((Gdx.graphics.getWidth() * GameScreen.getCamera().zoom * 1) / chunkRadius);
         // Optimale Rate an Chunks pro Frame berechnen
         chunksPerFrame = (int) Math.ceil(Math.pow(renderDistance, 2) * Math.PI / 140);
         chunks = new LinkedList<BackgroundChunk>();
@@ -85,8 +110,8 @@ public final class BackgroundChunkManager {
             newChunkRadius = width / 10;
         if (newChunkRadius > width / 2)
             newChunkRadius = width / 2;
-        int newRenderDistance = (int) Math.ceil(
-                (Gdx.graphics.getWidth() * GameScreen.getCamera().zoom * 1) / newChunkRadius);
+        int newRenderDistance = (int) Math
+                .ceil((Gdx.graphics.getWidth() * GameScreen.getCamera().zoom * 1) / newChunkRadius);
         int newChunksPerFrame = (int) Math.floor(Math.pow(newRenderDistance, 2) * Math.PI / 150);
         /**
          * Überprfung ob eine Anpassung der Chunkgröße notwendig ist, da eine Änderung bedeutet,
@@ -102,9 +127,8 @@ public final class BackgroundChunkManager {
             chunks.clear();
         } else {
             // Neue optimierte Werte setzen
-            this.renderDistance =
-                    (int) Math.ceil((Gdx.graphics.getWidth() * GameScreen.getCamera().zoom * 1)
-                            / this.chunkSize);
+            this.renderDistance = (int) Math.ceil(
+                    (Gdx.graphics.getWidth() * GameScreen.getCamera().zoom * 1) / this.chunkSize);
             this.chunksPerFrame =
                     (int) Math.floor(Math.pow(this.renderDistance, 2) * Math.PI / 150);
         }
@@ -163,8 +187,8 @@ public final class BackgroundChunkManager {
      */
     public void update() {
         LinkedList<BackgroundChunk> addChunks = new LinkedList<BackgroundChunk>();
-        Vector2 camPos = new Vector2(GameScreen.getCamera().position.x,
-                GameScreen.getCamera().position.y);
+        Vector2 camPos =
+                new Vector2(GameScreen.getCamera().position.x, GameScreen.getCamera().position.y);
         int pixelRenderDistance = chunkSize * renderDistance; // Render Distanz in Pixeln
         xLoop: for (int x = (int) getNumInGrid(camPos.x, chunkSize)
                 - pixelRenderDistance; x < (int) getNumInGrid(camPos.x, chunkSize)
@@ -234,8 +258,8 @@ public final class BackgroundChunkManager {
      */
     private LinkedList<BackgroundChunk> removeChunksOutOfRenderDistance() {
         LinkedList<BackgroundChunk> removeChunks = new LinkedList<BackgroundChunk>();
-        Vector2 camPos = new Vector2(GameScreen.getCamera().position.x,
-                GameScreen.getCamera().position.y);
+        Vector2 camPos =
+                new Vector2(GameScreen.getCamera().position.x, GameScreen.getCamera().position.y);
         for (BackgroundChunk chunk : chunks) {
             if (distance(new Vector2(chunk.getPosition().x, chunk.getPosition().y),
                     camPos) > renderDistance * chunkSize * 2) {
@@ -253,8 +277,8 @@ public final class BackgroundChunkManager {
      * @param y Y - Koordinate des Punktes
      */
     private boolean checkForChunkAtPosition(int x, int y) {
-        Vector2 camPos = new Vector2(GameScreen.getCamera().position.x,
-                GameScreen.getCamera().position.y);
+        Vector2 camPos =
+                new Vector2(GameScreen.getCamera().position.x, GameScreen.getCamera().position.y);
         for (BackgroundChunk chunk : chunks) {
             if (distance(new Vector2(x, y), camPos) > renderDistance * chunkSize * 1) {
                 return true;
