@@ -26,7 +26,7 @@ public class XpOrb extends AbstractEntity {
         this.xpPoints = xpPoints;
         textureRegion = TextureRegion.split(originTexture, 25, 25);
         animatedTexture = textureRegion[0][0].getTexture();
-        velocity = new Vector2(0, 0);
+        velocity = Vector2.zero;
         sprite = new Sprite(animatedTexture);
         sprite.setSize(10, 10);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);

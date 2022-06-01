@@ -23,7 +23,7 @@ public class ParticleEmitter {
     private Sprite attachedTo;
     private float offset;
     private float angle = 0;
-    private Vector2 velocity = new Vector2(0, 0);
+    private Vector2 velocity = Vector2.zero;
     private float offsetAngle;
     private boolean once = false;
     private AbstractEntity attachedEntity;

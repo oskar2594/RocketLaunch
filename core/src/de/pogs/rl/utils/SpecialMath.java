@@ -53,6 +53,7 @@ public class SpecialMath {
             this.y = y;
         }
 
+        public static final Vector2 zero = new Vector2(0, 0);
         public Vector2 mul(float scalar) {
             return new Vector2(x * scalar, y * scalar);
         }

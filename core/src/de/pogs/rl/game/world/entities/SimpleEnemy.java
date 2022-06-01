@@ -21,6 +21,7 @@ public class SimpleEnemy extends AbstractEntity {
     protected Texture texture;
     protected Sprite sprite;
     private float speed = 100;
+    protected float hp = 1;
 
     private float scale = 0.1f;
 
@@ -132,6 +133,9 @@ public class SimpleEnemy extends AbstractEntity {
             velocity = velocity.sub(velocity.mul(tractionCoeff * delta));
         }
         velocity = velocity.add(constAcceleration.mul(delta));
+
+        velocity = velocity.add(forceAdded);
+        forceAdded = Vector2.zero;
     }
 
     private void updatePos(float delta) {
@@ -140,9 +144,12 @@ public class SimpleEnemy extends AbstractEntity {
 
     @Override
     public void addDamage(float damage, AbstractEntity source) {
-        this.alive = false;
-        source.killOtherEvent(this);
-        splashEffectSelf();
+        hp -= damage;
+        if (hp <= 0) {
+            alive = false;
+            source.killOtherEvent(this);
+            splashEffectSelf();
+        }
     }
 
     @Override

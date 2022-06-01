@@ -87,7 +87,7 @@ public class Player extends AbstractEntity {
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-        position = new Vector2(0, 0);
+        position = Vector2.zero;
         renderPriority = 1;
         radius = 10;
 
@@ -226,6 +226,9 @@ public class Player extends AbstractEntity {
             velocity = velocity.mul(maxSpeed / velocity.magn());
         }
 
+        velocity = velocity.add(forceAdded);
+        forceAdded = Vector2.zero;
+
     }
 
     private void updateParticles() {
@@ -297,4 +300,5 @@ public class Player extends AbstractEntity {
     public void killOtherEvent(AbstractEntity victim) {
         PlayerStats.addExp(25);
     }
+
 }
