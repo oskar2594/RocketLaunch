@@ -73,16 +73,21 @@ public class Level extends HUDComponent {
         float percentage = PlayerStats.getCurrentLevelPercentage();
 
         shapeRenderer.setColor(new Color(0x2626261d));
-        partialCircle(shapeRenderer, position.x, position.y, radius, 0, 360, 2, 3);
+        partialCircle(shapeRenderer, position.x, position.y, radius, 0, 360, 2, radius / 25);
         shapeRenderer.setColor(Color.WHITE);
-        partialCircle(shapeRenderer, position.x, position.y, radius, 0, percentage * 360, 2, 5);
+        partialCircle(shapeRenderer, position.x, position.y, radius, 0, percentage * 360, 2,
+                radius / 15);
     }
 
     private void partialCircle(ShapeRenderer shapeRenderer, float x, float y, float radius,
             float start, float degrees, float space, float width) {
         for (float i = start; i < degrees; i += space) {
+            int seg = 10;
+            if (i >= degrees - space || i == 0) {
+                seg = 20;
+            }
             shapeRenderer.circle(x + Math.round(Math.cos(Math.toRadians(i)) * radius),
-                    y + Math.round(Math.sin(Math.toRadians(i)) * radius), width);
+                    y + Math.round(Math.sin(Math.toRadians(i)) * radius), width, seg);
         }
     }
 

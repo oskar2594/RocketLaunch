@@ -78,7 +78,7 @@ public final class BackgroundChunkManager {
         if (Math.abs(oldWidth - width) > width * 0.2
                 || Math.abs(oldWidth - width) > oldWidth * 0.2) {
             // for better performance collecting current color
-            int one = collectCache(newChunkRadius, this.renderDistance, this.chunkRadius);
+            collectCache(newChunkRadius, this.renderDistance, this.chunkRadius);
             this.chunkRadius = newChunkRadius * 2;
             this.renderDistance = newRenderDistance;
             this.chunksPerFrame = newChunksPerFrame;

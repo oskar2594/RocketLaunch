@@ -77,7 +77,6 @@ public class Menu extends ScreenAdapter {
 	}
 
 	private void updateLogo() {
-		System.out.println(logoSprite.getHeight());
 		logoSprite.setSize(Gdx.graphics.getWidth() * 0.5f,
 				((float) logo.getHeight() / (float) logo.getWidth())
 						* (float) Gdx.graphics.getWidth() * 0.5f);
@@ -129,7 +128,6 @@ public class Menu extends ScreenAdapter {
 
 	private void next() {
 		finished = TimeUtils.millis();
-		System.out.println("d");
 	}
 
 	private void update() {
