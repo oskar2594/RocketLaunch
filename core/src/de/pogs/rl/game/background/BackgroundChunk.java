@@ -107,7 +107,7 @@ public final class BackgroundChunk {
         float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
         float saturation = hsb[1];
         float brightness = hsb[2];
-        brightness = color.getAlpha() / 255f; // get the brightness based on the transparency
+        brightness = (color.getAlpha() / 255f) * 0.7f; // get the brightness based on the transparency and darken it
         return new Color(Color.HSBtoRGB(hsb[0], saturation, brightness)); // return a normal Color Object
     }
 
