@@ -12,7 +12,7 @@ import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class TankEnemy extends SimpleEnemy {
 
-    private float hp = 10;
+    private float hp = 20;
     private Texture aimTexture = RocketLauncher.INSTANCE.assetHelper.getImage("aimbeam");
     Sprite aimSprite = new Sprite(aimTexture);
 
@@ -38,8 +38,8 @@ public class TankEnemy extends SimpleEnemy {
         if (hp < 0) {
             this.alive = false;
             source.killOtherEvent(this);
-            splashEffectSelf();
         }
+        splashEffectSelf();
     }
 
     @Override

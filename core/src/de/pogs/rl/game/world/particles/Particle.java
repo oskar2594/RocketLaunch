@@ -59,7 +59,7 @@ public class Particle {
     public void update(float delta) {
         time += delta;
         position = position.add(angleToVector(angle + offsetAngle).mul(delta * speed))
-                .add(velocity.mul(-.001f));
+                .add(velocity.mul(delta * .1f));
         if (time >= duration) {
             isDead = true;
             return;

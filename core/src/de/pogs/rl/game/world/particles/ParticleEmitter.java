@@ -44,15 +44,7 @@ public class ParticleEmitter {
     public void update(float delta) {
         LinkedList<Particle> addParticles = new LinkedList<Particle>();
         LinkedList<Particle> remParticles = new LinkedList<Particle>();
-        if (willDie && this.particles.size() == 0) {
-            isDead = true;
-            this.dispose();
-            return;
-        }
-        if(isAttached && attachedEntity == null ) {
-            System.out.println("AAAAALAAAARM! [--] BUGGED PARTICLE EMITTER");
-        }
-        if((isAttached && !attachedEntity.getAlive()) || (isAttached && attachedEntity == null)) {
+        if ((willDie && this.particles.size() == 0) || (isAttached && !attachedEntity.getAlive())) {
             isDead = true;
             this.dispose();
             return;
