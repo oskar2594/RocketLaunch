@@ -20,7 +20,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-public class Player extends AbstractEntity {
+public class Player extends AbstractEntity implements ImpulseEntity {
     private static Player instance = new Player();
     private Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("rakete");
     private Sprite sprite;
@@ -79,6 +79,8 @@ public class Player extends AbstractEntity {
 
     public long experiencePoints = 1;
     private float baseTractionCoeff = 0.5f;
+
+    private float mass = 10;
 
     public static Player get() {
         return instance;
@@ -302,4 +304,11 @@ public class Player extends AbstractEntity {
         PlayerStats.addExp(25);
     }
 
+    public float getMass() {
+        return mass;
+    }
+
+    public void setVelocity(Vector2 velocity) {
+        this.velocity = velocity;
+    }
 }

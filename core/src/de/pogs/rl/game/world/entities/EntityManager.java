@@ -109,9 +109,7 @@ public class EntityManager {
      */
     public void flush() {
         entities.addAll(entityQueue);
-        while (entityQueue.size() > 0) {
-            entityQueue.remove();
-        }
+        entityQueue.clear();
         entities.sort((e1, e2) -> e1.getRenderPriority() - e2.getRenderPriority());
     }
 

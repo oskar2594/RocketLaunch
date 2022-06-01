@@ -112,5 +112,9 @@ public class SpecialMath {
             }
             return false;
         }
+
+        public float dot(Vector2 other) {
+            return x * other.getX() + y * other.getY();
+        }
     }
 }
