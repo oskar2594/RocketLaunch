@@ -34,6 +34,8 @@ public class GameScreen extends ScreenAdapter {
     public OverlayHandler overlayHandler;
     public SpawnManager entityGen;
 
+    public boolean paused = false; // TEST ONLY
+
     private int renderDistanceBase = 1500;
     private int updateDistanceBase = 1500;
     private int removeDistanceBase = 2500;
@@ -70,12 +72,13 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT
                 | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV
                         : 0));
-
-        entityGen.update(player.getPosition(), renderDistance2, removeDistance2);
-        entityManager.update(delta, player.getPosition(), updateDistance2, removeDistance2);
-        background.update();
-        particleManager.update(delta);
-        hud.update(delta);
+        if (!this.paused) {
+            entityGen.update(player.getPosition(), renderDistance2, removeDistance2);
+            entityManager.update(delta, player.getPosition(), updateDistance2, removeDistance2);
+            background.update();
+            particleManager.update(delta);
+            hud.update(delta);
+        }
         hudCamera.update();
         camera.refresh(delta);
 

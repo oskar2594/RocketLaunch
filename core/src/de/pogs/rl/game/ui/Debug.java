@@ -10,7 +10,7 @@ import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
 
 public class Debug extends HUDComponent {
-    private BitmapFont font = RocketLauncher.INSTANCE.assetHelper.getFont("roboto", 16);
+    private BitmapFont font = RocketLauncher.INSTANCE.assetHelper.getFont("superstar", 16);
     private String text = "";
     Debug() {
         super();

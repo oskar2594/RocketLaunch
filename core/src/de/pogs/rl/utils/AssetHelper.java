@@ -27,30 +27,33 @@ public class AssetHelper {
         assetManager = new AssetManager();
         baseDir = Gdx.files.getFileHandle("assets/", FileType.Local);
     }
-    
+
     public boolean isFinished = false;
 
     public void loadAll() {
-        System.out.println("dd");
         for (FileHandle entry : baseDir.list()) {
-            System.out.println(entry.name());
             if (entry.isDirectory()) {
                 switch (entry.name()) {
                     case "images":
-                        loadImages(entry.list());
+                        new Thread(() -> {
+                            loadImages(entry.list());
+                        }).run();
                         break;
                     case "sounds":
-                        loadSounds(entry.list());
+                        new Thread(() -> {
+                            loadSounds(entry.list());
+                        }).run();
                         break;
                     case "fonts":
-                        loadFonts(entry.list());
+                        new Thread(() -> {
+                            loadFonts(entry.list());
+                        }).run();
                         break;
                     default:
                         break;
                 }
             }
         }
-        System.out.println(assetManager.getProgress());
     }
 
 

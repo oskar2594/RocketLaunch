@@ -20,7 +20,7 @@ public class Loader extends ScreenAdapter {
     private BitmapFont font;
     private float scaleOne = 0.001f;
 
-    private int minDuration = 2000;
+    private int minDuration = 1000;
     private long start;
 
     private Color white = Color.WHITE;
@@ -57,7 +57,7 @@ public class Loader extends ScreenAdapter {
                         : 0));
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-        
+
         batch.begin();
         font.getData().setScale(scaleOne, scaleOne);
         font.setColor(getColor(!backgroundColor));

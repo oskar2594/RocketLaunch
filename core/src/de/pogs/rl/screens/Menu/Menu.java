@@ -28,7 +28,7 @@ public class Menu extends ScreenAdapter {
 	private long finished = -1;
 	private float alpha = 1f;
 
-	private int fadeOutTime = 2000;
+	private int fadeOutTime = 1000;
 
 	private Button testButton;
 	private ShapeRenderer shapeRenderer;
@@ -77,7 +77,6 @@ public class Menu extends ScreenAdapter {
 	}
 
 	private void updateLogo() {
-		System.out.println(logoSprite.getHeight());
 		logoSprite.setSize(Gdx.graphics.getWidth() * 0.5f,
 				((float) logo.getHeight() / (float) logo.getWidth())
 						* (float) Gdx.graphics.getWidth() * 0.5f);
@@ -129,7 +128,6 @@ public class Menu extends ScreenAdapter {
 
 	private void next() {
 		finished = TimeUtils.millis();
-		System.out.println("d");
 	}
 
 	private void update() {
