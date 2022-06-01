@@ -26,6 +26,7 @@ public class Player extends AbstractEntity {
     private Sprite sprite;
 
     private float scale = 0.075f;
+    private int size = 75;
 
     private float angle = 0;
     private float aimedAngle = 0;

@@ -28,7 +28,7 @@ public class Menu extends ScreenAdapter {
 	private long finished = -1;
 	private float alpha = 1f;
 
-	private int fadeOutTime = 2000;
+	private int fadeOutTime = 1000;
 
 	private Button testButton;
 	private ShapeRenderer shapeRenderer;

@@ -34,8 +34,8 @@ public class PlayerHealth extends HUDComponent {
     @Override
     public void resize(float width, float height) {
         this.width = (float) (width * 0.32);
-        this.height = (float) (this.width * 0.08);
-        font = RocketLauncher.INSTANCE.assetHelper.getFont("superstar", (int) Math.ceil(this.height * 0.6));
+        this.height = (float) (this.width * 0.07);
+        font = RocketLauncher.INSTANCE.assetHelper.getFont("superstar", (int) Math.ceil(this.height * 0.7));
     }
 
     public void updateProg() {
