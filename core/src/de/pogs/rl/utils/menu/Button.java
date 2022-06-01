@@ -2,6 +2,7 @@ package de.pogs.rl.utils.menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,7 +14,6 @@ import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.utils.InteractionUtils;
 
 public class Button {
-
     private Vector2 position;
     private BitmapFont font;
     private GlyphLayout glyphLayout = new GlyphLayout();
@@ -24,8 +24,10 @@ public class Button {
     private Color textColor;
     private String content;
     private float alpha = 1f;
+    private int borderWidth = 1;
 
     private boolean hover = false;
+    private boolean beforeHover = false;
     private boolean active = false;
 
     public Button(int x, int y, int width, int height, Color textColor, Color background,
@@ -36,14 +38,20 @@ public class Button {
         this.background = background;
         this.border = border;
         this.textColor = textColor;
-        this.content = content;
+        this.content = content.toUpperCase();
         updateFont();
     }
 
+    public Button(int x, int y, int width, int height, Color textColor, Color background,
+            Color border, String content, int borderWidth) {
+        this(x, y, width, height, textColor, background, border, content);
+        this.borderWidth = borderWidth;
+    }
+
     private void updateFont() {
-        font = RocketLauncher.INSTANCE.assetHelper.getFont("roboto",
-                (int) Math.ceil(this.height * 0.3));
-        font.setColor(new Color(textColor.r, textColor.g, textColor.b, alpha));
+        font = RocketLauncher.INSTANCE.assetHelper.getFont("roboto-bold",
+                (int) Math.ceil((this.height - borderWidth / 2) * 0.3));
+        font.setColor(new Color(textColor.r, textColor.g, textColor.b, textColor.a * alpha));
     }
 
     public void update(float delta) {
@@ -61,6 +69,14 @@ public class Button {
             this.hover = false;
             this.active = false;
         }
+        if (hover != beforeHover) {
+            if (this.hover) {
+                Gdx.graphics.setSystemCursor(SystemCursor.Hand);
+            } else {
+                Gdx.graphics.setSystemCursor(SystemCursor.Arrow);
+            }
+            beforeHover = hover;
+        }
     }
 
     public void render(SpriteBatch batch) {
@@ -70,13 +86,13 @@ public class Button {
     }
 
     public void shapeRender(ShapeRenderer shapeRenderer) {
-        shapeRenderer.setColor(new Color(background.r, background.g, background.b, alpha));
+        shapeRenderer.setColor(
+                new Color(background.r, background.g, background.b, background.a * alpha));
         shapeRenderer.set(ShapeType.Filled);
         shapeRenderer.rect(position.x - width / 2, position.y - height / 2, width, height);
-        shapeRenderer.setColor(new Color(border.r, border.g, border.b, alpha));
+        shapeRenderer.setColor(new Color(border.r, border.g, border.b, border.a * alpha));
         shapeRenderer.set(ShapeType.Filled);
         if (hover) {
-            int borderWidth = 3;
             // TOP
             shapeRenderer.rectLine(position.x - width / 2,
                     position.y + height / 2 - borderWidth / 2, position.x + width / 2,
@@ -90,9 +106,9 @@ public class Button {
                     position.y + height / 2, position.x - width / 2 + borderWidth / 2,
                     position.y - height / 2, borderWidth);
             // RIGHT
-            shapeRenderer.rectLine(position.x + width / 2 + borderWidth / 2,
-                    position.y + height / 2, position.x + width / 2 + borderWidth / 2,
-                    position.y - height / 2 , borderWidth);
+            shapeRenderer.rectLine(position.x + width / 2 - borderWidth / 2,
+                    position.y + height / 2, position.x + width / 2 - borderWidth / 2,
+                    position.y - height / 2, borderWidth);
         }
     }
 
@@ -136,6 +152,7 @@ public class Button {
 
     public void dispose() {
         font.dispose();
+        Gdx.graphics.setSystemCursor(SystemCursor.Arrow);
     }
 
     public void setAlpha(float alpha) {

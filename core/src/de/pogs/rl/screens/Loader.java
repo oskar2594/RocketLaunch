@@ -57,6 +57,7 @@ public class Loader extends ScreenAdapter {
                         : 0));
         camera.update();
         batch.setProjectionMatrix(camera.combined);
+        
         batch.begin();
         font.getData().setScale(scaleOne, scaleOne);
         font.setColor(getColor(!backgroundColor));

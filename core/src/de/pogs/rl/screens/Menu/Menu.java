@@ -40,7 +40,7 @@ public class Menu extends ScreenAdapter {
 		backgroundSprite = new Sprite(background);
 		logoSprite = new Sprite(logo);
 
-		testButton = new Button(0, 0, (int)(Gdx.graphics.getWidth() * 0.1), (int) ((Gdx.graphics.getWidth() * 0.1) / 2), Color.BLACK, Color.YELLOW, Color.BLUE, "Starten");
+		testButton = new Button(0, 0, (int)(Gdx.graphics.getWidth() * 0.5), (int) ((Gdx.graphics.getWidth() * 0.5) / 10), new Color(0x2beafcff), new Color(0x0183e5ff), new Color(0x06bbf4ff), "Starten", 5);
 		shapeRenderer = new ShapeRenderer();
 		shapeRenderer.setAutoShapeType(true);
 
@@ -86,8 +86,8 @@ public class Menu extends ScreenAdapter {
 	}
 
 	private void updateButton() {
-		testButton.setWidth((int)(Gdx.graphics.getWidth() * 0.1));
-		testButton.setHeight((int) ((Gdx.graphics.getWidth() * 0.1) / 2));
+		testButton.setWidth((int)(Gdx.graphics.getWidth() * 0.5));
+		testButton.setHeight((int) ((Gdx.graphics.getWidth() * 0.5) / 10));
 		testButton.setPosition(0, (int) - (logoSprite.getHeight() / 2) - testButton.getHeight());
 		testButton.setAlpha(alpha);
 	}
