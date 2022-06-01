@@ -100,7 +100,7 @@ public class Menu extends ScreenAdapter {
 			return;
 		}
 		update();
-		if (testButton.active && finished == -1) next();
+		if (testButton.isClicked() && finished == -1) next();
 		Gdx.gl.glClearColor(0, 0, 0, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT
 				| (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV
@@ -111,7 +111,7 @@ public class Menu extends ScreenAdapter {
 		backgroundSprite.draw(batch);
 		logoSprite.draw(batch);
 		batch.end();
-		
+
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		shapeRenderer.setProjectionMatrix(camera.combined);

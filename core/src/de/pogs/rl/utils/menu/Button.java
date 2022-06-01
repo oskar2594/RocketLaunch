@@ -25,8 +25,8 @@ public class Button {
     private String content;
     private float alpha = 1f;
 
-    public boolean hover = false;
-    public boolean active = false;
+    private boolean hover = false;
+    private boolean active = false;
 
     public Button(int x, int y, int width, int height, Color textColor, Color background,
             Color border, String content) {
@@ -140,6 +140,14 @@ public class Button {
 
     public void setAlpha(float alpha) {
         this.alpha = alpha;
+    }
+
+    public boolean isClicked() {
+        return this.active;
+    }
+
+    public boolean isHovered() {
+        return this.hover;
     }
 
     public float getAlpha() {

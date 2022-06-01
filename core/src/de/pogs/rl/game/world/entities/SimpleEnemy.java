@@ -107,7 +107,8 @@ public class SimpleEnemy extends AbstractEntity {
         GameScreen.INSTANCE.particleManager.createEmitter(
                 new ParticleEmitter((int) position.getX(), (int) position.getY(), 50, 5,
                         ParticleUtils.generateParticleTexture(ParticleUtils.averageColor(texture)),
-                        -180, 180, 10, 150, 1, 5, 1f, 1f, .5f, .1f, true));
+                        -180, 180, 10, 150, 1, 5, 1f, 1f, .5f, .1f, true))
+                .updateVelocity(velocity);
     }
 
 
