@@ -30,7 +30,7 @@ public class Menu extends ScreenAdapter {
 
 	private int fadeOutTime = 1000;
 
-	private Button testButton;
+	private Button startButton;
 	private ShapeRenderer shapeRenderer;
 
 
@@ -40,7 +40,7 @@ public class Menu extends ScreenAdapter {
 		backgroundSprite = new Sprite(background);
 		logoSprite = new Sprite(logo);
 
-		testButton = new Button(0, 0, (int)(Gdx.graphics.getWidth() * 0.5), (int) ((Gdx.graphics.getWidth() * 0.5) / 10), new Color(0x2beafcff), new Color(0x0183e5ff), new Color(0x06bbf4ff), "Starten", 5);
+		startButton = new Button(0, 0, (int)(Gdx.graphics.getWidth() * 0.5), (int) ((Gdx.graphics.getWidth() * 0.5) / 10), new Color(0x2beafcff), new Color(0x0183e5ff), new Color(0x06bbf4ff), "Starten", 5);
 		shapeRenderer = new ShapeRenderer();
 		shapeRenderer.setAutoShapeType(true);
 
@@ -80,15 +80,15 @@ public class Menu extends ScreenAdapter {
 		logoSprite.setSize(Gdx.graphics.getWidth() * 0.5f,
 				((float) logo.getHeight() / (float) logo.getWidth())
 						* (float) Gdx.graphics.getWidth() * 0.5f);
-		logoSprite.setPosition(-logoSprite.getWidth() / 2, -logoSprite.getHeight() / 2);
+		logoSprite.setPosition(-logoSprite.getWidth() / 2, - logoSprite.getHeight() * 0.3f);
 		logoSprite.setAlpha(alpha);
 	}
 
 	private void updateButton() {
-		testButton.setWidth((int)(Gdx.graphics.getWidth() * 0.5));
-		testButton.setHeight((int) ((Gdx.graphics.getWidth() * 0.5) / 10));
-		testButton.setPosition(0, (int) - (logoSprite.getHeight() / 2) - testButton.getHeight());
-		testButton.setAlpha(alpha);
+		startButton.setWidth((int)(Gdx.graphics.getWidth() * 0.5));
+		startButton.setHeight((int) ((Gdx.graphics.getWidth() * 0.5) / 10));
+		startButton.setPosition(0, (int)(- startButton.getHeight() - logoSprite.getHeight() * 0.2f));
+		startButton.setAlpha(alpha);
 	}
 
 	@Override
@@ -99,13 +99,13 @@ public class Menu extends ScreenAdapter {
 			return;
 		}
 		update();
-		if (testButton.isClicked() && finished == -1) next();
+		if (startButton.isClicked() && finished == -1) next();
 		Gdx.gl.glClearColor(0, 0, 0, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT
 				| (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV
 						: 0));
 		camera.update();
-		testButton.update(delta);
+		startButton.update(delta);
 		batch.begin();
 		backgroundSprite.draw(batch);
 		logoSprite.draw(batch);
@@ -115,13 +115,13 @@ public class Menu extends ScreenAdapter {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		shapeRenderer.begin();
-		testButton.shapeRender(shapeRenderer);
+		startButton.shapeRender(shapeRenderer);
 		shapeRenderer.end();
 		Gdx.gl.glDisable(GL20.GL_BLEND);
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		testButton.render(batch);
+		startButton.render(batch);
 		batch.end();
 		
 	}
@@ -144,14 +144,14 @@ public class Menu extends ScreenAdapter {
 		camera.viewportHeight = height;
 		camera.viewportWidth = width;
 		updateBackground();
-		testButton.resize(width, height);
+		startButton.resize(width, height);
 
 	}
 
 	@Override
 	public void dispose() {
 		background.dispose();
-		testButton.dispose();
+		startButton.dispose();
 	}
 
 }

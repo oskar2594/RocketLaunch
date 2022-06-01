@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.pogs.rl.RocketLauncher;
+import de.pogs.rl.utils.CameraShake;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class Asteroid extends AbstractEntity {
@@ -59,6 +60,9 @@ public class Asteroid extends AbstractEntity {
                 velocity = v1_new;
                 impulseEntity.setVelocity(v2_new);
                 position = position.add(position.sub(x2).nor().mul(radius + entity.getRadius() - x1.dst(x2)));
+                if(entity instanceof Player) {
+                    CameraShake.makeShake(1f, 50);
+                }
                 System.out.println(position.dst(x2));
             }
             if (entity instanceof Asteroid) {

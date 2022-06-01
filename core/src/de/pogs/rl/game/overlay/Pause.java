@@ -45,4 +45,10 @@ public class Pause extends Overlay{
         
     }
 
+    @Override
+    public void resize(int width, int height) {
+        
+        
+    }
+
 }

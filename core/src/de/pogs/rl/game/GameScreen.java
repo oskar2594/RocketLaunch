@@ -56,7 +56,7 @@ public class GameScreen extends ScreenAdapter {
         background = new BackgroundLayer();
         hud = new HUD();
         overlayHandler = new OverlayHandler();
-        overlayHandler.setOverlay(new Pause());
+        // overlayHandler.setOverlay(new Pause());
 
         entityManager.addEntity(player);
         entityManager.flush();

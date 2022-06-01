@@ -47,4 +47,10 @@ public class OverlayHandler {
         currentOverlay.update(delta);
     }
 
+    public void resize(int width, int height) {
+        if (currentOverlay == null)
+            return;
+        currentOverlay.resize(width, height);
+    }
+
 }

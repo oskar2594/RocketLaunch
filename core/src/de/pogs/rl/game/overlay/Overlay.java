@@ -19,5 +19,6 @@ public abstract class Overlay {
     public abstract void renderShape(ShapeRenderer shapeRenderer);
 
     public abstract void update(float delta);
- 
+
+    public abstract void resize(int width, int height);
 }
