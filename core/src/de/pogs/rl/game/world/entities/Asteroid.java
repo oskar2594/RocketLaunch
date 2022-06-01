@@ -17,15 +17,19 @@ public class Asteroid extends AbstractEntity {
         this.position = position;
         this.level = level;
         this.velocity = velocity;
-        sprite.setScale(baseSize * (float) Math.pow(1.5, this.level) / texture.getWidth(),
-                baseSize * (float) Math.pow(1.5, this.level) / texture.getHeight());
-        sprite.setPosition(position.getX(), position.getY());
+        radius = baseSize * (float) Math.pow(1.5, this.level) / 2;
+        sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+        sprite.setSize(baseSize * (float) Math.pow(1.5, this.level),
+                baseSize * (float) Math.pow(1.5, this.level));
+        sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
+                position.getY() - sprite.getHeight() / 2);
     }
 
     @Override
     public void update(float delta) {
         position = position.add(velocity.mul(delta));
-        sprite.setPosition(position.getX(), position.getY());
+        sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
+                position.getY() - sprite.getHeight() / 2);
     }
 
     @Override
