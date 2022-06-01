@@ -16,8 +16,10 @@ public class PlayerArmor extends HUDComponent {
     public float progress = 0f;
     private float currProg = 0f;
     private float progress_response = 0.1f;
-
     private BitmapFont font;
+
+    private Color color1 = new Color(0x349eebff);
+    private Color color2 = new Color(0x2164c2ff);
 
     public PlayerArmor() {
         super();
@@ -61,11 +63,8 @@ public class PlayerArmor extends HUDComponent {
 
     @Override
     public void dispose() {
-
+        font.dispose();
     }
-
-    public Color color1 = new Color(0x349eebff);
-    public Color color2 = new Color(0x2164c2ff);
 
     @Override
     public void shapeRender(ShapeRenderer shapeRenderer) {

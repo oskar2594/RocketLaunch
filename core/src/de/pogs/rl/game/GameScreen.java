@@ -43,11 +43,11 @@ public class GameScreen extends ScreenAdapter {
 
     public GameScreen() {
         batch = RocketLauncher.getSpriteBatch();
-        entityManager = EntityManager.get();
+        entityManager = new EntityManager();
         particleManager = new ParticleManager();
         camera = new RocketCamera();
         hudCamera = new HUDCamera();
-        player = Player.get();
+        player = new Player();
         background = new BackgroundLayer();
         hud = new HUD();
         overlayHandler = new OverlayHandler();
@@ -163,6 +163,10 @@ public class GameScreen extends ScreenAdapter {
 
     public static ParticleManager getParticleManager() {
         return particleManager;
+    }
+
+    public static EntityManager getEntityManager() {
+        return entityManager;
     }
 
     public static HUD getHud() {

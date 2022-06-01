@@ -5,15 +5,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import de.pogs.rl.game.GameScreen;
-import de.pogs.rl.utils.menu.Button;
 
 public class Pause extends Overlay{
     
 
     public Pause() {
         super();
-    
     }
 
     @Override

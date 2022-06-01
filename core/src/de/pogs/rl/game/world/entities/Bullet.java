@@ -41,7 +41,7 @@ public class Bullet extends AbstractEntity {
             Vector2 velocity, Color color, long lifeTime) {
                 Bullet bullet = new Bullet(position, sender, damage, velocity, color, lifeTime);
                 bullet.update(0);
-                EntityManager.get().addEntity(bullet);
+                GameScreen.getEntityManager().addEntity(bullet);
                 return bullet;
     }
 
@@ -79,7 +79,7 @@ public class Bullet extends AbstractEntity {
         updatePosition(delta);
         sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
                 position.getY() - sprite.getHeight() / 2);
-        for (AbstractEntity entity : EntityManager.get().getCollidingEntities(this)) {
+        for (AbstractEntity entity : GameScreen.getEntityManager().getCollidingEntities(this)) {
             if (entity != sender && !(entity instanceof XpOrb)) {
                 entity.addDamage(damage, sender);
                 this.alive = false;

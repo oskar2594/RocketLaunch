@@ -8,8 +8,7 @@ import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class Particle {
 
-    public boolean isDead = false;
-
+    private boolean isDead = false;
     private Vector2 position;
     private Vector2 velocity;
     private Sprite sprite;
@@ -75,10 +74,8 @@ public class Particle {
         if (time <= timeSize) {
             sprite.setScale(time / timeSize);
         }
-        // float currentSize = (time / duration) * (size - startSize + 1) + startSize;
         sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
                 position.getY() - sprite.getHeight() / 2);
-        // System.out.println(time);
     }
 
     private Vector2 angleToVector(float angle) {
@@ -89,16 +86,23 @@ public class Particle {
     public void dispose() {
     }
 
-    public float getAngle(float min, float max) {
+    private float getAngle(float min, float max) {
         return (float) (Math.random() * (max - min + 1) + min);
     }
 
-    public float getSpeed(float min, float max) {
+    private float getSpeed(float min, float max) {
         return (float) (Math.random() * (max - min + 1) + min);
     }
 
-    public float getSize(float min, float max) {
+    private float getSize(float min, float max) {
         return (float) (Math.random() * (max - min + 1) + min);
     }
 
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean isDead) {
+        this.isDead = isDead;
+    }
 }

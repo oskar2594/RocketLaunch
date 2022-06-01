@@ -12,6 +12,7 @@ import de.pogs.rl.game.GameScreen;
 public class Debug extends HUDComponent {
     private BitmapFont font = RocketLauncher.getAssetHelper().getFont("superstar", 16);
     private String text = "";
+
     Debug() {
         super();
     }
@@ -19,12 +20,13 @@ public class Debug extends HUDComponent {
     @Override
     public void resize(float width, float height) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void update(float delta) {
-        text = "X: " + Math.round(GameScreen.getCamera().position.x) + " | Y: " + Math.round(GameScreen.getCamera().position.y) + "\n";
+        text = "X: " + Math.round(GameScreen.getCamera().position.x) + " | Y: "
+                + Math.round(GameScreen.getCamera().position.y) + "\n";
         text += "FPS: " + Gdx.graphics.getFramesPerSecond();
     }
 
@@ -33,19 +35,19 @@ public class Debug extends HUDComponent {
         position.set(HUDUtils.getTopLeft().x, HUDUtils.getTopLeft().y);
         font.setColor(Color.WHITE);
         font.draw(batch, text, position.x, position.y);
-        
+
     }
 
     @Override
     public void shapeRender(ShapeRenderer shapeRenderer) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void dispose() {
         // TODO Auto-generated method stub
-        
+
     }
-    
+
 }

@@ -2,7 +2,7 @@ package de.pogs.rl.game.world.generation;
 
 import java.util.HashSet;
 import java.util.LinkedList;
-import de.pogs.rl.game.world.entities.EntityManager;
+import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.utils.SpecialMath;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
@@ -57,7 +57,7 @@ public class SpawnManager {
      */
     private void spawn(Vector2 chunk) {
         for (AbstractSpawner spawner : spawners) {
-            EntityManager.get().addEntities(spawner.spawn(chunk));
+            GameScreen.getEntityManager().addEntities(spawner.spawn(chunk));
         }
     }
 

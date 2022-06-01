@@ -1,5 +1,9 @@
 package de.pogs.rl.utils;
 
+/**
+ * Source: https://github.com/libgdx/libgdx/issues/6559
+ */
+
 public class OsUtils {
     private static String OS = System.getProperty("os.name").toLowerCase();
 

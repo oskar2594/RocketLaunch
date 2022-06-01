@@ -13,11 +13,14 @@ public class PlayerHealth extends HUDComponent {
     private float width;
     private float height;
 
-    public float progress = 0f;
+    private float progress = 0f;
     private float currProg = 0f;
     private float progress_response = 0.1f;
 
     private BitmapFont font;
+
+    private Color color1 = new Color(0xc74234ff);
+    private Color color2 = new Color(0xc92626ff);
 
     public PlayerHealth() {
         super();
@@ -49,7 +52,7 @@ public class PlayerHealth extends HUDComponent {
 
     @Override
     public void dispose() {
-
+        font.dispose();
     }
 
     @Override
@@ -61,9 +64,6 @@ public class PlayerHealth extends HUDComponent {
                 position.x + width * 0.02f,
                 position.y + height - ((height - (font.getXHeight())) / 2));
     }
-
-    public Color color1 = new Color(0xc74234ff);
-    public Color color2 = new Color(0xc92626ff);
 
     @Override
     public void shapeRender(ShapeRenderer shapeRenderer) {

@@ -1,11 +1,8 @@
 package de.pogs.rl.game.overlay;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
-import de.pogs.rl.game.GameScreen;
 
 public class OverlayHandler {
 

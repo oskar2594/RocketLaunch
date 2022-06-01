@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import java.awt.Color;
 
 public class ParticleUtils {
+
     public static Texture generateParticleTexture(Color color) {
         int size = 1;
         int idx = 0;
@@ -32,6 +33,13 @@ public class ParticleUtils {
         return new Texture(pixmap);
     }
 
+    /**
+     * Berechnet die Durchschnittsfarbe einer Textur
+     * Source: https://stackoverflow.com/questions/28162488/get-average-color-on-bufferedimage-and-bufferedimage-portion-as-fast-as-possible
+     * (Bearbeitet)
+     * @param t Textur
+     * @return Durchschnittsfarbe
+     */
     public static Color averageColor(Texture t) {
         t.getTextureData().prepare();
         Pixmap bi = t.getTextureData().consumePixmap();

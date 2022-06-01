@@ -8,7 +8,7 @@ import de.pogs.rl.game.world.generation.AbstractSpawner;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class AsteroidSpawner extends AbstractSpawner {
-    Random random = new Random();
+    private Random random = new Random();
     public LinkedList<AbstractEntity> spawn(Vector2 chunk) {
         LinkedList<AbstractEntity> result = new LinkedList<AbstractEntity>();
         if (random.nextDouble() < 0.01) {

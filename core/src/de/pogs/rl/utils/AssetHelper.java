@@ -14,7 +14,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 
 public class AssetHelper {
-    public final AssetManager assetManager;
+    private AssetManager assetManager;
 
     private HashMap<String, AssetDescriptor> images = new HashMap<String, AssetDescriptor>();
     private HashMap<String, AssetDescriptor> sounds = new HashMap<String, AssetDescriptor>();
@@ -27,8 +27,6 @@ public class AssetHelper {
         assetManager = new AssetManager();
         baseDir = Gdx.files.getFileHandle("assets/", FileType.Local);
     }
-
-    public boolean isFinished = false;
 
     public void loadAll() {
         for (FileHandle entry : baseDir.list()) {
@@ -114,4 +112,10 @@ public class AssetHelper {
             return null;
         }
     }
+
+
+    public AssetManager getAssetManager() {
+        return assetManager;
+    }
+
 }

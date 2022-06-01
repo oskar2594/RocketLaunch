@@ -83,7 +83,7 @@ public class ParticleEmitter {
             this.willDie = true;
         }
         for (Particle particle : particles) {
-            if (particle.isDead) {
+            if (particle.isDead()) {
                 remParticles.add(particle);
             } else {
                 particle.update(delta);
@@ -99,7 +99,7 @@ public class ParticleEmitter {
 
     public void render(SpriteBatch batch) {
         for (Particle particle : particles) {
-            if (!particle.isDead)
+            if (!particle.isDead())
                 particle.render(batch);
         }
     }

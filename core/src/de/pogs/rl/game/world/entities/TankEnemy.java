@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.pogs.rl.RocketLauncher;
+import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.utils.SpecialMath;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
@@ -12,7 +13,7 @@ public class TankEnemy extends SimpleEnemy {
 
     private float hp = 20;
     private Texture aimTexture = RocketLauncher.getAssetHelper().getImage("aimbeam");
-    Sprite aimSprite = new Sprite(aimTexture);
+    private Sprite aimSprite = new Sprite(aimTexture);
 
     public TankEnemy(Vector2 position) {
         super(position, RocketLauncher.getAssetHelper().getImage("monster2"));
@@ -42,10 +43,10 @@ public class TankEnemy extends SimpleEnemy {
 
     @Override
     protected void shoot(float delta) {
-        if (Player.get().getPosition().dst2(position) < sightRange) {
-            float flightTime = Player.get().getPosition().dst(position) / bulletSpeed;
+        if (GameScreen.getPlayer().getPosition().dst2(position) < sightRange) {
+            float flightTime = GameScreen.getPlayer().getPosition().dst(position) / bulletSpeed;
             Vector2 playerPosPredicted =
-                    Player.get().getPosition().add(Player.get().getVelocity().mul(flightTime));
+                    GameScreen.getPlayer().getPosition().add(GameScreen.getPlayer().getVelocity().mul(flightTime));
             Vector2 bulletDirection = playerPosPredicted.sub(position).nor();
             aimSprite.setRotation(90 - SpecialMath.VectorToAngle(bulletDirection.mul(-1)));
             aimSprite.setAlpha(1);

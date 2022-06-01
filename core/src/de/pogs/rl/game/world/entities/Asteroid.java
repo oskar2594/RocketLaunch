@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.pogs.rl.RocketLauncher;
+import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.utils.CameraShake;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
@@ -44,7 +45,7 @@ public class Asteroid extends AbstractEntity {
         sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
                 position.getY() - sprite.getHeight() / 2);
 
-        for (AbstractEntity entity : EntityManager.get().getCollidingEntities(this)) {
+        for (AbstractEntity entity : GameScreen.getEntityManager().getCollidingEntities(this)) {
             if (entity instanceof ImpulseEntity) {
                 ImpulseEntity impulseEntity = (ImpulseEntity) entity;
                 Vector2 v1 = velocity;

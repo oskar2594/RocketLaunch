@@ -19,13 +19,11 @@ public class DeathOverlay extends Overlay {
 
     @Override
     public void clear() {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        // TODO Auto-generated method stub
         testButton.render(batch);
     }
 
@@ -53,8 +51,6 @@ public class DeathOverlay extends Overlay {
 
     @Override
     public void resize(int width, int height) {
-        // TODO Auto-generated method stub
-
     }
 
 

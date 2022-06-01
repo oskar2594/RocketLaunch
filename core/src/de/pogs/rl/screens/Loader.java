@@ -45,8 +45,8 @@ public class Loader extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        RocketLauncher.getAssetHelper().assetManager.update();
-        if (RocketLauncher.getAssetHelper().assetManager.isFinished()) {
+        RocketLauncher.getAssetHelper().getAssetManager().update();
+        if (RocketLauncher.getAssetHelper().getAssetManager().isFinished()) {
             if ((TimeUtils.millis() - start) > minDuration) {
                 RocketLauncher.getInstance().setScreen(new Menu());
                 return;

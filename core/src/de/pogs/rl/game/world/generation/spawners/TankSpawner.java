@@ -8,7 +8,7 @@ import de.pogs.rl.game.world.generation.AbstractSpawner;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class TankSpawner extends AbstractSpawner {
-    Random random = new Random();
+    private Random random = new Random();
 
     public LinkedList<AbstractEntity> spawn(Vector2 chunk) {
         LinkedList<AbstractEntity> list = new LinkedList<AbstractEntity>();
