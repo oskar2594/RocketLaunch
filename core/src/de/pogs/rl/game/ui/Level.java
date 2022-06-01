@@ -26,8 +26,8 @@ public class Level extends HUDComponent {
 
     @Override
     public void resize(float width, float height) {
-        this.width = (float) (width * 0.1);
-        this.height = (float) (this.width * 1);
+        this.width = (float) (width * 0.15);
+        this.height = (float) (this.width);
         this.radius = this.width / 2;
         updateFonts();
     }
@@ -35,10 +35,10 @@ public class Level extends HUDComponent {
     public void updateFonts() {
         if (stringLength < 2)
             stringLength = 2;
-        levelFont = RocketLauncher.INSTANCE.assetHelper.getFont("roboto",
+        levelFont = RocketLauncher.INSTANCE.assetHelper.getFont("superstar",
                 (int) Math.ceil(this.width * 0.5 * 2 / stringLength));
 
-        lvlFont = RocketLauncher.INSTANCE.assetHelper.getFont("roboto",
+        lvlFont = RocketLauncher.INSTANCE.assetHelper.getFont("superstar",
                 (int) Math.ceil(this.width * 0.1));
     }
 

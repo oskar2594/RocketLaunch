@@ -34,15 +34,15 @@ public class PlayerArmor extends HUDComponent {
     @Override
     public void update(float delta) {
         this.progress = GameScreen.INSTANCE.player.getArmor() / GameScreen.INSTANCE.player.getMaxArmor();
-        position.set(HUDUtils.getBottomCenter().x - width / 2, HUDUtils.getBottomCenter().y + height * 1.5f);
+        position.set(HUDUtils.getBottomCenter().x - width / 2, HUDUtils.getBottomCenter().y + height * 1.3f);
         updateAngle();
     }
 
     @Override
     public void resize(float width, float height) {
-        this.width = (float) (width * 0.3);
-        this.height = (float) (this.width * 0.07);
-        font = RocketLauncher.INSTANCE.assetHelper.getFont("roboto", (int) Math.ceil(this.height * 0.5));
+        this.width = (float) (width * 0.32);
+        this.height = (float) (this.width * 0.08);
+        font = RocketLauncher.INSTANCE.assetHelper.getFont("superstar", (int) Math.ceil(this.height * 0.6));
     }
 
     public void updateAngle() {

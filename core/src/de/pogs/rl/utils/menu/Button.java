@@ -50,8 +50,8 @@ public class Button {
     }
 
     private void updateFont() {
-        font = RocketLauncher.INSTANCE.assetHelper.getFont("roboto-bold",
-                (int) Math.ceil((this.height - borderWidth / 2) * 0.3));
+        font = RocketLauncher.INSTANCE.assetHelper.getFont("superstar",
+                (int) Math.ceil((this.height - borderWidth / 2) * 0.5));
         font.setColor(new Color(textColor.r, textColor.g, textColor.b, textColor.a * alpha));
     }
 
