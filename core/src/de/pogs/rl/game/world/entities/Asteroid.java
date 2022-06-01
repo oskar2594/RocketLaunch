@@ -61,7 +61,7 @@ public class Asteroid extends AbstractEntity {
                 impulseEntity.setVelocity(v2_new);
                 position = position.add(position.sub(x2).nor().mul(radius + entity.getRadius() - x1.dst(x2)));
                 if(entity instanceof Player) {
-                    CameraShake.makeShake(1f, 50);
+                    CameraShake.makeShake(2f, 50);
                 }
                 System.out.println(position.dst(x2));
             }
