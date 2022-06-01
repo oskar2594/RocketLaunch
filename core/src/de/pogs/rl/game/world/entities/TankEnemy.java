@@ -49,10 +49,11 @@ public class TankEnemy extends SimpleEnemy {
             Vector2 playerPosPredicted =
                     Player.get().getPosition().add(Player.get().getVelocity().mul(flightTime));
             Vector2 bulletDirection = playerPosPredicted.sub(position).nor();
-            aimSprite.setRotation(90-SpecialMath.VectorToAngle(bulletDirection.mul(-1)));
+            aimSprite.setRotation(90 - SpecialMath.VectorToAngle(bulletDirection.mul(-1)));
             aimSprite.setAlpha(1);
-            if (random.nextFloat()  < shootingCoeff* delta) {
-                Bullet.createBullet(position, this, bulletDamage, bulletDirection.mul(bulletSpeed).add(velocity), bulletColor, 10000);
+            if (random.nextFloat() < shootingCoeff * delta) {
+                Bullet.createBullet(position, this, bulletDamage,
+                        bulletDirection.mul(bulletSpeed).add(velocity), bulletColor, 10000);
             }
         } else {
             aimSprite.setAlpha(0);
