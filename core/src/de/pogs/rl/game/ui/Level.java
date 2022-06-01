@@ -39,10 +39,10 @@ public class Level extends HUDComponent {
         lLayout = new GlyphLayout();
         sLayout = new GlyphLayout();
 
-        levelFont = RocketLauncher.INSTANCE.assetHelper.getFont("superstar",
+        levelFont =RocketLauncher.getAssetHelper().getFont("superstar",
                 (int) Math.ceil(this.width * 0.75));
 
-        smallFont = RocketLauncher.INSTANCE.assetHelper.getFont("superstar",
+        smallFont =RocketLauncher.getAssetHelper().getFont("superstar",
                 (int) Math.ceil(this.width * 0.2));
     }
 

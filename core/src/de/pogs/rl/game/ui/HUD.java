@@ -11,12 +11,10 @@ import com.badlogic.gdx.math.Vector2;
 
 
 public class HUD {
+    private static float width;
+    private static float height;
 
-    public static HUD INSTANCE;
-
-    public float width;
-    public float height;
-    public Vector2 position;
+    private static Vector2 position;
 
     private ShapeRenderer shapeRenderer;
 
@@ -27,10 +25,9 @@ public class HUD {
     private Debug debug;
     private Level level;
 
-    public int border = 30;
+    private int border = 30;
 
     public HUD() {
-        INSTANCE = this;
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
         shapeRenderer = new ShapeRenderer();
@@ -79,4 +76,31 @@ public class HUD {
     }
 
     public void dipose() {}
+
+    public static float getWidth() {
+        return width;
+    }
+
+    public static void setWidth(float w) {
+        width = w;
+    }
+
+    public static float getHeight() {
+        return height;
+    }
+
+    public static void setHeight(float h) {
+        height = h;
+    }
+
+    public static Vector2 getPosition() {
+        return position;
+    }
+
+    public static void setPosition(Vector2 p) {
+        position = p;
+    }
+
+
+
 }

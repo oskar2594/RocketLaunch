@@ -31,7 +31,7 @@ public class DeathOverlay extends Overlay {
 
     @Override
     public void renderShape(ShapeRenderer shapeRenderer) {
-        //DARK BACKGROUND
+        // DARK BACKGROUND
         shapeRenderer.setColor(new Color(0x000000b0));
         shapeRenderer.set(ShapeType.Filled);
         shapeRenderer.rect(-Gdx.graphics.getWidth() / 2, -Gdx.graphics.getHeight() / 2,
@@ -44,17 +44,17 @@ public class DeathOverlay extends Overlay {
     @Override
     public void update(float delta) {
         testButton.update(delta);
-        if(testButton.isClicked()) {
-            GameScreen.INSTANCE.paused = true;
+        if (testButton.isClicked()) {
+            GameScreen.setPaused(true);
         } else {
-            GameScreen.INSTANCE.paused = false;
+            GameScreen.setPaused(false);
         }
     }
 
     @Override
     public void resize(int width, int height) {
         // TODO Auto-generated method stub
-        
+
     }
 
 

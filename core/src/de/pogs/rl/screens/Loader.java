@@ -31,27 +31,30 @@ public class Loader extends ScreenAdapter {
     public Loader() {
         start = TimeUtils.millis();
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch = RocketLauncher.INSTANCE.batch;
+        batch = RocketLauncher.getSpriteBatch();
 
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter =
+                new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = Gdx.graphics.getHeight() / 5;
-        font = new FreeTypeFontGenerator(Gdx.files.internal("assets/fonts/Roboto.ttf")).generateFont(parameter);
+        font = new FreeTypeFontGenerator(Gdx.files.internal("assets/fonts/Roboto.ttf"))
+                .generateFont(parameter);
 
-        RocketLauncher.INSTANCE.assetHelper.loadAll();
+        RocketLauncher.getAssetHelper().loadAll();
 
     }
 
     @Override
     public void render(float delta) {
-        RocketLauncher.INSTANCE.assetHelper.assetManager.update();
-        if(RocketLauncher.INSTANCE.assetHelper.assetManager.isFinished()) {
-            if((TimeUtils.millis() - start) > minDuration) {
-                RocketLauncher.INSTANCE.setScreen(new Menu());
+        RocketLauncher.getAssetHelper().assetManager.update();
+        if (RocketLauncher.getAssetHelper().assetManager.isFinished()) {
+            if ((TimeUtils.millis() - start) > minDuration) {
+                RocketLauncher.getInstance().setScreen(new Menu());
                 return;
             }
         }
         update();
-        Gdx.gl.glClearColor(getColor(backgroundColor).r, getColor(backgroundColor).g, getColor(backgroundColor).b, 1f);
+        Gdx.gl.glClearColor(getColor(backgroundColor).r, getColor(backgroundColor).g,
+                getColor(backgroundColor).b, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT
                 | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV
                         : 0));
@@ -61,7 +64,8 @@ public class Loader extends ScreenAdapter {
         batch.begin();
         font.getData().setScale(scaleOne, scaleOne);
         font.setColor(getColor(!backgroundColor));
-        font.draw(batch, "LOADING", -Gdx.graphics.getWidth() / 2 + Gdx.graphics.getHeight() * 0.015f * scaleOne,
+        font.draw(batch, "LOADING",
+                -Gdx.graphics.getWidth() / 2 + Gdx.graphics.getHeight() * 0.015f * scaleOne,
                 (font.getCapHeight()) / 2, Gdx.graphics.getWidth(), Align.center, false);
         batch.end();
     }

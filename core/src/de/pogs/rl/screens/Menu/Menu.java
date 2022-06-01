@@ -19,10 +19,10 @@ public class Menu extends ScreenAdapter {
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 
-	private Texture background = RocketLauncher.INSTANCE.assetHelper.getImage("background");
+	private Texture background = RocketLauncher.getAssetHelper().getImage("background");
 	private Sprite backgroundSprite;
 
-	private Texture logo = RocketLauncher.INSTANCE.assetHelper.getImage("logo");
+	private Texture logo = RocketLauncher.getAssetHelper().getImage("logo");
 	private Sprite logoSprite;
 
 	private long finished = -1;
@@ -35,12 +35,14 @@ public class Menu extends ScreenAdapter {
 
 
 	public Menu() {
-		batch = RocketLauncher.INSTANCE.batch;
+		batch = RocketLauncher.getSpriteBatch();
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		backgroundSprite = new Sprite(background);
 		logoSprite = new Sprite(logo);
 
-		startButton = new Button(0, 0, (int)(Gdx.graphics.getWidth() * 0.5), (int) ((Gdx.graphics.getWidth() * 0.5) / 10), new Color(0x2beafcff), new Color(0x0183e5ff), new Color(0x06bbf4ff), "Starten", 5);
+		startButton = new Button(0, 0, (int) (Gdx.graphics.getWidth() * 0.5),
+				(int) ((Gdx.graphics.getWidth() * 0.5) / 10), new Color(0x2beafcff),
+				new Color(0x0183e5ff), new Color(0x06bbf4ff), "Starten", 5);
 		shapeRenderer = new ShapeRenderer();
 		shapeRenderer.setAutoShapeType(true);
 
@@ -80,26 +82,28 @@ public class Menu extends ScreenAdapter {
 		logoSprite.setSize(Gdx.graphics.getWidth() * 0.5f,
 				((float) logo.getHeight() / (float) logo.getWidth())
 						* (float) Gdx.graphics.getWidth() * 0.5f);
-		logoSprite.setPosition(-logoSprite.getWidth() / 2, - logoSprite.getHeight() * 0.3f);
+		logoSprite.setPosition(-logoSprite.getWidth() / 2, -logoSprite.getHeight() * 0.3f);
 		logoSprite.setAlpha(alpha);
 	}
 
 	private void updateButton() {
-		startButton.setWidth((int)(Gdx.graphics.getWidth() * 0.5));
+		startButton.setWidth((int) (Gdx.graphics.getWidth() * 0.5));
 		startButton.setHeight((int) ((Gdx.graphics.getWidth() * 0.5) / 10));
-		startButton.setPosition(0, (int)(- startButton.getHeight() - logoSprite.getHeight() * 0.2f));
+		startButton.setPosition(0,
+				(int) (-startButton.getHeight() - logoSprite.getHeight() * 0.2f));
 		startButton.setAlpha(alpha);
 	}
 
 	@Override
 	public void render(float delta) {
 		if (finished > 0 & TimeUtils.millis() - finished > fadeOutTime) {
-			RocketLauncher.INSTANCE.setScreen(new GameScreen());
+			RocketLauncher.getInstance().setScreen(new GameScreen());
 			dispose();
 			return;
 		}
 		update();
-		if (startButton.isClicked() && finished == -1) next();
+		if (startButton.isClicked() && finished == -1)
+			next();
 		Gdx.gl.glClearColor(0, 0, 0, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT
 				| (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV
@@ -111,8 +115,8 @@ public class Menu extends ScreenAdapter {
 		logoSprite.draw(batch);
 		batch.end();
 
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		Gdx.gl.glEnable(GL20.GL_BLEND);
+		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		shapeRenderer.begin();
 		startButton.shapeRender(shapeRenderer);
@@ -123,7 +127,7 @@ public class Menu extends ScreenAdapter {
 		batch.begin();
 		startButton.render(batch);
 		batch.end();
-		
+
 	}
 
 	private void next() {

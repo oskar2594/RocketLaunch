@@ -12,7 +12,7 @@ public abstract class HUDComponent {
     public HUDComponent() {
         position = new Vector2(0, 0);
         sprite = new Sprite();
-        resize(HUD.INSTANCE.width, HUD.INSTANCE.height);
+        resize(HUD.getWidth(), HUD.getHeight());
     }
 
     public abstract void resize(float width, float height);

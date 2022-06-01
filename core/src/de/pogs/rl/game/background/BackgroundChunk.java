@@ -11,6 +11,11 @@ import java.awt.Color;
 
 import de.pogs.rl.utils.FastNoiseLite;
 
+
+/**
+ * Einzelner Chunk des Hintergrundes
+ */
+
 public final class BackgroundChunk {
 
     public Color[][] fieldCache;
@@ -22,49 +27,67 @@ public final class BackgroundChunk {
     private Sprite sprite;
     private Texture texture;
 
-    public Vector2 position;
+    private Vector2 position;
 
-    public Vector2 start;
-    private int radius;
+    private Vector2 start;
+    private int size;
 
     private float scaling;
 
-    BackgroundChunk(int radius, int x, int y, float scaling) {
-        this.radius = radius;
+    /**
+     * Erstellung des Chunks
+     * 
+     * @param size Größe des Chunks
+     * @param x X - Koordinate im Chunkgitter
+     * @param y Y - Koordinate im Chunkgitter
+     * @param scaling Skalierung der Generierung (Für verschiedene Detaillierung)
+     */
+    BackgroundChunk(int size, int x, int y, float scaling) {
+        this.size = size;
         this.scaling = scaling;
         position = new Vector2();
         position.set(x, y);
-        fieldCache = new Color[(int) (radius)][(int) (radius)];
-        this.start = new Vector2(x - radius, y - radius);
-        this.create();
-    }
-
-    public void create() {
+        fieldCache = new Color[(int) (size)][(int) (size)];
+        this.start = new Vector2(x - size, y - size);
         this.texture = new Texture(this.generatePixmap(), true);
         sprite = new Sprite(texture);
-        sprite.setSize(radius, radius);
+        sprite.setSize(size, size);
         sprite.setScale(scaling);
         update();
     }
 
+    /**
+     * Position des Sprites zu der Chunkposition setzen
+     */
     public void update() {
         sprite.setPosition(position.x, position.y);
     }
 
+    /**
+     * Chunk rendern
+     * 
+     * @param batch SpriteBatch des GameScreens
+     */
     public void draw(SpriteBatch batch) {
         sprite.draw(batch);
     }
 
+    /**
+     * Unbenötigte Textur aus dem Cache löschen
+     */
     public void dispose() {
-        // texture.dispose();
+        texture.dispose();
     }
 
-    // generate Pixmap over a Bitstream
+    /**
+     * Pixmap aus den berechneten Farben generieren
+     * 
+     * @return Pixmap (Bild)
+     */
     public Pixmap generatePixmap() {
         Color[] bytes = generateBytes();
-        Pixmap pixmap = new Pixmap(radius, radius, Format.RGBA8888);
+        Pixmap pixmap = new Pixmap(size, size, Format.RGBA8888);
         int idx = 0;
-
         for (int i = 1; i < bytes.length; i++) {
             Color val = bytes[i];
             pixmap.getPixels().put(idx++, (byte) (val.getRed()));
@@ -75,83 +98,137 @@ public final class BackgroundChunk {
         return pixmap;
     }
 
+    /**
+     * Farben für jeden Punkt des Chunkes aus verschiedenen NoiseMaps berechnen
+     * 
+     * @return Liste mit Farben
+     */
     public Color[] generateBytes() {
-        Color[] bytes = new Color[((int) (Math.pow(radius, 2) + 1))];
+        Color[] bytes = new Color[((int) (Math.pow(size, 2) + 1))];
         int idx = 1;
-        for (int y = 0; y < radius; y++) {
-            for (int x = 0; x < radius; x++) {
-                Color color = BackgroundLayer.INSTANCE.chunkManager.getCachedColor(x, y, start);
-                if (color == null) { // if there is no cached color
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
+                Color color = BackgroundLayer.getChunkManager().getCachedColor(x, y, start); // Überprüfen
+                                                                                                 // von
+                                                                                                 // eventuell
+                                                                                                 // gespeicherten
+                                                                                                 // Wert
+                if (color == null) {
 
-                    double baseValue = getBaseValue(x, y); // get light value
-                    double starValue = getStarValue(x, y, baseValue); // get value of a possible star
-                    if (starValue == 0) {// if theres no star
-                        color = getColorValue(x, y); // generate a color for position
-                        // replace transparent parts of the image with black
-                        color = removeAlpha(new Color(color.getRed(), color.getGreen(), color.getBlue(),
-                                (int) (saveRGBValue((int) ((Math.max(baseValue, 0) + 0.2) * 255)))));
-
-                    } else {
-                        color = removeAlpha(new Color(255, 255, 255, (int) starValue));
-                    }
+                    double baseValue = getBaseValue(x, y); // Helligkeit
+                    double starValue = getStarValue(x, y, baseValue); // Stern
+                    color = getColorValue(x, y); // Farbe
+                    color = mix(Color.WHITE, removeAlpha(new Color(color.getRed(), color.getGreen(),
+                            color.getBlue(),
+                            (int) (saveRGBValue((int) ((Math.max(baseValue, 0) + 0.2) * 255))))),
+                            starValue); // Generierung der Farbe durch Mischen
                 }
                 bytes[idx++] = color;
-                fieldCache[(int) (x) ][(int) (y)] = color;
+                fieldCache[(int) (x)][(int) (y)] = color;
             }
         }
         return bytes;
     }
 
+    /**
+     * Alphakanal einer Farbe entfernen
+     * 
+     * @param color Farbe mit Alphakanal
+     * @return Farbe ohne Alphakanal mit der Hintergrundfarbe Schwarz
+     */
     private Color removeAlpha(Color color) {
-        // turning RGBA Color to a HSB Color
         float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
-        float saturation = hsb[1];
+        // Farbe in eine HSV Farbe umwandeln
         float brightness = hsb[2];
-        brightness = (color.getAlpha() / 255f) * 0.7f; // get the brightness based on the transparency and darken it
-        return new Color(Color.HSBtoRGB(hsb[0], saturation, brightness)); // return a normal Color Object
+        brightness = (color.getAlpha() / 255f) * 0.7f; // Helligkeit nach Alphakanal anpassn
+        return new Color(Color.HSBtoRGB(hsb[0], hsb[1], brightness));
     }
 
+    /**
+     * RGB Wert in Spanne 0 bis 255 halten
+     * 
+     * @param value RGB Wert
+     * @return RGB Wert im Bereich 0 bis 255
+     */
     private int saveRGBValue(int value) {
         return Math.min(Math.max(value, 0), 255);
     }
 
-    // combining Basenoise Level 1-3
+    /**
+     * Helligkeit von Position aus einer 3-Layer NoiseMap
+     * 
+     * @param x X - Koordinate des Punktes
+     * @param y Y - Koordinate des Punktes
+     * @return Helligkeits Wert
+     */
     private double getBaseValue(int x, int y) {
         Vector2 relativePositon = getRelativePosition(new Vector2(x, y));
-        double value_level1 = genNoise(BackgroundChunkManager.BASENOISE_LEVEL1, relativePositon, 0.3, 0, 0.4);
-        double value_level2 = genNoise(BackgroundChunkManager.BASENOISE_LEVEL2, relativePositon, 1, 0, 0.1);
-        double value_level3 = genNoise(BackgroundChunkManager.BASENOISE_LEVEL3, relativePositon, 0.1, 0, 0.2);
+        double value_level1 =
+                genNoise(BackgroundChunkManager.BASENOISE_LEVEL1, relativePositon, 0.3, 0, 0.4);
+        double value_level2 =
+                genNoise(BackgroundChunkManager.BASENOISE_LEVEL2, relativePositon, 1, 0, 0.1);
+        double value_level3 =
+                genNoise(BackgroundChunkManager.BASENOISE_LEVEL3, relativePositon, 0.1, 0, 0.2);
         return (value_level1 - Math.max(value_level2, 0) - value_level3) + 0.3;
     }
 
-    // combining Colornoise Blue, Purple and Red
+    /**
+     * Farbe aus einer 3-Layer NoiseMap bestehend aus Blau, Violett und Rot
+     * 
+     * @param x X - Koordinate des Punktes
+     * @param y Y - Koordinate des Punktes
+     * @return Farbe
+     */
     private Color getColorValue(int x, int y) {
         Vector2 relativePositon = getRelativePosition(new Vector2(x, y));
-        double value_blue = genNoise(BackgroundChunkManager.COLORNOISE_BLUE, relativePositon, 0.1, 0, 1);
-        double value_purple = genNoise(BackgroundChunkManager.COLORNOISE_PURPLE, relativePositon, 0.3, 0, 1);
-        double value_red = genNoise(BackgroundChunkManager.COLORNOISE_RED, relativePositon, 0.1, 0, 1);
+        double value_blue =
+                genNoise(BackgroundChunkManager.COLORNOISE_BLUE, relativePositon, 0.1, 0, 1);
+        double value_purple =
+                genNoise(BackgroundChunkManager.COLORNOISE_PURPLE, relativePositon, 0.3, 0, 1);
+        double value_red =
+                genNoise(BackgroundChunkManager.COLORNOISE_RED, relativePositon, 0.1, 0, 1);
         value_blue = minmax(value_blue, 0.001, 1);
         value_purple = minmax(value_purple, 0.001, 1);
         value_red = minmax(value_red, 0.001, 1);
         if (Double.isNaN(value_blue / value_purple) || value_blue == 0) {
             return Color.RED;
         }
-        // mixing colors
-        return mix(mix(purple, red, getMixValue(value_purple, value_red)), blue, getMixValue(value_blue, value_purple));
+        return mix(mix(purple, red, getMixValue(value_purple, value_red)), blue,
+                getMixValue(value_blue, value_purple));
     }
 
+    /**
+     * Durchschnitt aus zwei Zahlen berechnen
+     * 
+     * @param a Wert 1
+     * @param b Wert 2
+     * @return Durchschnitt der beiden Zahlen
+     */
     private double getMixValue(double a, double b) {
         return (a + b) / 2;
     }
 
+    /**
+     * Nach Zufallsprinzip Stern Helligkeit berechnen
+     * 
+     * @param x X - Koordinate des Punktes
+     * @param y Y - Koordinate des Punktes
+     * @param baseValue Lichtwert
+     * @return Helligkeit von Stern
+     */
     private double getStarValue(int x, int y, double baseValue) {
         if (isStarSpot(baseValue)) {
-            return 255 * getStarMultiplier(baseValue);
+            return getStarMultiplier(baseValue);
         }
-        return 0;
+        return 0f;
     }
 
-    // randomly decide if the spot is a star value
+    /**
+     * Nach Zufall entscheiden ob ein Stern generiert werden soll
+     * 
+     * @param value Lichtwert
+     * @return
+     */
     private boolean isStarSpot(double value) {
         if (value > -0.5 && Math.random() > 0.99) {
             return true;
@@ -159,6 +236,12 @@ public final class BackgroundChunk {
         return false;
     }
 
+    /**
+     * Sternhelligkeit nach Lichtwert
+     * 
+     * @param value Lichtwert
+     * @return Wert für Stern
+     */
     private double getStarMultiplier(double value) {
         return Math.min(Math.max(value, -0.6) + 0.5, 1);
     }
@@ -167,21 +250,61 @@ public final class BackgroundChunk {
         return Math.min(Math.max(value, min), max);
     }
 
-    // scale size and min max values of raw noise
-    private double genNoise(FastNoiseLite noise, Vector2 position, double scale, double min, double max) {
-        return ((noise.GetNoise((float) (position.x * scale * 1.5), (float) (position.y * scale * 1.5))
-                * (max - min + 1)) + min);
+    /**
+     * Wert einer NoiseMap vorbereiten
+     * 
+     * @param noise NoiseMap
+     * @param position Position in NoiseMap
+     * @param scale Skalierung der NoiseMap
+     * @param min Minimalwert (Skalierung der Werte)
+     * @param max Maximalwert (Skalierung der Werte)
+     * @return Wert der NoiseMap
+     */
+    private double genNoise(FastNoiseLite noise, Vector2 position, double scale, double min,
+            double max) {
+        return ((noise.GetNoise((float) (position.x * scale * 1.5),
+                (float) (position.y * scale * 1.5)) * (max - min + 1)) + min);
     }
 
-    // get position in normal coordination system
+    /**
+     * Position eines Punktes im Koordinatensystem des GameScreens
+     * 
+     * @param position Position im Chunk
+     * @return absolute Koordinaten
+     */
     public Vector2 getRelativePosition(Vector2 position) {
         return new Vector2(position.x * scaling + start.x, position.y * scaling - start.y);
     }
 
+    /**
+     * Farben mischen
+     * 
+     * @param a Farbe 1
+     * @param b Farbe 2
+     * @param percent Verhältnis zwischen Farbe 1 und Farbe 2
+     * @return gemischte Farbe
+     */
     private Color mix(Color a, Color b, double percent) {
         percent = Math.max(Math.min(percent, 1), 0);
         return new Color((int) (a.getRed() * percent + b.getRed() * (1.0 - percent)),
                 (int) (a.getGreen() * percent + b.getGreen() * (1.0 - percent)),
                 (int) (a.getBlue() * percent + b.getBlue() * (1.0 - percent)));
+    }
+
+
+    public Vector2 getPosition() {
+        return position;
+    }
+
+    public void setPosition(Vector2 position) {
+        this.position = position;
+    }
+
+    public Vector2 getStart() {
+        return start;
+    }
+
+    public void setStart(Vector2 start) {
+        this.start = start;
     }
 }

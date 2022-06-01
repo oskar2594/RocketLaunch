@@ -12,7 +12,7 @@ import de.pogs.rl.utils.SpecialMath.Vector2;
 public class Asteroid extends AbstractEntity {
     private int level;
     private Vector2 velocity;
-    private Texture texture = RocketLauncher.INSTANCE.assetHelper.getImage("asteroid");
+    private Texture texture = RocketLauncher.getAssetHelper().getImage("asteroid");
     private Sprite sprite = new Sprite(texture);
     private static final int baseSize = 5;
     private static Random random = new Random();

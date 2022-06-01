@@ -7,9 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.background.BackgroundLayer;
-import de.pogs.rl.game.overlay.DeathOverlay;
 import de.pogs.rl.game.overlay.OverlayHandler;
-import de.pogs.rl.game.overlay.Pause;
 import de.pogs.rl.game.ui.HUD;
 import de.pogs.rl.game.ui.HUDCamera;
 import de.pogs.rl.game.world.entities.EntityManager;
@@ -21,33 +19,30 @@ import de.pogs.rl.game.world.generation.spawners.TankSpawner;
 import de.pogs.rl.game.world.particles.ParticleManager;
 
 public class GameScreen extends ScreenAdapter {
-    public static GameScreen INSTANCE;
-
     private SpriteBatch batch;
 
-    private BackgroundLayer background;
-    public RocketCamera camera;
-    private HUDCamera hudCamera;
-    public Player player;
-    public EntityManager entityManager;
-    public ParticleManager particleManager;
-    public HUD hud;
-    public OverlayHandler overlayHandler;
-    public SpawnManager entityGen;
+    private static BackgroundLayer background;
+    private static RocketCamera camera;
+    private static HUDCamera hudCamera;
+    private static Player player;
+    private static EntityManager entityManager;
+    private static ParticleManager particleManager;
+    private static HUD hud;
+    private static OverlayHandler overlayHandler;
+    private static SpawnManager entityGen;
 
-    public boolean paused = false; // TEST ONLY
+    private static boolean paused = false; // TEST ONLY
 
-    private int renderDistanceBase = 1500;
-    private int updateDistanceBase = 1500;
-    private int removeDistanceBase = 2500;
+    private static int renderDistanceBase = 1500;
+    private static int updateDistanceBase = 1500;
+    private static int removeDistanceBase = 2500;
 
-    private int renderDistance2 = (int) Math.pow(renderDistanceBase, 2);
-    private int updateDistance2 = (int) Math.pow(updateDistanceBase, 2);
-    private int removeDistance2 = (int) Math.pow(removeDistanceBase, 2);
+    private static int renderDistance2 = (int) Math.pow(renderDistanceBase, 2);
+    private static int updateDistance2 = (int) Math.pow(updateDistanceBase, 2);
+    private static int removeDistance2 = (int) Math.pow(removeDistanceBase, 2);
 
     public GameScreen() {
-        INSTANCE = this;
-        batch = RocketLauncher.INSTANCE.batch;
+        batch = RocketLauncher.getSpriteBatch();
         entityManager = EntityManager.get();
         particleManager = new ParticleManager();
         camera = new RocketCamera();
@@ -138,15 +133,40 @@ public class GameScreen extends ScreenAdapter {
         resizeDistance();
     }
 
-    public void resizeZoom(int width, int height) {
+    public static void resizeZoom(int width, int height) {
         camera.resize(width, height);
         background.resize(width, height);
         resizeDistance();
     }
 
-    private void resizeDistance() {
+    private static void resizeDistance() {
         renderDistance2 = (int) Math.pow(renderDistanceBase * camera.zoom, 2);
         updateDistance2 = (int) Math.pow(updateDistanceBase * camera.zoom, 2);
         removeDistance2 = (int) Math.pow(removeDistanceBase * camera.zoom, 2);
     }
+
+    public static boolean isPaused() {
+        return paused;
+    }
+
+    public static void setPaused(boolean p) {
+        paused = p;
+    }
+
+    public static RocketCamera getCamera() {
+        return camera;
+    }
+
+    public static Player getPlayer() {
+        return player;
+    }
+
+    public static ParticleManager getParticleManager() {
+        return particleManager;
+    }
+
+    public static HUD getHud() {
+        return hud;
+    }
+
 }

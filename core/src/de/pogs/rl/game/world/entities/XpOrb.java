@@ -10,7 +10,7 @@ import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class XpOrb extends AbstractEntity {
 
-    private Texture originTexture = RocketLauncher.INSTANCE.assetHelper.getImage("xporb");
+    private Texture originTexture = RocketLauncher.getAssetHelper().getImage("xporb");
     private TextureRegion[][] textureRegion;
     private float currentTexture = 0;
     private Texture animatedTexture;

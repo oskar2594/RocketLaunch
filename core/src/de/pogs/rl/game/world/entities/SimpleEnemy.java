@@ -46,7 +46,7 @@ public class SimpleEnemy extends AbstractEntity {
     protected Color bulletColor = new Color(0xd46178);
 
     public SimpleEnemy(Vector2 position) {
-        this(position, RocketLauncher.INSTANCE.assetHelper.getImage("monster1"));
+        this(position, RocketLauncher.getAssetHelper().getImage("monster1"));
     }
 
     public SimpleEnemy(Vector2 position, Texture texture) {
@@ -105,7 +105,7 @@ public class SimpleEnemy extends AbstractEntity {
     }
 
     protected void splashEffectSelf() {
-        GameScreen.INSTANCE.particleManager.createEmitter(
+        GameScreen.getParticleManager().createEmitter(
                 new ParticleEmitter((int) position.getX(), (int) position.getY(), 50, 5,
                         ParticleUtils.generateParticleTexture(ParticleUtils.averageColor(texture)),
                         -180, 180, 10, 150, 1, 5, 1f, 1f, .5f, .1f, true))

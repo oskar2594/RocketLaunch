@@ -11,11 +11,11 @@ import de.pogs.rl.utils.SpecialMath.Vector2;
 public class TankEnemy extends SimpleEnemy {
 
     private float hp = 20;
-    private Texture aimTexture = RocketLauncher.INSTANCE.assetHelper.getImage("aimbeam");
+    private Texture aimTexture = RocketLauncher.getAssetHelper().getImage("aimbeam");
     Sprite aimSprite = new Sprite(aimTexture);
 
     public TankEnemy(Vector2 position) {
-        super(position, RocketLauncher.INSTANCE.assetHelper.getImage("monster2"));
+        super(position, RocketLauncher.getAssetHelper().getImage("monster2"));
         shootingCoeff = 0.1f;
         bulletSpeed = 1000;
         bulletDamage = 25;

@@ -27,14 +27,19 @@ public class PlayerArmor extends HUDComponent {
     @Override
     public void render(SpriteBatch batch) {
         font.setColor(Color.WHITE);
-        font.draw(batch, Math.round(GameScreen.INSTANCE.player.getArmor()) + " | " + Math.round(GameScreen.INSTANCE.player.getMaxArmor()), position.x + width * 0.02f, position.y + height - ((height - (font.getCapHeight())) / 2));
+        font.draw(batch,
+                Math.round(GameScreen.getPlayer().getArmor()) + " | "
+                        + Math.round(GameScreen.getPlayer().getMaxArmor()),
+                position.x + width * 0.02f,
+                position.y + height - ((height - (font.getCapHeight())) / 2));
 
     }
 
     @Override
     public void update(float delta) {
-        this.progress = GameScreen.INSTANCE.player.getArmor() / GameScreen.INSTANCE.player.getMaxArmor();
-        position.set(HUDUtils.getBottomCenter().x - width / 2, HUDUtils.getBottomCenter().y + height * 1.3f);
+        this.progress = GameScreen.getPlayer().getArmor() / GameScreen.getPlayer().getMaxArmor();
+        position.set(HUDUtils.getBottomCenter().x - width / 2,
+                HUDUtils.getBottomCenter().y + height * 1.3f);
         updateAngle();
     }
 
@@ -42,7 +47,8 @@ public class PlayerArmor extends HUDComponent {
     public void resize(float width, float height) {
         this.width = (float) (width * 0.32);
         this.height = (float) (this.width * 0.07);
-        font = RocketLauncher.INSTANCE.assetHelper.getFont("superstar", (int) Math.ceil(this.height * 0.7));
+        font = RocketLauncher.getAssetHelper().getFont("superstar",
+                (int) Math.ceil(this.height * 0.7));
     }
 
     public void updateAngle() {
@@ -66,7 +72,8 @@ public class PlayerArmor extends HUDComponent {
         shapeRenderer.setColor(new Color(0x26262691));
         shapeRenderer.rect(position.x, position.y, width, height);
         shapeRenderer.rect(position.x + width * 0.01f, position.y + width * 0.01f,
-                (width - width * 0.02f) * currProg, height - width * 0.02f, color2, color1, color1, color2);
+                (width - width * 0.02f) * currProg, height - width * 0.02f, color2, color1, color1,
+                color2);
     }
 
 }

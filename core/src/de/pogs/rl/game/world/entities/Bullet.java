@@ -62,7 +62,7 @@ public class Bullet extends AbstractEntity {
         sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
                 position.getY() - sprite.getHeight() / 2);
 
-        glow = GameScreen.INSTANCE.particleManager.createEmitter(new ParticleEmitter(0, 0, 500, 15,
+        glow = GameScreen.getParticleManager().createEmitter(new ParticleEmitter(0, 0, 500, 15,
                 ParticleUtils.generateParticleTexture(color, (int) width, (int) width * 4), 90, 90,
                 0, 800, width, width, .2f, .1f, 0f, .0f, false));
         glow.attach(this.sprite, 0, 0, this);

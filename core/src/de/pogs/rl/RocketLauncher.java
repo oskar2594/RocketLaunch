@@ -8,14 +8,25 @@ import de.pogs.rl.utils.ConfigLoader;
 
 
 public class RocketLauncher extends Game {
-	public SpriteBatch batch;
-	public static RocketLauncher INSTANCE;
-	
-	public AssetHelper assetHelper;
+	private static RocketLauncher instance;
+	private static SpriteBatch batch;
+	private static AssetHelper assetHelper;
 
 	public RocketLauncher() {
 		super();
-		INSTANCE = this;
+		instance = this;
+	}
+
+	public static SpriteBatch getSpriteBatch() {
+		return batch;
+	}
+
+	public static AssetHelper getAssetHelper() {
+		return assetHelper;
+	}
+
+	public static RocketLauncher getInstance() {
+		return instance;
 	}
 
 	@Override

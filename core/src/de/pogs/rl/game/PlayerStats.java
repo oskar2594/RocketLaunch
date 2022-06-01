@@ -4,7 +4,7 @@ import de.pogs.rl.utils.ConfigLoader;
 
 public class PlayerStats {
 
-    private static int expPerLevel = 100; 
+    private static int expPerLevel = 100;
     private static int expMorePerLevel = 20;
 
     private static int exp = 0;
@@ -15,7 +15,7 @@ public class PlayerStats {
     private static boolean first = true;
 
     public static void update() {
-        if(first) {
+        if (first) {
             first = false;
             exp = ConfigLoader.getValueInt("exp");
         }
@@ -24,18 +24,21 @@ public class PlayerStats {
     }
 
     public static float getCurrentLevelPercentage() {
-        if(accessExp == 0 || needExp == 0) return 0;
-        return (float) accessExp / (float)needExp;
+        if (accessExp == 0 || needExp == 0)
+            return 0;
+        return (float) accessExp / (float) needExp;
     }
 
     public static void addExp(int e) {
-        if(e < 0) return;
+        if (e < 0)
+            return;
         exp += e;
     }
 
     public static void remExp(int e) {
-        if(e < 0) return;
-        if(e > exp) {
+        if (e < 0)
+            return;
+        if (e > exp) {
             exp = 0;
             return;
         }

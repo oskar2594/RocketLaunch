@@ -31,8 +31,8 @@ public class RocketCamera extends OrthographicCamera {
 
     public void refresh(float delta) {
         // Position der Kamera auf den Spieler setzen
-        this.position.set(GameScreen.INSTANCE.player.getPosition().getX(),
-                GameScreen.INSTANCE.player.getPosition().getY(), 0);
+        this.position.set(GameScreen.getPlayer().getPosition().getX(),
+                GameScreen.getPlayer().getPosition().getY(), 0);
 
         // Kamera Wackeln ausführen
         Vector2 shake = CameraShake.getShake();
@@ -40,14 +40,14 @@ public class RocketCamera extends OrthographicCamera {
 
 
         // Zoom Faktor ermitteln & setzen
-        float playerSpeed = GameScreen.INSTANCE.player.getSpeed();
-        float maxSpeed = GameScreen.INSTANCE.player.getMaxSpeed();
+        float playerSpeed = GameScreen.getPlayer().getSpeed();
+        float maxSpeed = GameScreen.getPlayer().getMaxSpeed();
         float zoom = (float) easeInOut((playerSpeed / maxSpeed)) * 0.18f + 0.9f;
         this.zoom = Math.min(zoom, 1.1f);
 
 
         // Kamera Wackeln setzen
-        if (zoom > .9f && GameScreen.INSTANCE.player.isAccelerating()) {
+        if (zoom > .9f && GameScreen.getPlayer().isAccelerating()) {
             CameraShake.activate((zoom - .95f) * 10);
         } else {
             CameraShake.deactivate();
@@ -55,9 +55,9 @@ public class RocketCamera extends OrthographicCamera {
 
         // Trigger CameraZoomm Event
         if (beforeZoom != this.zoom) {
-            GameScreen.INSTANCE.resizeZoom(
-                    (int) (Gdx.graphics.getWidth() * GameScreen.INSTANCE.camera.zoom),
-                    (int) (Gdx.graphics.getHeight() * GameScreen.INSTANCE.camera.zoom));
+            GameScreen.resizeZoom(
+                    (int) (Gdx.graphics.getWidth() * GameScreen.getCamera().zoom),
+                    (int) (Gdx.graphics.getHeight() * GameScreen.getCamera().zoom));
             beforeZoom = this.zoom;
         }
         this.update();
