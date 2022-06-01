@@ -10,8 +10,8 @@ public abstract class AbstractEntity {
     /**
      * Koordinaten der Entität
      */
-    protected Vector2 position = new Vector2(0, 0);
-
+    protected Vector2 position = Vector2.zero;
+    protected Vector2 forceAdded = Vector2.zero;
     /**
      * Führt einen Simulationsschritt für die Entität durch.
      * 
@@ -99,7 +99,18 @@ public abstract class AbstractEntity {
 
     }
 
+    /**
+     * Tötet die Entität
+     */
     public void kill() {
         alive = false;
+    }
+
+    /**
+     * Wirkt eine Kraft, wie z.B. einen Stoß auf die Entität aus
+     * @param force Die Ausgewirkte Kraft
+     */
+    public void addForce(Vector2 force) {
+        forceAdded = forceAdded.add(force);
     }
 }
