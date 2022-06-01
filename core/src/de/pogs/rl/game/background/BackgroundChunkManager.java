@@ -122,7 +122,6 @@ public final class BackgroundChunkManager {
                 }
             }
         }
-        System.out.println(i);
         i = 0;
         return 1;
     }
