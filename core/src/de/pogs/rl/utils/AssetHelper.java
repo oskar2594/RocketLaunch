@@ -59,17 +59,17 @@ public class AssetHelper {
                     case "images":
                         new Thread(() -> {
                             loadImages(entry.list());
-                        }).run();
+                        }).start();
                         break;
                     case "sounds":
                         new Thread(() -> {
                             loadSounds(entry.list());
-                        }).run();
+                        }).start();
                         break;
                     case "fonts":
                         new Thread(() -> {
                             loadFonts(entry.list());
-                        }).run();
+                        }).start();
                         break;
                     default:
                         break;

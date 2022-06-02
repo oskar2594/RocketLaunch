@@ -26,6 +26,9 @@ package de.pogs.rl.game.world.entities;
 
 import java.util.LinkedList;
 import java.util.Random;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -41,6 +44,10 @@ public class Asteroid extends AbstractEntity {
     private Sprite sprite = new Sprite(texture);
     private static final int baseSize = 5;
     private static Random random = new Random();
+
+    private Sound metalSound;
+    private Sound rockSound;
+    private Sound muffleSound;
 
     private float force;
     private static final float baseForce = 100;
@@ -59,6 +66,10 @@ public class Asteroid extends AbstractEntity {
                 baseSize * (float) Math.pow(1.5, this.level));
         sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
                 position.getY() - sprite.getHeight() / 2);
+
+        metalSound = RocketLauncher.getAssetHelper().getSound("metalhit");
+        rockSound = RocketLauncher.getAssetHelper().getSound("rockhit");
+        muffleSound = RocketLauncher.getAssetHelper().getSound("muffle");
     }
 
     @Override
@@ -84,9 +95,14 @@ public class Asteroid extends AbstractEntity {
                         .mul(2 * m1 / (m2 + m1) * v2.sub(v1).dot(x2.sub(x1)) / x2.dst2(x1)));
                 velocity = v1_new;
                 impulseEntity.setVelocity(v2_new);
-                position = position.add(position.sub(x2).nor().mul(radius + entity.getRadius() - x1.dst(x2)));
-                if(entity instanceof Player) {
+                position = position
+                        .add(position.sub(x2).nor().mul(radius + entity.getRadius() - x1.dst(x2)));
+                if (entity instanceof Player) {
                     CameraShake.makeShake(((Player) entity).getSpeed() / 50, 20);
+                    playMuffle(0);
+                    playSoundBasedOnDistance(rockSound, entity.getPosition().dst(GameScreen.getPlayer().getPosition()));
+                } else {
+                    playMuffle(entity.getPosition().dst(GameScreen.getPlayer().getPosition()));
                 }
                 System.out.println(position.dst(x2));
             }
@@ -106,12 +122,28 @@ public class Asteroid extends AbstractEntity {
                     velocity = v1_new;
                     other.setVelocity(v2_new);
                     other.addCollided(this);
-                    
-                    position = position.add(position.sub(x2).nor().mul(radius + entity.getRadius() - x1.dst(x2)));
+
+                    position = position.add(
+                            position.sub(x2).nor().mul(radius + entity.getRadius() - x1.dst(x2)));
+                    if (v2_new.dst(Vector2.zero) > 30 || v1_new.dst(Vector2.zero) > 30) {
+                        playMuffle(entity.getPosition().dst(GameScreen.getPlayer().getPosition()));
+                    }
                 }
             }
         }
         collided.clear();
+    }
+
+    private void playMuffle(float distance) {
+        playSoundBasedOnDistance(muffleSound, distance - 200);
+    }
+
+    private void playSoundBasedOnDistance(Sound sound, float distance) {
+        if (Math.abs(distance) * 3 > Gdx.graphics.getHeight())
+            return;
+        System.out.println(1 - (2 * distance / Gdx.graphics.getWidth()));
+        sound.play(Math.abs(1 - (2 * distance / Gdx.graphics.getWidth())));
+        // sound.play(0.01f);
     }
 
     @Override

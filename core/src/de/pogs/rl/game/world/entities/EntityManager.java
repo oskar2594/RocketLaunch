@@ -28,7 +28,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
+import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 
@@ -84,6 +84,11 @@ public class EntityManager {
             if (entityChecked.getPosition()
                     .dst(entity.getPosition()) <= (radius + entityChecked.getRadius())
                     && !entityChecked.equals(entity)) {
+
+                if(entityChecked instanceof Asteroid && entity instanceof Asteroid) {
+
+                }
+
                 result.add(entityChecked);
             }
         }
