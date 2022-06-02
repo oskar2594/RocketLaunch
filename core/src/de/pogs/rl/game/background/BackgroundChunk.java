@@ -165,7 +165,7 @@ public final class BackgroundChunk {
         float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
         // Farbe in eine HSV Farbe umwandeln
         float brightness = hsb[2];
-        brightness = (color.getAlpha() / 255f) * 0.7f; // Helligkeit nach Alphakanal anpassn
+        brightness = ((color.getAlpha()/ 255f) - 0.1f) * 0.7f; // Helligkeit nach Alphakanal anpassn
         return new Color(Color.HSBtoRGB(hsb[0], hsb[1], brightness));
     }
 

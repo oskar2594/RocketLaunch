@@ -92,10 +92,10 @@ public class HUD {
 
     public void resize(int width, int height) {
         this.border = (int) (width * 0.03);
-        this.width = width - border * 2;
-        this.height = height - border * 2;
+        HUD.width = width - border * 2;
+        HUD.height = height - border * 2;
         components.forEach((name, component) -> {
-            component.resize(this.width, this.height);
+            component.resize(HUD.width, HUD.height);
         });
     }
 

@@ -93,7 +93,7 @@ public class Button {
         if (mouseX > position.x - width / 2 && mouseX < position.x + width / 2
                 && mouseY > position.y - height / 2 && mouseY < position.y + height / 2) {
             this.hover = true;
-            if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
+            if (Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
                 this.active = true;
                 background = border;
             } else {

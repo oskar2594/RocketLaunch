@@ -32,7 +32,7 @@ import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class Particle {
 
-    private boolean isDead = false;
+    private boolean dead = false;
     private Vector2 position;
     private Vector2 velocity;
     private Sprite sprite;
@@ -84,7 +84,7 @@ public class Particle {
         position = position.add(angleToVector(angle + offsetAngle).mul(delta * speed))
                 .add(velocity.mul(delta * .1f));
         if (time >= duration) {
-            isDead = true;
+            dead = true;
             return;
         }
         if (time > timeAlpha) {
@@ -123,10 +123,10 @@ public class Particle {
     }
 
     public boolean isDead() {
-        return isDead;
+        return dead;
     }
 
     public void setDead(boolean isDead) {
-        this.isDead = isDead;
+        this.dead = isDead;
     }
 }

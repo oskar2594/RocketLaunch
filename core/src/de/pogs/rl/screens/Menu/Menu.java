@@ -195,7 +195,6 @@ public class Menu extends ScreenAdapter {
 
 	@Override
 	public void dispose() {
-		background.dispose();
 		startButton.dispose();
 	}
 
