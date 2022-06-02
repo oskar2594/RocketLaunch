@@ -129,12 +129,4 @@ public abstract class AbstractEntity {
     public void kill() {
         alive = false;
     }
-
-    /**
-     * Wirkt eine Kraft, wie z.B. einen Stoß auf die Entität aus
-     * @param force Die Ausgewirkte Kraft
-     */
-    public void addForce(Vector2 force) {
-        forceAdded = forceAdded.add(force);
-    }
 }
