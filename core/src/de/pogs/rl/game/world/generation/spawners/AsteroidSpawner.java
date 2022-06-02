@@ -16,7 +16,7 @@ public class AsteroidSpawner extends AbstractSpawner {
             Vector2 velocity = new Vector2(random.nextFloat() - 0.5f, random.nextFloat() - 0.5f).mul(random.nextInt(50) + 25);
             for (int i = 0; i<count; i++) {
                 Vector2 position = chunk.add(new Vector2(random.nextFloat(), random.nextFloat()).mul(200));
-                result.add(new Asteroid(position, 4, velocity));
+                result.add(new Asteroid(position, 1000, velocity));
             }
         }
         return result;
