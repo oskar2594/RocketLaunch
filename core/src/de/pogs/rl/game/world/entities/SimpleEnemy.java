@@ -36,7 +36,7 @@ import de.pogs.rl.game.world.particles.ParticleEmitter;
 import de.pogs.rl.game.world.particles.ParticleUtils;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
-public class SimpleEnemy extends AbstractEntity {
+public class SimpleEnemy extends AbstractEntity implements ImpulseEntity {
     protected float sightRange = (float) Math.pow(500, 2);
     private float haloRange = (float) Math.pow(200, 2);
 
@@ -67,6 +67,8 @@ public class SimpleEnemy extends AbstractEntity {
     protected float bulletDamage = 1;
     protected float bulletSpeed = 500;
     protected Color bulletColor = new Color(0xd46178);
+
+    protected float mass = 100;
 
     public SimpleEnemy(Vector2 position) {
         this(position, RocketLauncher.getAssetHelper().getImage("monster1"));
@@ -176,4 +178,15 @@ public class SimpleEnemy extends AbstractEntity {
         GameScreen.getEntityManager().addEntity(new XpOrb(position, 10));
     }
 
+    public void setVelocity(Vector2 velocity) {
+        this.velocity = velocity;
+    }
+
+    public Vector2 getVelocity() {
+        return velocity;
+    }
+
+    public float getMass() {
+        return mass;
+    }
 }
