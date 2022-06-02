@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 
@@ -103,8 +102,8 @@ public class EntityManager {
      */
     public void update(float delta, Vector2 playerPosition, int updateDistance2, int removeDistance2) {
         
-        entities.stream().filter(entity -> !entity.getAlive()).forEach(entity -> entity.dispose());
-        entities.removeIf((entity) -> !entity.getAlive());
+        entities.stream().filter(entity -> !entity.isAlive()).forEach(entity -> entity.dispose());
+        entities.removeIf((entity) -> !entity.isAlive());
 
         removeOutOfRange(playerPosition, removeDistance2);
         for (AbstractEntity entity : entities) {
@@ -151,5 +150,7 @@ public class EntityManager {
     public LinkedList<AbstractEntity> getEntities() {
         return new LinkedList<AbstractEntity>(entities);
     }
+
     public void dispose() {}
+
 }

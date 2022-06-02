@@ -33,7 +33,6 @@ import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.background.BackgroundLayer;
 import de.pogs.rl.game.overlay.DeathOverlay;
 import de.pogs.rl.game.overlay.OverlayHandler;
-import de.pogs.rl.game.overlay.Pause;
 import de.pogs.rl.game.ui.HUD;
 import de.pogs.rl.game.ui.HUDCamera;
 import de.pogs.rl.game.world.entities.EntityManager;
@@ -43,6 +42,7 @@ import de.pogs.rl.game.world.generation.spawners.AsteroidSpawner;
 import de.pogs.rl.game.world.generation.spawners.SimpleSpawner;
 import de.pogs.rl.game.world.generation.spawners.TankSpawner;
 import de.pogs.rl.game.world.particles.ParticleManager;
+import de.pogs.rl.utils.CameraShake;
 
 public class GameScreen extends ScreenAdapter {
     private SpriteBatch batch;
@@ -57,7 +57,7 @@ public class GameScreen extends ScreenAdapter {
     private static OverlayHandler overlayHandler;
     private static SpawnManager entityGen;
 
-    private static boolean paused = false; // TEST ONLY
+    private static boolean paused = false;
 
     private static int renderDistanceBase = 1500;
     private static int updateDistanceBase = 1500;
@@ -77,14 +77,15 @@ public class GameScreen extends ScreenAdapter {
         background = new BackgroundLayer();
         hud = new HUD();
         overlayHandler = new OverlayHandler();
-        // overlayHandler.setOverlay(new DeathOverlay());
 
         entityManager.addEntity(player);
         entityManager.flush();
-        entityGen = SpawnManager.get();
+        entityGen = new SpawnManager();
         entityGen.addSpawner(new SimpleSpawner());
         entityGen.addSpawner(new TankSpawner());
         entityGen.addSpawner(new AsteroidSpawner());
+
+        paused = false;
 
     }
 
@@ -177,6 +178,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public static void setPaused(boolean p) {
+        if(p) player.pauseSounds();
         paused = p;
     }
 
@@ -200,6 +202,20 @@ public class GameScreen extends ScreenAdapter {
         return hud;
     }
 
-    public static void reset() {}
+    public static OverlayHandler getOverlayHandler() {
+        return overlayHandler;
+    }
+
+    public static void reset() {
+        CameraShake.deactivate();
+        CameraShake.isActive = false;
+        RocketLauncher.getInstance().setScreen(new GameScreen());
+    }
+
+    public static void playerDied() {
+        CameraShake.deactivate();
+        overlayHandler.setOverlay(new DeathOverlay());
+        setPaused(true);
+    }
 
 }

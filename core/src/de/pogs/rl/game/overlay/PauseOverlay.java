@@ -36,19 +36,20 @@ import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.screens.Menu.Menu;
 import de.pogs.rl.utils.menu.Button;
 
-public class DeathOverlay extends Overlay {
 
+public class PauseOverlay extends Overlay{
+    
     private BitmapFont font;
-    private Button restartButton;
+    private Button resumeButton;
     private Button menuButton;
 
-    public DeathOverlay() {
+    public PauseOverlay() {
         super();
         font = RocketLauncher.getAssetHelper().getFont("superstar",
                 (int) (Gdx.graphics.getWidth() * 0.2));
-        restartButton = new Button(0, 0, (int) (Gdx.graphics.getWidth() * 0.5),
+        resumeButton = new Button(0, 0, (int) (Gdx.graphics.getWidth() * 0.5),
                 (int) ((Gdx.graphics.getWidth() * 0.5) / 10), new Color(0x2beafcff),
-                new Color(0x0183e5ff), new Color(0x06bbf4ff), "Neustarten", 5);
+                new Color(0x0183e5ff), new Color(0x06bbf4ff), "Fortsetzen", 5);
         menuButton = new Button(0, 0, (int) (Gdx.graphics.getWidth() * 0.5),
                 (int) ((Gdx.graphics.getWidth() * 0.5) / 10), new Color(0x2beafcff),
                 new Color(0x0183e5ff), new Color(0x06bbf4ff), "Zurück zum Hauptmenü", 5);
@@ -61,9 +62,9 @@ public class DeathOverlay extends Overlay {
 
     @Override
     public void render(SpriteBatch batch) {
-        font.draw(batch, "GESTORBEN", -Gdx.graphics.getWidth() / 2, font.getCapHeight(),
+        font.draw(batch, "Pausiert", -Gdx.graphics.getWidth() / 2, font.getCapHeight(),
                 Gdx.graphics.getWidth(), Align.center, false);
-        restartButton.render(batch);
+        resumeButton.render(batch);
         menuButton.render(batch);
     }
 
@@ -76,38 +77,43 @@ public class DeathOverlay extends Overlay {
         shapeRenderer.rect(-Gdx.graphics.getWidth() / 2, -Gdx.graphics.getHeight() / 2,
                 Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        restartButton.shapeRender(shapeRenderer);
+        resumeButton.shapeRender(shapeRenderer);
         menuButton.shapeRender(shapeRenderer);
     }
 
     public void updateButtons(float delta) {
-        restartButton.setWidth((int) (Gdx.graphics.getWidth() * 0.5));
-        restartButton.setHeight((int) ((Gdx.graphics.getWidth() * 0.5) / 10));
-        restartButton.setPosition(0, (int) (-restartButton.getHeight()));
+        resumeButton.setWidth((int) (Gdx.graphics.getWidth() * 0.5));
+        resumeButton.setHeight((int) ((Gdx.graphics.getWidth() * 0.5) / 10));
+        resumeButton.setPosition(0, (int) (-resumeButton.getHeight()));
 
         menuButton.setWidth((int) (Gdx.graphics.getWidth() * 0.5));
         menuButton.setHeight((int) ((Gdx.graphics.getWidth() * 0.5) / 10));
-        menuButton.setPosition(0, (int) (-restartButton.getHeight() - menuButton.getHeight()
+        menuButton.setPosition(0, (int) (-resumeButton.getHeight() - menuButton.getHeight()
                 - Gdx.graphics.getHeight() * 0.02f));
 
-        restartButton.update(delta);
+        resumeButton.update(delta);
         menuButton.update(delta);
     }
 
     @Override
     public void update(float delta) {
         updateButtons(delta);
-        if(restartButton.isClicked()) {
-            GameScreen.reset();
+        if(resumeButton.isClicked()) {
+            resume();
         }
         if(menuButton.isClicked()) {
             RocketLauncher.getInstance().setScreen(new Menu());
         }
     }
 
+    public void resume() {
+        GameScreen.setPaused(false);
+        GameScreen.getOverlayHandler().setOverlay(null);
+    }
+
     @Override
     public void resize(int width, int height) {
-        restartButton.resize(width, height);
+        resumeButton.resize(width, height);
         menuButton.resize(width, height);
 
         font = RocketLauncher.getAssetHelper().getFont("superstar",

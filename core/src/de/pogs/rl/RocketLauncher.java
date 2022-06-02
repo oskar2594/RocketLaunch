@@ -25,6 +25,7 @@
 package de.pogs.rl;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.pogs.rl.screens.Loader;
 import de.pogs.rl.utils.AssetHelper;
@@ -35,6 +36,8 @@ public class RocketLauncher extends Game {
 	private static RocketLauncher instance;
 	private static SpriteBatch batch;
 	private static AssetHelper assetHelper;
+
+	public static final SystemCursor defaultCursor = SystemCursor.Arrow;
 
 	public RocketLauncher() {
 		super();

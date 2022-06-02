@@ -36,8 +36,6 @@ import de.pogs.rl.utils.SpecialMath;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class Bullet extends AbstractEntity {
-    private Texture texture;
-
     private ParticleEmitter glow;
     private Sprite sprite;
 
@@ -53,8 +51,10 @@ public class Bullet extends AbstractEntity {
 
     /**
      * Factory Methode, die ein Bullet erzeugt und registriert.
+     * 
      * @param position Initiale Position des Bullet.
-     * @param sender Entität, welche das Bullet verschossen hat und dadurch immun gegen das Bullet ist.
+     * @param sender Entität, welche das Bullet verschossen hat und dadurch immun gegen das Bullet
+     *        ist.
      * @param damage Schaden, den das Bullet bei einem Treffer verursachen soll.
      * @param velocity Geschwindigkeitsvektor nach dem Bullet sich bewegt.
      * @param color Farbe des Bullet.
@@ -63,10 +63,10 @@ public class Bullet extends AbstractEntity {
      */
     public static Bullet createBullet(Vector2 position, AbstractEntity sender, float damage,
             Vector2 velocity, Color color, long lifeTime) {
-                Bullet bullet = new Bullet(position, sender, damage, velocity, color, lifeTime);
-                bullet.update(0);
-                GameScreen.getEntityManager().addEntity(bullet);
-                return bullet;
+        Bullet bullet = new Bullet(position, sender, damage, velocity, color, lifeTime);
+        bullet.update(0);
+        GameScreen.getEntityManager().addEntity(bullet);
+        return bullet;
     }
 
     public Bullet(Vector2 position, AbstractEntity sender, float damage, Vector2 velocity,
@@ -86,9 +86,10 @@ public class Bullet extends AbstractEntity {
         sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
                 position.getY() - sprite.getHeight() / 2);
 
-        glow = GameScreen.getParticleManager().createEmitter(new ParticleEmitter(0, 0, 500, 15,
-                ParticleUtils.generateParticleTexture(color, (int) width, (int) width * 4), 90, 90,
-                0, 800, width, width, .2f, .1f, 0f, .0f, false));
+        glow = GameScreen.getParticleManager()
+                .createEmitter(new ParticleEmitter(0, 0, 500, 15,
+                        ParticleUtils.generateParticleTexture(color, (int) width, (int) width * 4),
+                        90, 90, 0, 800, width, width, .2f, .1f, 0f, .0f, false));
         glow.attach(this.sprite, 0, 0, this);
     }
 
@@ -106,6 +107,7 @@ public class Bullet extends AbstractEntity {
         for (AbstractEntity entity : GameScreen.getEntityManager().getCollidingEntities(this)) {
             if (entity != sender && !(entity instanceof XpOrb)) {
                 entity.addDamage(damage, sender);
+                splashEffect(entity);
                 this.alive = false;
                 break;
             }
@@ -113,6 +115,15 @@ public class Bullet extends AbstractEntity {
         if (TimeUtils.millis() > deathTime) {
             this.alive = false;
         }
+    }
+
+    private void splashEffect(AbstractEntity entity) {
+        GameScreen.getParticleManager()
+                .createEmitter(new ParticleEmitter((int) position.getX(), (int) position.getY(), 50,
+                        5,
+                        ParticleUtils.generateParticleTexture(ParticleUtils.averageColor(entity.getTexture())),
+                        -180, 180, 10, 150, 1, 5, 1f, 1f, .5f, .1f, true))
+                .updateVelocity(velocity.mul(-1));
     }
 
     private void updatePosition(float delta) {
@@ -133,4 +144,6 @@ public class Bullet extends AbstractEntity {
         texture.dispose();
         glow.setDead(true);
     }
+
+    
 }

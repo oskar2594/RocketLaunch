@@ -24,7 +24,6 @@
  */
 package de.pogs.rl.game.world.entities;
 
-import java.util.Random;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -41,7 +40,6 @@ public class SimpleEnemy extends AbstractEntity implements ImpulseEntity {
     private float haloRange = (float) Math.pow(200, 2);
 
     private float respectDistance = (float) Math.pow(180, 2);
-    protected Texture texture;
     protected Sprite sprite;
     private float speed = 100;
     protected float hp = 1;
@@ -124,15 +122,6 @@ public class SimpleEnemy extends AbstractEntity implements ImpulseEntity {
                 .mul(20 * delta * speed / (float) Math.pow(position.dst(entity.getPosition()), 3));
     }
 
-    protected void splashEffectSelf() {
-        GameScreen.getParticleManager()
-                .createEmitter(new ParticleEmitter((int) position.getX(), (int) position.getY(), 50,
-                        5,
-                        ParticleUtils.generateParticleTexture(ParticleUtils.averageColor(texture)),
-                        -180, 180, 10, 150, 1, 5, 1f, 1f, .5f, .1f, true))
-                .updateVelocity(velocity);
-    }
-
 
     private void updateVelocity(float delta) {
         Vector2 playerPos = GameScreen.getPlayer().getPosition();
@@ -169,7 +158,6 @@ public class SimpleEnemy extends AbstractEntity implements ImpulseEntity {
         if (hp <= 0) {
             alive = false;
             source.killOtherEvent(this);
-            splashEffectSelf();
         }
     }
 

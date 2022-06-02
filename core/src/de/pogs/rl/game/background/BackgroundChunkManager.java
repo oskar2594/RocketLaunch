@@ -57,9 +57,9 @@ public final class BackgroundChunkManager {
 
     private int chunksPerFrame = 5;
 
-    private static Color[][] colorCache;
+    private Color[][] colorCache;
 
-    private static Vector2 cacheStart = new Vector2();
+    private Vector2 cacheStart = new Vector2();
 
     /**
      * Erstellung eines Chunk Managers
