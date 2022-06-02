@@ -55,6 +55,8 @@ public class Menu extends ScreenAdapter {
 	private int fadeOutTime = 1000;
 
 	private Button startButton;
+	private Button settingsButton;
+
 	private ShapeRenderer shapeRenderer;
 
 
@@ -67,6 +69,11 @@ public class Menu extends ScreenAdapter {
 		startButton = new Button(0, 0, (int) (Gdx.graphics.getWidth() * 0.5),
 				(int) ((Gdx.graphics.getWidth() * 0.5) / 10), new Color(0x2beafcff),
 				new Color(0x0183e5ff), new Color(0x06bbf4ff), "Starten", 5);
+
+		settingsButton = new Button(0, 0, (int) (Gdx.graphics.getWidth() * 0.5),
+				(int) ((Gdx.graphics.getWidth() * 0.5) / 10), new Color(0x2beafcff),
+				new Color(0x0183e5ff), new Color(0x06bbf4ff), "Einstellungen", 5);
+
 		shapeRenderer = new ShapeRenderer();
 		shapeRenderer.setAutoShapeType(true);
 
@@ -110,12 +117,19 @@ public class Menu extends ScreenAdapter {
 		logoSprite.setAlpha(alpha);
 	}
 
-	private void updateButton() {
+	private void updateButtons() {
 		startButton.setWidth((int) (Gdx.graphics.getWidth() * 0.5));
 		startButton.setHeight((int) ((Gdx.graphics.getWidth() * 0.5) / 10));
 		startButton.setPosition(0,
 				(int) (-startButton.getHeight() - logoSprite.getHeight() * 0.2f));
 		startButton.setAlpha(alpha);
+
+		settingsButton.setWidth((int) (Gdx.graphics.getWidth() * 0.5));
+		settingsButton.setHeight((int) ((Gdx.graphics.getWidth() * 0.5) / 10));
+		settingsButton.setPosition(0,
+				(int) (-settingsButton.getHeight() - startButton.getHeight() - logoSprite.getHeight() * 0.2f - Gdx.graphics.getHeight() * 0.02f));
+		settingsButton.setAlpha(alpha);
+
 	}
 
 	@Override
@@ -134,6 +148,7 @@ public class Menu extends ScreenAdapter {
 						: 0));
 		camera.update();
 		startButton.update(delta);
+		settingsButton.update(delta);
 		batch.begin();
 		backgroundSprite.draw(batch);
 		logoSprite.draw(batch);
@@ -144,12 +159,14 @@ public class Menu extends ScreenAdapter {
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		shapeRenderer.begin();
 		startButton.shapeRender(shapeRenderer);
+		settingsButton.shapeRender(shapeRenderer);
 		shapeRenderer.end();
 		Gdx.gl.glDisable(GL20.GL_BLEND);
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		startButton.render(batch);
+		settingsButton.render(batch);
 		batch.end();
 
 	}
@@ -164,7 +181,7 @@ public class Menu extends ScreenAdapter {
 		}
 		updateLogo();
 		updateBackground();
-		updateButton();
+		updateButtons();
 	}
 
 	@Override
@@ -173,7 +190,7 @@ public class Menu extends ScreenAdapter {
 		camera.viewportWidth = width;
 		updateBackground();
 		startButton.resize(width, height);
-
+		settingsButton.resize(width, height);
 	}
 
 	@Override

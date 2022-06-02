@@ -26,6 +26,7 @@ package de.pogs.rl.utils.menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -45,15 +46,19 @@ public class Button {
     private int width;
     private int height;
     private Color background;
+    private Color origBackground;
     private Color border;
     private Color textColor;
     private String content;
     private float alpha = 1f;
     private int borderWidth = 1;
+    private Sound hoverSound;
+    private Sound clickSound;
 
     private boolean hover = false;
     private boolean beforeHover = false;
     private boolean active = false;
+    private boolean beforeActive = false;
 
     public Button(int x, int y, int width, int height, Color textColor, Color background,
             Color border, String content) {
@@ -61,9 +66,12 @@ public class Button {
         this.width = width;
         this.height = height;
         this.background = background;
+        this.origBackground = background;
         this.border = border;
         this.textColor = textColor;
         this.content = content.toUpperCase();
+        hoverSound = RocketLauncher.getAssetHelper().getSound("hover");
+        clickSound = RocketLauncher.getAssetHelper().getSound("active");
         updateFont();
     }
 
@@ -87,8 +95,10 @@ public class Button {
             this.hover = true;
             if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
                 this.active = true;
+                background = border;
             } else {
                 this.active = false;
+                background = origBackground;
             }
         } else {
             this.hover = false;
@@ -97,10 +107,17 @@ public class Button {
         if (hover != beforeHover) {
             if (this.hover) {
                 Gdx.graphics.setSystemCursor(SystemCursor.Hand);
+                hoverSound.play(.5f);
             } else {
                 Gdx.graphics.setSystemCursor(SystemCursor.Arrow);
             }
             beforeHover = hover;
+        }
+        if(active != beforeActive) {
+            if(active) {
+                clickSound.play(.5f);
+            }
+            beforeActive = active;
         }
     }
 
