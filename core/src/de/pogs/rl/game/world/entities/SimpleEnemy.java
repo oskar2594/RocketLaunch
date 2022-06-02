@@ -99,11 +99,6 @@ public class SimpleEnemy extends AbstractEntity {
                 position.getY() - sprite.getHeight() / 2);
         updateVelocity(delta);
 
-        for (AbstractEntity entity : GameScreen.getEntityManager().getCollidingEntities(this)) {
-            if (!(entity instanceof SimpleEnemy || entity instanceof Bullet)) {
-                entity.addDamage(5 * delta, this);
-            }
-        }
 
 
         updatePos(delta);
