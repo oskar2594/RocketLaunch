@@ -143,10 +143,6 @@ public class SpecialMath {
     }
     
     public static int randint(int a, int b) {
-        System.out.println("AAA");
-        System.out.println(a);
-        System.out.println(b);
-        System.out.println(a + (int) Math.random() * (b - a + 1));
         return (int)(a + Math.random() * (b - a + 1));
     }
 }
