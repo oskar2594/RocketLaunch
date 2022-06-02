@@ -65,7 +65,7 @@ public class ParticleUtils {
      * @return Durchschnittsfarbe
      */
     public static Color averageColor(Texture t) {
-        t.getTextureData().prepare();
+        if(!t.getTextureData().isPrepared()) t.getTextureData().prepare();
         Pixmap bi = t.getTextureData().consumePixmap();
         int x0 = 0;
         int y0 = 0;

@@ -45,7 +45,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Player extends AbstractEntity implements ImpulseEntity {
-    private Texture texture = RocketLauncher.getAssetHelper().getImage("rakete");
     private Sprite sprite;
     private int size = 50;
     private float angle = 0;
@@ -89,6 +88,7 @@ public class Player extends AbstractEntity implements ImpulseEntity {
     private float mass = 100;
 
     public Player() {
+        texture = RocketLauncher.getAssetHelper().getImage("rakete");
         sprite = new Sprite(texture);
         sprite.setSize(((float) texture.getWidth() / (float) texture.getHeight()) * size, size);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
@@ -129,7 +129,7 @@ public class Player extends AbstractEntity implements ImpulseEntity {
         overheat.attach(this.getSprite(), 15, 0, this);
 
         sparks = GameScreen.getParticleManager()
-                .createEmitter(new ParticleEmitter(0, 0, -1, 0.3f,
+                .createEmitter(new ParticleEmitter(0, 0, -1, 0.5f,
                         RocketLauncher.getAssetHelper().getImage("spark"), -5, 5, 200, 300, 5, 5,
                         .8f, 0.4f, .9f, 0, false));
         sparks.attach(this.getSprite(), 15, 0, this);
@@ -166,9 +166,9 @@ public class Player extends AbstractEntity implements ImpulseEntity {
     }
 
     private void updateStats() {
-        acceleration = 200 + (float) Math.log(PlayerStats.getExp());
-        angleResponse = 5 + (float) Math.log(PlayerStats.getExp()) / 10;
-        tractionCoeff = baseTractionCoeff / (float) Math.log(PlayerStats.getExp());
+        acceleration = 200 + (float) Math.log(PlayerStats.getLevel());
+        angleResponse = 5 + (float) Math.log(PlayerStats.getLevel()) / 10;
+        tractionCoeff = baseTractionCoeff / (float) Math.log(PlayerStats.getLevel());
     }
 
     private void regenArmor(float delta) {

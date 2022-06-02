@@ -24,6 +24,7 @@
  */
 package de.pogs.rl.game.world.entities;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.pogs.rl.utils.SpecialMath.Vector2;;
 
@@ -36,6 +37,7 @@ public abstract class AbstractEntity {
      */
     protected Vector2 position = Vector2.zero;
     protected Vector2 forceAdded = Vector2.zero;
+    protected Texture texture;
     /**
      * Führt einen Simulationsschritt für die Entität durch.
      * 
@@ -136,5 +138,9 @@ public abstract class AbstractEntity {
      */
     public void addForce(Vector2 force) {
         forceAdded = forceAdded.add(force);
+    }
+
+    public Texture getTexture() {
+        return texture;
     }
 }

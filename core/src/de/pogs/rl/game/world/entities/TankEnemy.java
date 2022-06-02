@@ -62,7 +62,6 @@ public class TankEnemy extends SimpleEnemy {
             this.alive = false;
             source.killOtherEvent(this);
         }
-        splashEffectSelf();
     }
 
     @Override

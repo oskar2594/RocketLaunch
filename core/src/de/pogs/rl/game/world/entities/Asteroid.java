@@ -41,8 +41,7 @@ import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class Asteroid extends AbstractEntity {
     private Vector2 velocity;
-    private Texture texture = RocketLauncher.getAssetHelper().getImage("asteroid");
-    private Sprite sprite = new Sprite(texture);
+    private Sprite sprite;
 
     private Sound rockSound;
     private Sound muffleSound;
@@ -59,6 +58,8 @@ public class Asteroid extends AbstractEntity {
     public Asteroid(Vector2 position, float mass, Vector2 velocity) {
         this.position = position;
         this.mass = mass;
+        this.texture = RocketLauncher.getAssetHelper().getImage("asteroid");
+        sprite = new Sprite(texture);
         radius = (float) Math.pow(mass / density, 1f / 3f);
         hp = 0.1f * mass;
         this.velocity = velocity;
@@ -177,7 +178,6 @@ public class Asteroid extends AbstractEntity {
             Vector2 splitVelocity =
                     new Vector2((float) Math.random() - 0.5f, (float) Math.random() - 0.5f).nor()
                             .mul(10);
-            splashEffectSelf();
             GameScreen.getEntityManager()
                     .addEntity(new Asteroid(position, mass / 2f, velocity.add(splitVelocity)));
             GameScreen.getEntityManager().addEntity(
@@ -185,12 +185,12 @@ public class Asteroid extends AbstractEntity {
         }
     }
 
-    private void splashEffectSelf() {
-        GameScreen.getParticleManager()
-                .createEmitter(new ParticleEmitter((int) position.getX(), (int) position.getY(), 50,
-                        5,
-                        ParticleUtils.generateParticleTexture(ParticleUtils.averageColor(texture)),
-                        -180, 180, 10, 150, 1, 5, 1f, 1f, .5f, .1f, true))
-                .updateVelocity(velocity);
-    }
+    // private void splashEffectSelf() {
+    //     GameScreen.getParticleManager()
+    //             .createEmitter(new ParticleEmitter((int) position.getX(), (int) position.getY(), 50,
+    //                     5,
+    //                     ParticleUtils.generateParticleTexture(ParticleUtils.averageColor(texture)),
+    //                     -180, 180, 10, 150, 1, 5, 1f, 1f, .5f, .1f, true))
+    //             .updateVelocity(velocity);
+    // }
 }
