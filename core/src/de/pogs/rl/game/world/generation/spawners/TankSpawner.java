@@ -25,20 +25,18 @@
 package de.pogs.rl.game.world.generation.spawners;
 
 import java.util.LinkedList;
-import java.util.Random;
 import de.pogs.rl.game.world.entities.AbstractEntity;
 import de.pogs.rl.game.world.entities.TankEnemy;
 import de.pogs.rl.game.world.generation.AbstractSpawner;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class TankSpawner extends AbstractSpawner {
-    private Random random = new Random();
 
     public LinkedList<AbstractEntity> spawn(Vector2 chunk) {
         LinkedList<AbstractEntity> list = new LinkedList<AbstractEntity>();
-        if (random.nextDouble() < 0.001) {
-            list.add(new TankEnemy((float) (chunk.getX() + random.nextDouble() * 200),
-                    (float) (chunk.getY() + random.nextDouble() * 200)));
+        if (Math.random() < 0.001) {
+            list.add(new TankEnemy((float) (chunk.getX() + Math.random() * 200),
+                    (float) (chunk.getY() + Math.random() * 200)));
         }
         return list;
     }

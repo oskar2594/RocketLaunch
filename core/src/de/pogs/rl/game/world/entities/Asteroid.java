@@ -38,7 +38,6 @@ public class Asteroid extends AbstractEntity {
     private Vector2 velocity;
     private Texture texture = RocketLauncher.getAssetHelper().getImage("asteroid");
     private Sprite sprite = new Sprite(texture);
-    private static Random random = new Random();
 
     private static final float density = 0.5f;
     private static final float damageCoeff = 0.01f;
@@ -139,7 +138,7 @@ public class Asteroid extends AbstractEntity {
     public void addDamage(float damage, AbstractEntity sender) {
         this.alive = false;
         Vector2 splitVelocity =
-                new Vector2(random.nextFloat() - 0.5f, random.nextFloat() - 0.5f).nor().mul(10);
+                new Vector2((float) Math.random() - 0.5f, (float) Math.random() - 0.5f).nor().mul(10);
         GameScreen.getEntityManager()
                 .addEntity(new Asteroid(position, mass / 2f, velocity.add(splitVelocity)));
         GameScreen.getEntityManager()

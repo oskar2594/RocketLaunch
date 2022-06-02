@@ -34,7 +34,6 @@ public class CameraShake {
     private static float strength = 0;
     private static float tempStrength = 0;
     private static int tempDuration = 0;
-    private static Random random = new Random();
 
     public static void activate(float s) {
         strength = s;
@@ -59,9 +58,9 @@ public class CameraShake {
         } else {
             tempDuration -= 1;
         }
-        move.x = (random.nextFloat() - 0.5f) * 2 * (strength + tempStrength)
+        move.x = ((float) Math.random() - 0.5f) * 2 * (strength + tempStrength)
                 * (Gdx.graphics.getWidth() / 1000);
-        move.y = (random.nextFloat() - 0.5f) * 2 * (strength + tempStrength)
+        move.y = ((float) Math.random() - 0.5f) * 2 * (strength + tempStrength)
                 * (Gdx.graphics.getWidth() / 1000);
         return move;
     }

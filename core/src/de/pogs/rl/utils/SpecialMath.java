@@ -141,4 +141,8 @@ public class SpecialMath {
             return x * other.getX() + y * other.getY();
         }
     }
+    
+    public static int randint(int a, int b) {
+        return a + (int) Math.random() * (a - b + 1);
+    }
 }
