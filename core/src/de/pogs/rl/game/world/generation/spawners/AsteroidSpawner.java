@@ -35,12 +35,12 @@ import de.pogs.rl.utils.SpecialMath.Vector2;
 public class AsteroidSpawner extends AbstractSpawner {
     public LinkedList<AbstractEntity> spawn(Vector2 chunk) {
         LinkedList<AbstractEntity> result = new LinkedList<AbstractEntity>();
-        if (Math.random() < 0.01) {
+        if (Math.random() < 0.005) {
             int count = SpecialMath.randint(10, 15);
             Vector2 velocity = new Vector2((float) Math.random() - 0.5f, (float) Math.random() - 0.5f).mul(SpecialMath.randint(25, 50));
             for (int i = 0; i<count; i++) {
                 Vector2 position = chunk.add(new Vector2((float) Math.random(), (float) Math.random()).mul(200));
-                result.add(new Asteroid(position, 1000, velocity));
+                result.add(new Asteroid(position, SpecialMath.randint(750, 1250), velocity));
             }
         }
         return result;
