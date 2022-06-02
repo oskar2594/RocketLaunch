@@ -97,7 +97,7 @@ public abstract class AbstractEntity {
      * 
      * @return
      */
-    public boolean getAlive() {
+    public boolean isAlive() {
         return alive;
     }
 

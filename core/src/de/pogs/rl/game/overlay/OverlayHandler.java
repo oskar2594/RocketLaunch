@@ -24,9 +24,12 @@
  */
 package de.pogs.rl.game.overlay;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import de.pogs.rl.game.GameScreen;
 
 public class OverlayHandler {
 
@@ -63,8 +66,17 @@ public class OverlayHandler {
     }
 
     public void update(float delta) {
-        if (currentOverlay == null)
-            return;
+        if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+            if(currentOverlay instanceof PauseOverlay && GameScreen.isPaused()) {
+                ((PauseOverlay) currentOverlay).resume();
+            } else if(currentOverlay == null) {
+                if(!GameScreen.isPaused() && GameScreen.getPlayer().isAlive()) {
+                    this.setOverlay(new PauseOverlay());
+                    GameScreen.setPaused(true);
+                }
+            }
+        }
+        if (currentOverlay == null) return;
         currentOverlay.update(delta);
     }
 

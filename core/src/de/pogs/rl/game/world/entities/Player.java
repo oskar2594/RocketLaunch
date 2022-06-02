@@ -37,6 +37,7 @@ import de.pogs.rl.utils.SpecialMath;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 import java.awt.Color;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
@@ -55,8 +56,8 @@ public class Player extends AbstractEntity implements ImpulseEntity {
     private float maxSpeed = 500;
     private double shotCooldown = 200;
     private double lastBulletTime = TimeUtils.millis();
-    private float armor = 100;
-    private float health = 100;
+    private float armor = 1;
+    private float health = 1;
     private float maxArmor = 100;
     private float maxHealth = 100;
     private double healingTime = 2000;
@@ -70,6 +71,7 @@ public class Player extends AbstractEntity implements ImpulseEntity {
     private long thrustId;
     private float thrustVolume = 0f;
     private float thrustMaxVolume = 0.5f;
+    private boolean thrustisPlaying = false;
     private Sound startSound;
     private long startId;
     private float startVolume = 0.5f;
@@ -97,6 +99,7 @@ public class Player extends AbstractEntity implements ImpulseEntity {
 
         thrustSound = RocketLauncher.getAssetHelper().getSound("thrust");
         thrustId = thrustSound.loop(thrustVolume);
+        thrustisPlaying = true;
         thrustSound.setLooping(thrustId, true);
 
         startSound = RocketLauncher.getAssetHelper().getSound("start");
@@ -187,6 +190,12 @@ public class Player extends AbstractEntity implements ImpulseEntity {
                 startId = startSound.play(startVolume);
                 startSound.setLooping(startId, false);
             }
+        }
+        if(thrustVolume > 0 && !thrustisPlaying && !GameScreen.isPaused()) {
+            thrustisPlaying = true;
+            thrustSound.stop(thrustId);
+            thrustId = thrustSound.loop(thrustVolume);
+            thrustSound.setLooping(thrustId, true);
         }
         thrustSound.setVolume(thrustId, thrustVolume);
         wasAccelerating = isAccelerating;
@@ -283,8 +292,8 @@ public class Player extends AbstractEntity implements ImpulseEntity {
             health += armor;
             armor = 0;
         }
-        if (health < 0) {
-            health = 0;
+        if(health <= 0) {
+            GameScreen.playerDied();
         }
         lastTimeDamaged = TimeUtils.millis();
     }
@@ -316,5 +325,13 @@ public class Player extends AbstractEntity implements ImpulseEntity {
 
     public void setVelocity(Vector2 velocity) {
         this.velocity = velocity;
+    }
+
+    public void pauseSounds() {
+        thrustSound.stop();
+        thrustSound.stop(thrustId);
+        thrustisPlaying = false;
+        startSound.stop();
+        startSound.stop(startId);
     }
 }

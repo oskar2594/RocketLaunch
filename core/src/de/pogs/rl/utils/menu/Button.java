@@ -109,7 +109,7 @@ public class Button {
                 Gdx.graphics.setSystemCursor(SystemCursor.Hand);
                 hoverSound.play(.5f);
             } else {
-                Gdx.graphics.setSystemCursor(SystemCursor.Arrow);
+                Gdx.graphics.setSystemCursor(RocketLauncher.defaultCursor);
             }
             beforeHover = hover;
         }
