@@ -54,11 +54,13 @@ public class Asteroid extends AbstractEntity {
     private static final float density = 0.01f;
     private static final float damageCoeff = 0.01f;
     private LinkedList<Asteroid> collided = new LinkedList<Asteroid>();
+    private float hp;
 
     public Asteroid(Vector2 position, float mass, Vector2 velocity) {
         this.position = position;
         this.mass = mass;
         radius = (float) Math.pow(mass / density, 1f / 3f);
+        hp = 0.1f * mass;
         this.velocity = velocity;
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
         sprite.setSize(radius * 2, radius * 2);
@@ -169,15 +171,18 @@ public class Asteroid extends AbstractEntity {
 
     @Override
     public void addDamage(float damage, AbstractEntity sender) {
-        this.alive = false;
-        Vector2 splitVelocity =
-                new Vector2((float) Math.random() - 0.5f, (float) Math.random() - 0.5f).nor().mul(10);
-        splashEffectSelf();
-        GameScreen.getEntityManager()
-                .addEntity(new Asteroid(position, mass / 2f, velocity.add(splitVelocity)));
-        GameScreen.getEntityManager()
-                .addEntity(new Asteroid(position, mass / 2f, velocity.add(splitVelocity.mul(-1))));
-
+        hp -= damage;
+        if (hp <= 0) {
+            this.alive = false;
+            Vector2 splitVelocity =
+                    new Vector2((float) Math.random() - 0.5f, (float) Math.random() - 0.5f).nor()
+                            .mul(10);
+            splashEffectSelf();
+            GameScreen.getEntityManager()
+                    .addEntity(new Asteroid(position, mass / 2f, velocity.add(splitVelocity)));
+            GameScreen.getEntityManager().addEntity(
+                    new Asteroid(position, mass / 2f, velocity.add(splitVelocity.mul(-1))));
+        }
     }
 
     private void splashEffectSelf() {
