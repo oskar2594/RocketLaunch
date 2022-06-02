@@ -42,7 +42,7 @@ public class CameraShake {
     }
 
     public static void deactivate() {
-        isActive = false;
+        strength = 0;
     }
 
     public static void makeShake(float strength, int duration) {

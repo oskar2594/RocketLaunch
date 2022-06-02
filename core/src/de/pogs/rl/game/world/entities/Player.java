@@ -93,7 +93,7 @@ public class Player extends AbstractEntity implements ImpulseEntity {
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
         position = Vector2.zero;
         renderPriority = 1;
-        radius = size / 2;
+        radius = size / 3;
 
         thrustSound = RocketLauncher.getAssetHelper().getSound("thrust");
         thrustId = thrustSound.loop(thrustVolume);
