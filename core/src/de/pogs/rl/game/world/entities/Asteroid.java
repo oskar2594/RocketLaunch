@@ -34,6 +34,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
+import de.pogs.rl.game.world.particles.ParticleEmitter;
+import de.pogs.rl.game.world.particles.ParticleUtils;
 import de.pogs.rl.utils.CameraShake;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
@@ -43,7 +45,6 @@ public class Asteroid extends AbstractEntity {
     private Sprite sprite = new Sprite(texture);
     private static Random random = new Random();
 
-    private Sound metalSound;
     private Sound rockSound;
     private Sound muffleSound;
 
@@ -65,7 +66,6 @@ public class Asteroid extends AbstractEntity {
         sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
                 position.getY() - sprite.getHeight() / 2);
 
-        metalSound = RocketLauncher.getAssetHelper().getSound("metalhit");
         rockSound = RocketLauncher.getAssetHelper().getSound("rockhit");
         muffleSound = RocketLauncher.getAssetHelper().getSound("muffle");
     }
@@ -101,7 +101,8 @@ public class Asteroid extends AbstractEntity {
                 if (entity instanceof Player) {
                     CameraShake.makeShake(((Player) entity).getSpeed() / 50, 20);
                     playMuffle(0);
-                    playSoundBasedOnDistance(rockSound, entity.getPosition().dst(GameScreen.getPlayer().getPosition()));
+                    playSoundBasedOnDistance(rockSound,
+                            entity.getPosition().dst(GameScreen.getPlayer().getPosition()));
                 } else {
                     playMuffle(entity.getPosition().dst(GameScreen.getPlayer().getPosition()));
                 }
@@ -174,10 +175,20 @@ public class Asteroid extends AbstractEntity {
         this.alive = false;
         Vector2 splitVelocity =
                 new Vector2(random.nextFloat() - 0.5f, random.nextFloat() - 0.5f).nor().mul(10);
+        splashEffectSelf();
         GameScreen.getEntityManager()
                 .addEntity(new Asteroid(position, mass / 2f, velocity.add(splitVelocity)));
         GameScreen.getEntityManager()
                 .addEntity(new Asteroid(position, mass / 2f, velocity.add(splitVelocity.mul(-1))));
 
+    }
+
+    private void splashEffectSelf() {
+        GameScreen.getParticleManager()
+                .createEmitter(new ParticleEmitter((int) position.getX(), (int) position.getY(), 50,
+                        5,
+                        ParticleUtils.generateParticleTexture(ParticleUtils.averageColor(texture)),
+                        -180, 180, 10, 150, 1, 5, 1f, 1f, .5f, .1f, true))
+                .updateVelocity(velocity);
     }
 }
