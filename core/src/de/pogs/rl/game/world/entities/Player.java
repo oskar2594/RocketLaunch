@@ -37,7 +37,6 @@ import de.pogs.rl.utils.SpecialMath;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 import java.awt.Color;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
@@ -56,8 +55,8 @@ public class Player extends AbstractEntity implements ImpulseEntity {
     private float maxSpeed = 500;
     private double shotCooldown = 200;
     private double lastBulletTime = TimeUtils.millis();
-    private float armor = 1;
-    private float health = 1;
+    private float armor = 100;
+    private float health = 100;
     private float maxArmor = 100;
     private float maxHealth = 100;
     private double healingTime = 2000;
@@ -293,6 +292,7 @@ public class Player extends AbstractEntity implements ImpulseEntity {
             armor = 0;
         }
         if(health <= 0) {
+            health = 0;
             GameScreen.playerDied();
         }
         lastTimeDamaged = TimeUtils.millis();

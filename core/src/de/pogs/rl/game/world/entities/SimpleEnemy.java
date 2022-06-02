@@ -24,7 +24,6 @@
  */
 package de.pogs.rl.game.world.entities;
 
-import java.util.Random;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
