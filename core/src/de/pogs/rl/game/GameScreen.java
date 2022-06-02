@@ -31,6 +31,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.background.BackgroundLayer;
+import de.pogs.rl.game.overlay.DeathOverlay;
 import de.pogs.rl.game.overlay.OverlayHandler;
 import de.pogs.rl.game.overlay.Pause;
 import de.pogs.rl.game.ui.HUD;
@@ -76,7 +77,7 @@ public class GameScreen extends ScreenAdapter {
         background = new BackgroundLayer();
         hud = new HUD();
         overlayHandler = new OverlayHandler();
-        // overlayHandler.setOverlay(new Pause());
+        overlayHandler.setOverlay(new DeathOverlay());
 
         entityManager.addEntity(player);
         entityManager.flush();
@@ -155,6 +156,7 @@ public class GameScreen extends ScreenAdapter {
         camera.resize(width, height);
         hudCamera.resize(width, height);
         background.resize(width, height);
+        overlayHandler.resize(width, height);
         resizeDistance();
     }
 
@@ -197,5 +199,7 @@ public class GameScreen extends ScreenAdapter {
     public static HUD getHud() {
         return hud;
     }
+
+    public static void reset() {}
 
 }

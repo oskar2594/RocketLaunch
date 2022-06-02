@@ -127,10 +127,9 @@ public class Asteroid extends AbstractEntity {
 
                     position = position.add(
                             position.sub(x2).nor().mul(radius + entity.getRadius() - x1.dst(x2)));
-                    if (v2_new.dst(Vector2.zero) > 30 || v1_new.dst(Vector2.zero) > 30) {
+                    if (v2_new.dst(Vector2.zero) > 40 || v1_new.dst(Vector2.zero) > 40) {
                         playMuffle(entity.getPosition().dst(GameScreen.getPlayer().getPosition()));
                     }
-                    System.out.println("Colloisipon");
                 }
             }
         }
@@ -144,7 +143,6 @@ public class Asteroid extends AbstractEntity {
     private void playSoundBasedOnDistance(Sound sound, float distance) {
         if (Math.abs(distance) * 3 > Gdx.graphics.getHeight())
             return;
-        System.out.println(1 - (2 * distance / Gdx.graphics.getWidth()));
         sound.play(Math.abs(1 - (2 * distance / Gdx.graphics.getWidth())));
         // sound.play(0.01f);
     }
