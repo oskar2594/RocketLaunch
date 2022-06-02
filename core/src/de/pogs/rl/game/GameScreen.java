@@ -1,3 +1,27 @@
+/**
+ * 
+ * MIT LICENSE
+ * 
+ * Copyright 2022 Philip Gilde & Oskar Stanschus
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * 
+ * @author Philip Gilde & Oskar Stanschus
+ * 
+ */
 package de.pogs.rl.game;
 
 import com.badlogic.gdx.Gdx;
@@ -7,8 +31,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.background.BackgroundLayer;
-import de.pogs.rl.game.overlay.DeathOverlay;
 import de.pogs.rl.game.overlay.OverlayHandler;
+import de.pogs.rl.game.overlay.Pause;
 import de.pogs.rl.game.ui.HUD;
 import de.pogs.rl.game.ui.HUDCamera;
 import de.pogs.rl.game.world.entities.EntityManager;
@@ -20,42 +44,39 @@ import de.pogs.rl.game.world.generation.spawners.TankSpawner;
 import de.pogs.rl.game.world.particles.ParticleManager;
 
 public class GameScreen extends ScreenAdapter {
-    public static GameScreen INSTANCE;
-
     private SpriteBatch batch;
 
-    private BackgroundLayer background;
-    public RocketCamera camera;
-    private HUDCamera hudCamera;
-    public Player player;
-    public EntityManager entityManager;
-    public ParticleManager particleManager;
-    public HUD hud;
-    public OverlayHandler overlayHandler;
-    public SpawnManager entityGen;
+    private static BackgroundLayer background;
+    private static RocketCamera camera;
+    private static HUDCamera hudCamera;
+    private static Player player;
+    private static EntityManager entityManager;
+    private static ParticleManager particleManager;
+    private static HUD hud;
+    private static OverlayHandler overlayHandler;
+    private static SpawnManager entityGen;
 
-    public boolean paused = false; // TEST ONLY
+    private static boolean paused = false; // TEST ONLY
 
-    private int renderDistanceBase = 1500;
-    private int updateDistanceBase = 1500;
-    private int removeDistanceBase = 2500;
+    private static int renderDistanceBase = 1500;
+    private static int updateDistanceBase = 1500;
+    private static int removeDistanceBase = 2500;
 
-    private int renderDistance2 = (int) Math.pow(renderDistanceBase, 2);
-    private int updateDistance2 = (int) Math.pow(updateDistanceBase, 2);
-    private int removeDistance2 = (int) Math.pow(removeDistanceBase, 2);
+    private static int renderDistance2 = (int) Math.pow(renderDistanceBase, 2);
+    private static int updateDistance2 = (int) Math.pow(updateDistanceBase, 2);
+    private static int removeDistance2 = (int) Math.pow(removeDistanceBase, 2);
 
     public GameScreen() {
-        INSTANCE = this;
-        batch = RocketLauncher.INSTANCE.batch;
-        entityManager = EntityManager.get();
+        batch = RocketLauncher.getSpriteBatch();
+        entityManager = new EntityManager();
         particleManager = new ParticleManager();
         camera = new RocketCamera();
         hudCamera = new HUDCamera();
-        player = Player.get();
+        player = new Player();
         background = new BackgroundLayer();
         hud = new HUD();
         overlayHandler = new OverlayHandler();
-        // overlayHandler.setOverlay(new DeathOverlay());
+        overlayHandler.setOverlay(new Pause());
 
         entityManager.addEntity(player);
         entityManager.flush();
@@ -137,15 +158,44 @@ public class GameScreen extends ScreenAdapter {
         resizeDistance();
     }
 
-    public void resizeZoom(int width, int height) {
+    public static void resizeZoom(int width, int height) {
         camera.resize(width, height);
         background.resize(width, height);
         resizeDistance();
     }
 
-    private void resizeDistance() {
+    private static void resizeDistance() {
         renderDistance2 = (int) Math.pow(renderDistanceBase * camera.zoom, 2);
         updateDistance2 = (int) Math.pow(updateDistanceBase * camera.zoom, 2);
         removeDistance2 = (int) Math.pow(removeDistanceBase * camera.zoom, 2);
     }
+
+    public static boolean isPaused() {
+        return paused;
+    }
+
+    public static void setPaused(boolean p) {
+        paused = p;
+    }
+
+    public static RocketCamera getCamera() {
+        return camera;
+    }
+
+    public static Player getPlayer() {
+        return player;
+    }
+
+    public static ParticleManager getParticleManager() {
+        return particleManager;
+    }
+
+    public static EntityManager getEntityManager() {
+        return entityManager;
+    }
+
+    public static HUD getHud() {
+        return hud;
+    }
+
 }

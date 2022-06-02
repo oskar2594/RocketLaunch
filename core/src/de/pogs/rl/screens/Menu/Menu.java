@@ -1,3 +1,27 @@
+/**
+ * 
+ * MIT LICENSE
+ * 
+ * Copyright 2022 Philip Gilde & Oskar Stanschus
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * 
+ * @author Philip Gilde & Oskar Stanschus
+ * 
+ */
 package de.pogs.rl.screens.Menu;
 
 import com.badlogic.gdx.Gdx;
@@ -19,10 +43,10 @@ public class Menu extends ScreenAdapter {
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 
-	private Texture background = RocketLauncher.INSTANCE.assetHelper.getImage("background");
+	private Texture background = RocketLauncher.getAssetHelper().getImage("background");
 	private Sprite backgroundSprite;
 
-	private Texture logo = RocketLauncher.INSTANCE.assetHelper.getImage("logo");
+	private Texture logo = RocketLauncher.getAssetHelper().getImage("logo");
 	private Sprite logoSprite;
 
 	private long finished = -1;
@@ -30,17 +54,26 @@ public class Menu extends ScreenAdapter {
 
 	private int fadeOutTime = 1000;
 
-	private Button testButton;
+	private Button startButton;
+	private Button settingsButton;
+
 	private ShapeRenderer shapeRenderer;
 
 
 	public Menu() {
-		batch = RocketLauncher.INSTANCE.batch;
+		batch = RocketLauncher.getSpriteBatch();
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		backgroundSprite = new Sprite(background);
 		logoSprite = new Sprite(logo);
 
-		testButton = new Button(0, 0, (int)(Gdx.graphics.getWidth() * 0.5), (int) ((Gdx.graphics.getWidth() * 0.5) / 10), new Color(0x2beafcff), new Color(0x0183e5ff), new Color(0x06bbf4ff), "Starten", 5);
+		startButton = new Button(0, 0, (int) (Gdx.graphics.getWidth() * 0.5),
+				(int) ((Gdx.graphics.getWidth() * 0.5) / 10), new Color(0x2beafcff),
+				new Color(0x0183e5ff), new Color(0x06bbf4ff), "Starten", 5);
+
+		settingsButton = new Button(0, 0, (int) (Gdx.graphics.getWidth() * 0.5),
+				(int) ((Gdx.graphics.getWidth() * 0.5) / 10), new Color(0x2beafcff),
+				new Color(0x0183e5ff), new Color(0x06bbf4ff), "Einstellungen", 5);
+
 		shapeRenderer = new ShapeRenderer();
 		shapeRenderer.setAutoShapeType(true);
 
@@ -80,50 +113,62 @@ public class Menu extends ScreenAdapter {
 		logoSprite.setSize(Gdx.graphics.getWidth() * 0.5f,
 				((float) logo.getHeight() / (float) logo.getWidth())
 						* (float) Gdx.graphics.getWidth() * 0.5f);
-		logoSprite.setPosition(-logoSprite.getWidth() / 2, -logoSprite.getHeight() / 2);
+		logoSprite.setPosition(-logoSprite.getWidth() / 2, -logoSprite.getHeight() * 0.3f);
 		logoSprite.setAlpha(alpha);
 	}
 
-	private void updateButton() {
-		testButton.setWidth((int)(Gdx.graphics.getWidth() * 0.5));
-		testButton.setHeight((int) ((Gdx.graphics.getWidth() * 0.5) / 10));
-		testButton.setPosition(0, (int) - (logoSprite.getHeight() / 2) - testButton.getHeight());
-		testButton.setAlpha(alpha);
+	private void updateButtons() {
+		startButton.setWidth((int) (Gdx.graphics.getWidth() * 0.5));
+		startButton.setHeight((int) ((Gdx.graphics.getWidth() * 0.5) / 10));
+		startButton.setPosition(0,
+				(int) (-startButton.getHeight() - logoSprite.getHeight() * 0.2f));
+		startButton.setAlpha(alpha);
+
+		settingsButton.setWidth((int) (Gdx.graphics.getWidth() * 0.5));
+		settingsButton.setHeight((int) ((Gdx.graphics.getWidth() * 0.5) / 10));
+		settingsButton.setPosition(0,
+				(int) (-settingsButton.getHeight() - startButton.getHeight() - logoSprite.getHeight() * 0.2f - Gdx.graphics.getHeight() * 0.02f));
+		settingsButton.setAlpha(alpha);
+
 	}
 
 	@Override
 	public void render(float delta) {
 		if (finished > 0 & TimeUtils.millis() - finished > fadeOutTime) {
-			RocketLauncher.INSTANCE.setScreen(new GameScreen());
+			RocketLauncher.getInstance().setScreen(new GameScreen());
 			dispose();
 			return;
 		}
 		update();
-		if (testButton.isClicked() && finished == -1) next();
+		if (startButton.isClicked() && finished == -1)
+			next();
 		Gdx.gl.glClearColor(0, 0, 0, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT
 				| (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV
 						: 0));
 		camera.update();
-		testButton.update(delta);
+		startButton.update(delta);
+		settingsButton.update(delta);
 		batch.begin();
 		backgroundSprite.draw(batch);
 		logoSprite.draw(batch);
 		batch.end();
 
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		Gdx.gl.glEnable(GL20.GL_BLEND);
+		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		shapeRenderer.begin();
-		testButton.shapeRender(shapeRenderer);
+		startButton.shapeRender(shapeRenderer);
+		settingsButton.shapeRender(shapeRenderer);
 		shapeRenderer.end();
 		Gdx.gl.glDisable(GL20.GL_BLEND);
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		testButton.render(batch);
+		startButton.render(batch);
+		settingsButton.render(batch);
 		batch.end();
-		
+
 	}
 
 	private void next() {
@@ -136,7 +181,7 @@ public class Menu extends ScreenAdapter {
 		}
 		updateLogo();
 		updateBackground();
-		updateButton();
+		updateButtons();
 	}
 
 	@Override
@@ -144,14 +189,14 @@ public class Menu extends ScreenAdapter {
 		camera.viewportHeight = height;
 		camera.viewportWidth = width;
 		updateBackground();
-		testButton.resize(width, height);
-
+		startButton.resize(width, height);
+		settingsButton.resize(width, height);
 	}
 
 	@Override
 	public void dispose() {
 		background.dispose();
-		testButton.dispose();
+		startButton.dispose();
 	}
 
 }

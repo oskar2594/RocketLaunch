@@ -1,3 +1,27 @@
+/**
+ * 
+ * MIT LICENSE
+ * 
+ * Copyright 2022 Philip Gilde & Oskar Stanschus
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * 
+ * @author Philip Gilde & Oskar Stanschus
+ * 
+ */
 package de.pogs.rl.game.world.particles;
 
 import com.badlogic.gdx.graphics.Pixmap;
@@ -7,6 +31,7 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import java.awt.Color;
 
 public class ParticleUtils {
+
     public static Texture generateParticleTexture(Color color) {
         int size = 1;
         int idx = 0;
@@ -32,6 +57,13 @@ public class ParticleUtils {
         return new Texture(pixmap);
     }
 
+    /**
+     * Berechnet die Durchschnittsfarbe einer Textur
+     * Source: https://stackoverflow.com/questions/28162488/get-average-color-on-bufferedimage-and-bufferedimage-portion-as-fast-as-possible
+     * (Bearbeitet)
+     * @param t Textur
+     * @return Durchschnittsfarbe
+     */
     public static Color averageColor(Texture t) {
         t.getTextureData().prepare();
         Pixmap bi = t.getTextureData().consumePixmap();

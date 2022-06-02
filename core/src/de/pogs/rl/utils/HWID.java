@@ -2,12 +2,13 @@ package de.pogs.rl.utils;
 
 import java.security.MessageDigest;
 
+//Source: https://github.com/Kqnth/Java-HWID
+
 public class HWID {
 
     /**
     *
     * @return HWID in MD5;
-    * Source: https://github.com/Kqnth/Java-HWID
     *
     */
     

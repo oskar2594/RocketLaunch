@@ -1,7 +1,32 @@
+/**
+ * 
+ * MIT LICENSE
+ * 
+ * Copyright 2022 Philip Gilde & Oskar Stanschus
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * 
+ * @author Philip Gilde & Oskar Stanschus
+ * 
+ */
 package de.pogs.rl.utils.menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -21,15 +46,19 @@ public class Button {
     private int width;
     private int height;
     private Color background;
+    private Color origBackground;
     private Color border;
     private Color textColor;
     private String content;
     private float alpha = 1f;
     private int borderWidth = 1;
+    private Sound hoverSound;
+    private Sound clickSound;
 
     private boolean hover = false;
     private boolean beforeHover = false;
     private boolean active = false;
+    private boolean beforeActive = false;
 
     public Button(int x, int y, int width, int height, Color textColor, Color background,
             Color border, String content) {
@@ -37,9 +66,12 @@ public class Button {
         this.width = width;
         this.height = height;
         this.background = background;
+        this.origBackground = background;
         this.border = border;
         this.textColor = textColor;
         this.content = content.toUpperCase();
+        hoverSound = RocketLauncher.getAssetHelper().getSound("hover");
+        clickSound = RocketLauncher.getAssetHelper().getSound("active");
         updateFont();
     }
 
@@ -50,7 +82,7 @@ public class Button {
     }
 
     private void updateFont() {
-        font = RocketLauncher.INSTANCE.assetHelper.getFont("superstar",
+        font = RocketLauncher.getAssetHelper().getFont("superstar",
                 (int) Math.ceil((this.height - borderWidth / 2) * 0.5));
         font.setColor(new Color(textColor.r, textColor.g, textColor.b, textColor.a * alpha));
     }
@@ -63,8 +95,10 @@ public class Button {
             this.hover = true;
             if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
                 this.active = true;
+                background = border;
             } else {
                 this.active = false;
+                background = origBackground;
             }
         } else {
             this.hover = false;
@@ -73,10 +107,17 @@ public class Button {
         if (hover != beforeHover) {
             if (this.hover) {
                 Gdx.graphics.setSystemCursor(SystemCursor.Hand);
+                hoverSound.play(.5f);
             } else {
                 Gdx.graphics.setSystemCursor(SystemCursor.Arrow);
             }
             beforeHover = hover;
+        }
+        if(active != beforeActive) {
+            if(active) {
+                clickSound.play(.5f);
+            }
+            beforeActive = active;
         }
     }
 

@@ -30,7 +30,6 @@ import javax.crypto.spec.SecretKeySpec;
  * @description the common method of encrypt and decrypt
  */
 
-
 // SOURCE: https://github.com/taolin2107/Encrypt-java
 
 public class Crypt {

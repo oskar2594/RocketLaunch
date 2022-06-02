@@ -1,3 +1,27 @@
+/**
+ * 
+ * MIT LICENSE
+ * 
+ * Copyright 2022 Philip Gilde & Oskar Stanschus
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * 
+ * @author Philip Gilde & Oskar Stanschus
+ * 
+ */
 package de.pogs.rl.game.ui;
 
 import com.badlogic.gdx.graphics.Color;
@@ -13,7 +37,6 @@ import de.pogs.rl.game.PlayerStats;
 public class Level extends HUDComponent {
 
     private float width;
-    private float height;
 
     private BitmapFont levelFont;
     private BitmapFont smallFont;
@@ -31,7 +54,6 @@ public class Level extends HUDComponent {
     @Override
     public void resize(float width, float height) {
         this.width = (float) (width * 0.1);
-        this.height = (float) (this.width);
         updateFonts();
     }
 
@@ -39,10 +61,10 @@ public class Level extends HUDComponent {
         lLayout = new GlyphLayout();
         sLayout = new GlyphLayout();
 
-        levelFont = RocketLauncher.INSTANCE.assetHelper.getFont("superstar",
+        levelFont = RocketLauncher.getAssetHelper().getFont("superstar",
                 (int) Math.ceil(this.width * 0.75));
 
-        smallFont = RocketLauncher.INSTANCE.assetHelper.getFont("superstar",
+        smallFont = RocketLauncher.getAssetHelper().getFont("superstar",
                 (int) Math.ceil(this.width * 0.2));
     }
 
@@ -65,45 +87,21 @@ public class Level extends HUDComponent {
         smallFont.draw(batch, "LVL", position.x + lLayout.width * 1.1f,
                 position.y + sLayout.height * 2.5f, width, Align.left, false);
         sLayout.setText(smallFont, expString, Color.BLACK, width, Align.center, false);
-        smallFont.draw(batch, expString, position.x,
-                position.y + sLayout.height, width, Align.left, false);
-        // lvlFont.draw(batch, "LVL", position.x - width / 2,
-        // position.y - levelFont.getCapHeight() / 2 - lvlFont.getCapHeight() / 2, width,
-        // Align.center, false);
+        smallFont.draw(batch, expString, position.x, position.y + sLayout.height, width, Align.left,
+                false);
+    }
 
-        // lvlFont.draw(batch, PlayerStats.getAccessExp() + "/" + PlayerStats.getNeedExp(),
-        // position.x - width / 2, position.y - levelFont.getCapHeight() / 2
-        // - lvlFont.getCapHeight() - expFont.getCapHeight(),
-        // width, Align.center, false);
+
+    @Override
+    public void dispose() {
+        levelFont.dispose();
+        smallFont.dispose();
+
     }
 
     @Override
     public void shapeRender(ShapeRenderer shapeRenderer) {
-        // float percentage = PlayerStats.getCurrentLevelPercentage();
-
-        // shapeRenderer.setColor(new Color(0x2626261d));
-        // partialCircle(shapeRenderer, position.x, position.y, radius, 0, 360, 2, radius / 25);
-        // shapeRenderer.setColor(Color.WHITE);
-        // partialCircle(shapeRenderer, position.x, position.y, radius, 0, percentage * 360, 2,
-        // radius / 15);
-    }
-
-    // private void partialCircle(ShapeRenderer shapeRenderer, float x, float y, float radius,
-    // float start, float degrees, float space, float width) {
-    // for (float i = start; i < degrees; i += space) {
-    // int seg = 10;
-    // if (i >= degrees - space || i == 0) {
-    // seg = 20;
-    // }
-    // shapeRenderer.circle(x + Math.round(Math.cos(Math.toRadians(i)) * radius),
-    // y + Math.round(Math.sin(Math.toRadians(i)) * radius), width, seg);
-    // }
-    // }
-
-    @Override
-    public void dispose() {
-        // TODO Auto-generated method stub
-
+        //Unbenutzt
     }
 
 }

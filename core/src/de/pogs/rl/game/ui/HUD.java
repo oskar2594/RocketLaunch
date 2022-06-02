@@ -1,3 +1,27 @@
+/**
+ * 
+ * MIT LICENSE
+ * 
+ * Copyright 2022 Philip Gilde & Oskar Stanschus
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * 
+ * @author Philip Gilde & Oskar Stanschus
+ * 
+ */
 package de.pogs.rl.game.ui;
 
 import java.util.HashMap;
@@ -11,12 +35,10 @@ import com.badlogic.gdx.math.Vector2;
 
 
 public class HUD {
+    private static float width;
+    private static float height;
 
-    public static HUD INSTANCE;
-
-    public float width;
-    public float height;
-    public Vector2 position;
+    private static Vector2 position;
 
     private ShapeRenderer shapeRenderer;
 
@@ -27,10 +49,9 @@ public class HUD {
     private Debug debug;
     private Level level;
 
-    public int border = 30;
+    private int border = 30;
 
     public HUD() {
-        INSTANCE = this;
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
         shapeRenderer = new ShapeRenderer();
@@ -79,4 +100,31 @@ public class HUD {
     }
 
     public void dipose() {}
+
+    public static float getWidth() {
+        return width;
+    }
+
+    public static void setWidth(float w) {
+        width = w;
+    }
+
+    public static float getHeight() {
+        return height;
+    }
+
+    public static void setHeight(float h) {
+        height = h;
+    }
+
+    public static Vector2 getPosition() {
+        return position;
+    }
+
+    public static void setPosition(Vector2 p) {
+        position = p;
+    }
+
+
+
 }

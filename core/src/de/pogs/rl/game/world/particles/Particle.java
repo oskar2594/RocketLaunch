@@ -1,3 +1,27 @@
+/**
+ * 
+ * MIT LICENSE
+ * 
+ * Copyright 2022 Philip Gilde & Oskar Stanschus
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * 
+ * @author Philip Gilde & Oskar Stanschus
+ * 
+ */
 package de.pogs.rl.game.world.particles;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -8,8 +32,7 @@ import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class Particle {
 
-    public boolean isDead = false;
-
+    private boolean isDead = false;
     private Vector2 position;
     private Vector2 velocity;
     private Sprite sprite;
@@ -75,10 +98,8 @@ public class Particle {
         if (time <= timeSize) {
             sprite.setScale(time / timeSize);
         }
-        // float currentSize = (time / duration) * (size - startSize + 1) + startSize;
         sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
                 position.getY() - sprite.getHeight() / 2);
-        // System.out.println(time);
     }
 
     private Vector2 angleToVector(float angle) {
@@ -89,16 +110,23 @@ public class Particle {
     public void dispose() {
     }
 
-    public float getAngle(float min, float max) {
+    private float getAngle(float min, float max) {
         return (float) (Math.random() * (max - min + 1) + min);
     }
 
-    public float getSpeed(float min, float max) {
+    private float getSpeed(float min, float max) {
         return (float) (Math.random() * (max - min + 1) + min);
     }
 
-    public float getSize(float min, float max) {
+    private float getSize(float min, float max) {
         return (float) (Math.random() * (max - min + 1) + min);
     }
 
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean isDead) {
+        this.isDead = isDead;
+    }
 }

@@ -49,11 +49,6 @@ package de.pogs.rl.utils;
 // VERSION: 1.0.1
 // https://github.com/Auburn/FastNoise
 
-// To switch between using floats or doubles for input position,
-// perform a file-wide replace on the following strings (including /*FNLfloat*/)
-// /*FNLfloat*/ float
-// /*FNLfloat*/ double
-
 public class FastNoiseLite
 {
     public enum NoiseType

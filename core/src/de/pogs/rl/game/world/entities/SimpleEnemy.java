@@ -1,3 +1,27 @@
+/**
+ * 
+ * MIT LICENSE
+ * 
+ * Copyright 2022 Philip Gilde & Oskar Stanschus
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * 
+ * @author Philip Gilde & Oskar Stanschus
+ * 
+ */
 package de.pogs.rl.game.world.entities;
 
 import java.util.Random;
@@ -46,7 +70,7 @@ public class SimpleEnemy extends AbstractEntity {
     protected Color bulletColor = new Color(0xd46178);
 
     public SimpleEnemy(Vector2 position) {
-        this(position, RocketLauncher.INSTANCE.assetHelper.getImage("monster1"));
+        this(position, RocketLauncher.getAssetHelper().getImage("monster1"));
     }
 
     public SimpleEnemy(Vector2 position, Texture texture) {
@@ -84,11 +108,11 @@ public class SimpleEnemy extends AbstractEntity {
 
     protected void shoot(float delta) {
 
-        if (Player.get().getPosition().dst2(position) < sightRange
+        if (GameScreen.getPlayer().getPosition().dst2(position) < sightRange
                 && random.nextFloat() < delta * shootingCoeff) {
-            float flightTime = Player.get().getPosition().dst(position) / bulletSpeed;
-            Vector2 playerPosPredicted =
-                    Player.get().getPosition().add(Player.get().getVelocity().mul(flightTime));
+            float flightTime = GameScreen.getPlayer().getPosition().dst(position) / bulletSpeed;
+            Vector2 playerPosPredicted = GameScreen.getPlayer().getPosition()
+                    .add(GameScreen.getPlayer().getVelocity().mul(flightTime));
             Vector2 bulletVelocity = playerPosPredicted.sub(position).nor().mul(bulletSpeed);
             Bullet.createBullet(position, this, bulletDamage, bulletVelocity, bulletColor, 20000);
         }
@@ -100,8 +124,9 @@ public class SimpleEnemy extends AbstractEntity {
     }
 
     protected void splashEffectSelf() {
-        GameScreen.INSTANCE.particleManager.createEmitter(
-                new ParticleEmitter((int) position.getX(), (int) position.getY(), 50, 5,
+        GameScreen.getParticleManager()
+                .createEmitter(new ParticleEmitter((int) position.getX(), (int) position.getY(), 50,
+                        5,
                         ParticleUtils.generateParticleTexture(ParticleUtils.averageColor(texture)),
                         -180, 180, 10, 150, 1, 5, 1f, 1f, .5f, .1f, true))
                 .updateVelocity(velocity);
@@ -109,7 +134,7 @@ public class SimpleEnemy extends AbstractEntity {
 
 
     private void updateVelocity(float delta) {
-        Vector2 playerPos = Player.get().getPosition();
+        Vector2 playerPos = GameScreen.getPlayer().getPosition();
         if ((position.dst2(playerPos) > haloRange) && (position.dst2(playerPos) < sightRange)) {
             moveDirection = playerPos.sub(position).nor();
             velocity = velocity.add(moveDirection.mul(playerAttraction * delta));
@@ -118,7 +143,7 @@ public class SimpleEnemy extends AbstractEntity {
             velocity = velocity.add(moveDirection.mul(playerRepulsion * delta));
         }
 
-        for (AbstractEntity entity : EntityManager.get().getCollidingEntities(this,
+        for (AbstractEntity entity : GameScreen.getEntityManager().getCollidingEntities(this,
                 repulsionRadius)) {
             if (entity instanceof SimpleEnemy) {
                 velocity = velocity.add(repulsion(delta, entity));
@@ -149,7 +174,7 @@ public class SimpleEnemy extends AbstractEntity {
 
     @Override
     public void dispose() {
-        EntityManager.get().addEntity(new XpOrb(position, 10));
+        GameScreen.getEntityManager().addEntity(new XpOrb(position, 10));
     }
 
 }
