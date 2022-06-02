@@ -85,7 +85,7 @@ public class Player extends AbstractEntity implements ImpulseEntity {
     private ParticleEmitter overheat;
     public long experiencePoints = 1;
     private float baseTractionCoeff = 0.5f;
-    private float mass = 10;
+    private float mass = 100;
 
     public Player() {
         sprite = new Sprite(texture);

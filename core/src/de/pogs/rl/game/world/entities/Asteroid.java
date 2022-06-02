@@ -51,8 +51,8 @@ public class Asteroid extends AbstractEntity {
     private float force;
     private static final float baseForce = 100;
     private static final float dps = 3;
-    private float mass = 10;
-    private static final float density = 0.5f;
+    private float mass = 2;
+    private static final float density = 0.01f;
     private static final float damageCoeff = 0.01f;
     private LinkedList<Asteroid> collided = new LinkedList<Asteroid>();
 

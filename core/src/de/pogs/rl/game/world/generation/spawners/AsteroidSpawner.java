@@ -35,12 +35,12 @@ public class AsteroidSpawner extends AbstractSpawner {
     private Random random = new Random();
     public LinkedList<AbstractEntity> spawn(Vector2 chunk) {
         LinkedList<AbstractEntity> result = new LinkedList<AbstractEntity>();
-        if (random.nextDouble() < 0.01) {
-            int count = random.nextInt(10) + 5;
+        if (random.nextDouble() < 0.008) {
+            int count = random.nextInt(3) + 2;
             Vector2 velocity = new Vector2(random.nextFloat() - 0.5f, random.nextFloat() - 0.5f).mul(random.nextInt(50) + 25);
             for (int i = 0; i<count; i++) {
                 Vector2 position = chunk.add(new Vector2(random.nextFloat(), random.nextFloat()).mul(200));
-                result.add(new Asteroid(position, 1000, velocity));
+                result.add(new Asteroid(position, (int) (Math.random() * 800) + 200, velocity));
             }
         }
         return result;
