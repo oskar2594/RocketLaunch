@@ -29,18 +29,18 @@ import java.util.Random;
 import de.pogs.rl.game.world.entities.AbstractEntity;
 import de.pogs.rl.game.world.entities.Asteroid;
 import de.pogs.rl.game.world.generation.AbstractSpawner;
+import de.pogs.rl.utils.SpecialMath;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class AsteroidSpawner extends AbstractSpawner {
-    private Random random = new Random();
     public LinkedList<AbstractEntity> spawn(Vector2 chunk) {
         LinkedList<AbstractEntity> result = new LinkedList<AbstractEntity>();
-        if (random.nextDouble() < 0.008) {
-            int count = random.nextInt(3) + 2;
-            Vector2 velocity = new Vector2(random.nextFloat() - 0.5f, random.nextFloat() - 0.5f).mul(random.nextInt(50) + 25);
+        if (Math.random() < 0.005) {
+            int count = SpecialMath.randint(10, 15);
+            Vector2 velocity = new Vector2((float) Math.random() - 0.5f, (float) Math.random() - 0.5f).mul(SpecialMath.randint(25, 50));
             for (int i = 0; i<count; i++) {
-                Vector2 position = chunk.add(new Vector2(random.nextFloat(), random.nextFloat()).mul(200));
-                result.add(new Asteroid(position, (int) (Math.random() * 800) + 200, velocity));
+                Vector2 position = chunk.add(new Vector2((float) Math.random(), (float) Math.random()).mul(200));
+                result.add(new Asteroid(position, SpecialMath.randint(750, 1250), velocity));
             }
         }
         return result;

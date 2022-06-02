@@ -49,7 +49,7 @@ public final class BackgroundLayer {
         size = (int) (Gdx.graphics.getHeight() * Gdx.graphics.getWidth() / 14000); // Optimale Größe
                                                                                    // von Chunks
                                                                                    // berechnen
-        seed = new Random().nextGaussian() * 255; // Generierung eines zufälligen Seeds
+        seed = Math.random(); // Generierung eines zufälligen Seeds
         chunkManager = new BackgroundChunkManager(size, seed);
     }
 

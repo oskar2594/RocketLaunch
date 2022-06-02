@@ -74,7 +74,7 @@ public class TankEnemy extends SimpleEnemy {
             Vector2 bulletDirection = playerPosPredicted.sub(position).nor();
             aimSprite.setRotation(90 - SpecialMath.VectorToAngle(bulletDirection.mul(-1)));
             aimSprite.setAlpha(1);
-            if (random.nextFloat() < shootingCoeff * delta) {
+            if (Math.random() < shootingCoeff * delta) {
                 Bullet.createBullet(position, this, bulletDamage,
                         bulletDirection.mul(bulletSpeed).add(velocity), bulletColor, 10000);
             }
