@@ -31,6 +31,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.background.BackgroundLayer;
+import de.pogs.rl.game.overlay.CountdownOverlay;
 import de.pogs.rl.game.overlay.DeathOverlay;
 import de.pogs.rl.game.overlay.OverlayHandler;
 import de.pogs.rl.game.ui.HUD;
@@ -57,6 +58,8 @@ public class GameScreen extends ScreenAdapter {
     private static OverlayHandler overlayHandler;
     private static SpawnManager entityGen;
 
+    private static int COUNTDOWN_DURATION = 3;
+
     private static boolean paused = false;
 
     private static int renderDistanceBase = 1500;
@@ -79,6 +82,7 @@ public class GameScreen extends ScreenAdapter {
         background = new BackgroundLayer();
         hud = new HUD();
         overlayHandler = new OverlayHandler();
+        overlayHandler.setOverlay(new CountdownOverlay(COUNTDOWN_DURATION));
 
         entityManager.addEntity(player);
         entityManager.flush();
@@ -88,7 +92,6 @@ public class GameScreen extends ScreenAdapter {
         entityGen.addSpawner(new AsteroidSpawner());
 
         paused = false;
-
     }
 
     @Override
@@ -100,10 +103,14 @@ public class GameScreen extends ScreenAdapter {
         if (!GameScreen.paused) {
             entityGen.update(player.getPosition(), renderDistance2, removeDistance2, spawnProtectionRange);
             entityManager.update(delta, player.getPosition(), updateDistance2, removeDistance2);
-            background.update();
             particleManager.update(delta);
-            hud.update(delta);
         }
+        if (!BackgroundLayer.getChunkManager().isLoaded() && !paused) {
+            this.setPaused(true);
+        }
+        background.update();
+        hud.update(delta);
+
         hudCamera.update();
         camera.refresh(delta);
 
@@ -180,8 +187,13 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public static void setPaused(boolean p) {
-        if(p) player.pauseSounds();
+        if (p) player.pauseSounds();
         paused = p;
+    }
+
+    public static void startCountdown() {
+        setPaused(true);
+        overlayHandler.setOverlay(new CountdownOverlay(COUNTDOWN_DURATION));
     }
 
     public static RocketCamera getCamera() {
