@@ -35,16 +35,30 @@ public class PlayerStats {
     private static int level = 0;
     private static int accessExp = 0;
     private static int needExp = expPerLevel;
+    private static int highscore;
 
     private static boolean first = true;
 
     public static void update() {
         if (first) {
             first = false;
-            exp = ConfigLoader.getValueInt("exp");
+            exp = 0;
+            highscore = ConfigLoader.getValueInt("highscore");
         }
         updateLevelData();
-        ConfigLoader.setValue(exp, "exp");
+        ConfigLoader.setValue(highscore, "highscore");
+        ConfigLoader.save();
+    }
+
+    public static void saveHighscore() {
+        if (exp > highscore) {
+            highscore = exp;
+            ConfigLoader.setValue(highscore, "highscore");
+        }
+    }
+
+    public static void reset() {
+        exp = 0;
     }
 
     public static float getCurrentLevelPercentage() {
@@ -57,6 +71,7 @@ public class PlayerStats {
         if (e < 0)
             return;
         exp += e;
+        saveHighscore();
     }
 
     public static void remExp(int e) {
@@ -88,6 +103,18 @@ public class PlayerStats {
         needExp = nExp;
     }
 
+    public static int getLevelFromExp(int exp) {
+        int l = 0;
+        int globalNeed = expPerLevel;
+        for (int i = 0; i < exp; i++) {
+            if (i >= globalNeed) {
+                l++;
+                globalNeed += expPerLevel + l * expMorePerLevel;
+            }
+        }
+        return l;
+    }
+
     public static int getLevel() {
         return level;
     }
@@ -104,5 +131,8 @@ public class PlayerStats {
         return needExp;
     }
 
+    public static int getHighscore() {
+        return highscore;
+    }
 
 }

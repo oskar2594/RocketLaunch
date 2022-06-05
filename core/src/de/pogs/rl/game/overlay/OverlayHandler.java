@@ -86,4 +86,8 @@ public class OverlayHandler {
         currentOverlay.resize(width, height);
     }
 
+    public Overlay getOverlay() {
+        return currentOverlay;
+    }
+
 }

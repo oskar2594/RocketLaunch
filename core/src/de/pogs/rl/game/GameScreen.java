@@ -92,6 +92,7 @@ public class GameScreen extends ScreenAdapter {
         entityGen.addSpawner(new AsteroidSpawner());
 
         paused = false;
+        PlayerStats.reset();
     }
 
     @Override
@@ -107,6 +108,8 @@ public class GameScreen extends ScreenAdapter {
         }
         if (!BackgroundLayer.getChunkManager().isLoaded() && !paused) {
             this.setPaused(true);
+        } else if(overlayHandler.getOverlay() == null && paused) {
+            this.setPaused(false);
         }
         background.update();
         hud.update(delta);
