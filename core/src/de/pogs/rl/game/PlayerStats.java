@@ -47,7 +47,6 @@ public class PlayerStats {
         }
         updateLevelData();
         ConfigLoader.setValue(highscore, "highscore");
-        ConfigLoader.save();
     }
 
     public static void saveHighscore() {
