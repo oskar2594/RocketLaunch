@@ -25,17 +25,12 @@
 package de.pogs.rl.game.world.entities;
 
 import java.util.LinkedList;
-import java.util.Random;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
-import de.pogs.rl.game.world.particles.ParticleEmitter;
-import de.pogs.rl.game.world.particles.ParticleUtils;
 import de.pogs.rl.utils.CameraShake;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
@@ -46,9 +41,6 @@ public class Asteroid extends AbstractEntity {
     private Sound rockSound;
     private Sound muffleSound;
 
-    private float force;
-    private static final float baseForce = 100;
-    private static final float dps = 3;
     private float mass = 2;
     private static final float density = 0.01f;
     private static final float damageCoeff = 0.01f;

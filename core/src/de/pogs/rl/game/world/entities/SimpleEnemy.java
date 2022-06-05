@@ -31,8 +31,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.pogs.rl.RocketLauncher;
 import java.awt.Color;
 import de.pogs.rl.game.GameScreen;
-import de.pogs.rl.game.world.particles.ParticleEmitter;
-import de.pogs.rl.game.world.particles.ParticleUtils;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class SimpleEnemy extends AbstractEntity implements ImpulseEntity {
