@@ -35,12 +35,12 @@ import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class TankEnemy extends SimpleEnemy {
 
-    private float hp = 20;
     private Texture aimTexture = RocketLauncher.getAssetHelper().getImage("aimbeam");
     private Sprite aimSprite = new Sprite(aimTexture);
 
     public TankEnemy(Vector2 position) {
         super(position, RocketLauncher.getAssetHelper().getImage("monster2"));
+        hp = 20;
         shootingCoeff = 0.1f;
         bulletSpeed = 1000;
         bulletDamage = 25;
@@ -56,20 +56,11 @@ public class TankEnemy extends SimpleEnemy {
     }
 
     @Override
-    public void addDamage(float damage, AbstractEntity source) {
-        hp -= damage;
-        if (hp < 0) {
-            this.alive = false;
-            source.killOtherEvent(this);
-        }
-    }
-
-    @Override
     protected void shoot(float delta) {
         if (GameScreen.getPlayer().getPosition().dst2(position) < sightRange) {
             float flightTime = GameScreen.getPlayer().getPosition().dst(position) / bulletSpeed;
-            Vector2 playerPosPredicted =
-                    GameScreen.getPlayer().getPosition().add(GameScreen.getPlayer().getVelocity().mul(flightTime));
+            Vector2 playerPosPredicted = GameScreen.getPlayer().getPosition()
+                    .add(GameScreen.getPlayer().getVelocity().mul(flightTime));
             Vector2 bulletDirection = playerPosPredicted.sub(position).nor();
             aimSprite.setRotation(90 - SpecialMath.VectorToAngle(bulletDirection.mul(-1)));
             aimSprite.setAlpha(1);
@@ -92,5 +83,15 @@ public class TankEnemy extends SimpleEnemy {
     public void update(float delta) {
         super.update(delta);
         aimSprite.setPosition(position.getX(), position.getY());
+    }
+
+    @Override
+    protected void killSelfEvent(AbstractEntity killer) {
+        for (int i = 0; i < 3; i++) {
+            GameScreen.getEntityManager()
+                    .addEntity(new XpOrb(position.add(
+                            new Vector2(Math.random() - 0.5, Math.random() - 0.5).nor().mul(20)),
+                            20));
+        }
     }
 }

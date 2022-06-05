@@ -154,13 +154,12 @@ public class SimpleEnemy extends AbstractEntity implements ImpulseEntity {
     public void addDamage(float damage, AbstractEntity source) {
         hp -= damage;
         if (hp <= 0) {
-            alive = false;
-            source.killOtherEvent(this);
+            kill(source);
         }
     }
 
     @Override
-    public void dispose() {
+    protected void killSelfEvent(AbstractEntity killer) {
         GameScreen.getEntityManager().addEntity(new XpOrb(position, 10));
     }
 
