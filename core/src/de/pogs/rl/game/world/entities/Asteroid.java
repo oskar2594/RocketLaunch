@@ -88,7 +88,7 @@ public class Asteroid extends AbstractEntity {
                 velocity = v1_new;
                 impulseEntity.setVelocity(v2_new);
                 if (entity instanceof Player) {
-                    entity.addDamage(v2.sub(v1).magn() * damageCoeff, this);
+                    entity.addDamage(v2.sub(v2_new).magn() * damageCoeff, this);
                 }
                 position = position
                         .add(position.sub(x2).nor().mul(radius + entity.getRadius() - x1.dst(x2)));
