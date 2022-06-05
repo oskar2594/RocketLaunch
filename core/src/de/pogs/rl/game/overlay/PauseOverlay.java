@@ -107,8 +107,7 @@ public class PauseOverlay extends Overlay{
     }
 
     public void resume() {
-        GameScreen.setPaused(false);
-        GameScreen.getOverlayHandler().setOverlay(null);
+        GameScreen.startCountdown();
     }
 
     @Override

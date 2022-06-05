@@ -50,6 +50,8 @@ public final class BackgroundChunkManager {
     public static FastNoiseLite COLORNOISE_PURPLE;
     public static FastNoiseLite COLORNOISE_BLUE;
 
+    private boolean loaded = false;
+
     private int chunkSize;
     private int renderDistance;
     private float scaling = 2;
@@ -194,8 +196,8 @@ public final class BackgroundChunkManager {
                 - pixelRenderDistance; x < (int) getNumInGrid(camPos.x, chunkSize)
                         + pixelRenderDistance; x += chunkSize) {
             // Wenn genug Chunks generiert wurde werden weitere Generierungen von Chunks abgebrochen
-            if (addChunks.size() > chunksPerFrame
-                    && chunks.size() > Math.pow(renderDistance, 2) * Math.PI) {
+            if (chunks.size() > Math.pow(renderDistance, 2) * Math.PI
+                    && addChunks.size() > chunksPerFrame) {
                 break xLoop;
             }
             yLoop: for (int y = (int) getNumInGrid(camPos.y, chunkSize)
@@ -209,16 +211,16 @@ public final class BackgroundChunkManager {
                 }
                 // Wenn genug Chunks generiert wurde werden weitere Generierungen von Chunks
                 // abgebrochen
-                if (addChunks.size() > chunksPerFrame
-                        && chunks.size() > Math.pow(renderDistance, 2) * Math.PI) {
+                if (chunks.size() > Math.pow(renderDistance, 2) * Math.PI
+                        && addChunks.size() > chunksPerFrame) {
                     break yLoop;
                 }
             }
         }
+        this.loaded = (chunks.size() > Math.pow(renderDistance, 2) * Math.PI);
         // Ausführen der Änderungen
         chunks.removeAll(removeChunksOutOfRenderDistance());
         chunks.addAll(addChunks);
-
     }
 
     /**
@@ -300,6 +302,15 @@ public final class BackgroundChunkManager {
     private double distance(Vector2 start, Vector2 end) {
         return Math.sqrt(
                 (end.y - start.y) * (end.y - start.y) + (end.x - start.x) * (end.x - start.x));
+    }
+
+
+    public boolean isLoaded() {
+        return loaded;
+    }
+
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
     }
 
 }

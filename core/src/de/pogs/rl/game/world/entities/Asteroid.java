@@ -100,7 +100,6 @@ public class Asteroid extends AbstractEntity {
                 } else {
                     playMuffle(entity.getPosition().dst(GameScreen.getPlayer().getPosition()));
                 }
-                System.out.println(position.dst(x2));
             }
             if (entity instanceof Asteroid) {
                 Asteroid other = (Asteroid) entity;
