@@ -48,6 +48,7 @@ public class Asteroid extends AbstractEntity {
     private static final float damageCoeff = 0.01f;
     private LinkedList<Asteroid> collided = new LinkedList<Asteroid>();
     private float hp;
+    private static float collectionMass = 10;
 
     private static TextureRegion[][] textureRegion = TextureRegion.split(RocketLauncher.getAssetHelper().getImage("asteroids_spritesheet_diffuse"), 75, 75); 
     public Asteroid(Vector2 position, float mass, Vector2 velocity) {
@@ -78,6 +79,10 @@ public class Asteroid extends AbstractEntity {
                 position.getY() - sprite.getHeight() / 2);
 
         for (AbstractEntity entity : GameScreen.getEntityManager().getCollidingEntities(this)) {
+            if (mass < collectionMass && entity instanceof Player) {
+                this.alive = false;
+                GameScreen.getPlayer().heal(mass);
+            }
             if (entity instanceof ImpulseEntity) {
                 ImpulseEntity impulseEntity = (ImpulseEntity) entity;
                 Vector2 v1 = velocity;

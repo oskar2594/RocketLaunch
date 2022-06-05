@@ -333,4 +333,8 @@ public class Player extends AbstractEntity implements ImpulseEntity {
         startSound.stop();
         startSound.stop(startId);
     }
+
+    public void heal(float amount) {
+        health += amount;
+    }
 }
