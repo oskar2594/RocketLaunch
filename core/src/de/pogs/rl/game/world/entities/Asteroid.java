@@ -29,9 +29,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.utils.CameraShake;
+import de.pogs.rl.utils.SpecialMath;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
 public class Asteroid extends AbstractEntity {
@@ -47,11 +49,14 @@ public class Asteroid extends AbstractEntity {
     private LinkedList<Asteroid> collided = new LinkedList<Asteroid>();
     private float hp;
 
+    private static TextureRegion[][] textureRegion = TextureRegion.split(RocketLauncher.getAssetHelper().getImage("asteroids_spritesheet_diffuse"), 75, 75); 
     public Asteroid(Vector2 position, float mass, Vector2 velocity) {
         this.position = position;
         this.mass = mass;
-        this.texture = RocketLauncher.getAssetHelper().getImage("asteroid");
+        TextureRegion region = textureRegion[SpecialMath.randint(0, 8)][SpecialMath.randint(0, 22)];
+        this.texture = region.getTexture();
         sprite = new Sprite(texture);
+        sprite.setRegion(region);
         radius = (float) Math.pow(mass / density, 1f / 3f);
         hp = 0.1f * mass;
         this.velocity = velocity;
