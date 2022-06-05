@@ -60,7 +60,7 @@ public class Loader extends ScreenAdapter {
         FreeTypeFontGenerator.FreeTypeFontParameter parameter =
                 new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = Gdx.graphics.getHeight() / 5;
-        font = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto.ttf"))
+        font = new FreeTypeFontGenerator(Gdx.files.internal("assets/fonts/Roboto.ttf"))
                 .generateFont(parameter);
 
         RocketLauncher.getAssetHelper().loadAll();

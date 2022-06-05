@@ -25,7 +25,6 @@
 package de.pogs.rl.game.world.generation.spawners;
 
 import java.util.LinkedList;
-import java.util.Random;
 import de.pogs.rl.game.world.entities.AbstractEntity;
 import de.pogs.rl.game.world.entities.Asteroid;
 import de.pogs.rl.game.world.generation.AbstractSpawner;

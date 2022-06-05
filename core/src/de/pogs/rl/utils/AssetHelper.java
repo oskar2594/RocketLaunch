@@ -49,7 +49,7 @@ public class AssetHelper {
 
     public AssetHelper() {
         assetManager = new AssetManager();
-        baseDir = Gdx.files.getFileHandle("assets/", FileType.Internal);
+        baseDir = Gdx.files.getFileHandle("assets/", FileType.Local);
     }
 
     public void loadAll() {
