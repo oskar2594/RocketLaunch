@@ -67,6 +67,8 @@ public class GameScreen extends ScreenAdapter {
     private static int updateDistance2 = (int) Math.pow(updateDistanceBase, 2);
     private static int removeDistance2 = (int) Math.pow(removeDistanceBase, 2);
 
+    private static int spawnProtectionRange = 400;
+
     public GameScreen() {
         batch = RocketLauncher.getSpriteBatch();
         entityManager = new EntityManager();
@@ -96,7 +98,7 @@ public class GameScreen extends ScreenAdapter {
                 | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV
                         : 0));
         if (!GameScreen.paused) {
-            entityGen.update(player.getPosition(), renderDistance2, removeDistance2);
+            entityGen.update(player.getPosition(), renderDistance2, removeDistance2, spawnProtectionRange);
             entityManager.update(delta, player.getPosition(), updateDistance2, removeDistance2);
             background.update();
             particleManager.update(delta);

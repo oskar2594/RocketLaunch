@@ -52,7 +52,7 @@ public class SpawnManager {
      * @param renderDistance2 Das Quadrat der Entfernung, ab der Chunks als erschlossen gelten.
      * @param removeDistance2 Das Quadrat der Entfernung, ab der Chunks gelöscht werden.
      */
-    public void update(Vector2 pos, int renderDistance2, int removeDistance2) {
+    public void update(Vector2 pos, int renderDistance2, int removeDistance2, int spawnProtectionRange) {
         int renderDistance = (int) Math.sqrt(renderDistance2);
         int renderPosX;
         int renderPosY;
@@ -63,7 +63,7 @@ public class SpawnManager {
                 renderPosY = (int) pos.getY() + y;
                 renderPosY -= SpecialMath.modulus(renderPosY, chunkSize);
                 Vector2 renderPos = new Vector2(renderPosX, renderPosY);
-                if (!generatedChunks.contains(renderPos)) {
+                if (!generatedChunks.contains(renderPos) && renderPos.magn() > spawnProtectionRange) {
                     generatedChunks.add(renderPos);
                     spawn(renderPos);
                 }
