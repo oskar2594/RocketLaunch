@@ -25,6 +25,7 @@
 package de.pogs.rl.game.world.entities;
 
 import java.awt.Color;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -37,6 +38,7 @@ public class TankEnemy extends SimpleEnemy {
 
     private Texture aimTexture = RocketLauncher.getAssetHelper().getImage("aimbeam");
     private Sprite aimSprite = new Sprite(aimTexture);
+    private Sound shootSound;
 
     public TankEnemy(Vector2 position) {
         super(position, RocketLauncher.getAssetHelper().getImage("enemy2"));
@@ -49,6 +51,8 @@ public class TankEnemy extends SimpleEnemy {
         aimSprite.setOrigin(0, 5);
         aimSprite.setPosition(position.getX(), position.getY() - aimSprite.getHeight() / 2);
         aimSprite.setAlpha(0);
+
+        shootSound = RocketLauncher.getAssetHelper().getSound("shoot2");
 
     }
 
@@ -66,6 +70,7 @@ public class TankEnemy extends SimpleEnemy {
             aimSprite.setRotation(90 - SpecialMath.VectorToAngle(bulletDirection.mul(-1)));
             aimSprite.setAlpha(1);
             if (Math.random() < shootingCoeff * delta) {
+                shootSound.play(1f);
                 Bullet.createBullet(position, this, bulletDamage,
                         bulletDirection.mul(bulletSpeed).add(velocity), bulletColor, 10000);
             }
