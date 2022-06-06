@@ -83,11 +83,6 @@ public class EntityManager {
             if (entityChecked.getPosition()
                     .dst(entity.getPosition()) <= (radius + entityChecked.getRadius())
                     && !entityChecked.equals(entity)) {
-
-                if(entityChecked instanceof Asteroid && entity instanceof Asteroid) {
-
-                }
-
                 result.add(entityChecked);
             }
         }
@@ -101,8 +96,7 @@ public class EntityManager {
      * @param updateDistance2 Quadrat der Simulationsweite, in der simuliert werden soll.
      */
     public void update(float delta, Vector2 playerPosition, int updateDistance2, int removeDistance2) {
-        
-        entities.stream().filter(entity -> !entity.isAlive()).forEach(entity -> entity.dispose());
+    
         entities.removeIf((entity) -> !entity.isAlive());
 
         removeOutOfRange(playerPosition, removeDistance2);
@@ -143,14 +137,15 @@ public class EntityManager {
      * @param range2 Quadrat der Entfernung, ab der Entitäten entfernt werden.
      */
     public void removeOutOfRange(Vector2 pos, float range2) {
-        entities.stream().filter(e -> e.getPosition().dst2(pos) > range2).forEach(e -> e.dispose());
-        entities.removeIf((entity) -> entity.getPosition().dst2(pos) > range2);
+        entities.stream().filter(e -> e.getPosition().dst2(pos) > range2).forEach(e -> e.kill(null));
     }
 
+    /**
+     * Gibt alle Entitäten, die der EntityManager verwaltet, zurück.
+     * @return Entitäten.
+     */
     public LinkedList<AbstractEntity> getEntities() {
         return new LinkedList<AbstractEntity>(entities);
     }
-
-    public void dispose() {}
 
 }

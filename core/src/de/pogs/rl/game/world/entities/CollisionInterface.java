@@ -26,9 +26,28 @@ package de.pogs.rl.game.world.entities;
 
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
-public interface ImpulseEntity {
+/**
+ * Interface für elastische Kollisionen mit Asteroiden
+ */
+public interface CollisionInterface {
+    /**
+     * Gibt Geschwindigkeit zurück.
+     * @return Die aktuelle Geschwindigkeit.
+     */
     public Vector2 getVelocity();
+    /**
+     * Setzt Geschwindigkeit.
+     * @param velocity Die neue Geschwindigkeit.
+     */
     public void setVelocity(Vector2 velocity);
+    /**
+     * Gibt Masse zurück.
+     * @return Masse.
+     */
     public float getMass();
+    /**
+     * Gibt Position zurück.
+     * @return Position.
+     */
     public Vector2 getPosition();
 }

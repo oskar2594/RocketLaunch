@@ -27,6 +27,7 @@ package de.pogs.rl.game.world.entities;
 import java.util.LinkedList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -54,13 +55,21 @@ public class Asteroid extends AbstractEntity {
     private static TextureRegion[][] textureRegion = TextureRegion.split(
             RocketLauncher.getAssetHelper().getImage("asteroids"), 75, 75);
 
+    private static Texture orb = RocketLauncher.getAssetHelper().getImage("xporb");
+
     public Asteroid(Vector2 position, float mass, Vector2 velocity) {
         this.position = position;
         this.mass = mass;
-        TextureRegion region = textureRegion[SpecialMath.randint(0, 8)][SpecialMath.randint(0, 1)];
-        this.texture = region.getTexture();
-        sprite = new Sprite(texture);
-        sprite.setRegion(region);
+        if (mass < collectionMass) {
+            sprite = new Sprite(orb);
+            texture = orb;
+        } else {
+            TextureRegion region =
+                    textureRegion[SpecialMath.randint(0, 8)][SpecialMath.randint(0, 1)];
+            this.texture = region.getTexture();
+            sprite = new Sprite(texture);
+            sprite.setRegion(region);
+        }
 
         // Radius einer Kugel mit Masse und Dichte
         radius = (float) Math.pow(mass / density, 1f / 3f);
@@ -94,8 +103,8 @@ public class Asteroid extends AbstractEntity {
             // Elastische Kollision mit anderen Entitäten, die ImpulseInterface implementieren.
             // Formel für die Kollision: https://en.wikipedia.org/wiki/Elastic_collision
 
-            if (entity instanceof ImpulseEntity) {
-                ImpulseEntity impulseEntity = (ImpulseEntity) entity;
+            if (entity instanceof CollisionInterface) {
+                CollisionInterface impulseEntity = (CollisionInterface) entity;
                 Vector2 v1 = velocity;
                 Vector2 v2 = impulseEntity.getVelocity();
                 Vector2 x1 = position;
@@ -119,7 +128,7 @@ public class Asteroid extends AbstractEntity {
                 // Geschwindigkeitsänderung durch die Kollision ist.
                 if (entity instanceof Player) {
                     entity.addDamage(v2.sub(v2_new).magn() * damageCoeff, this);
-                    CameraShake.makeShake(((Player) entity).getSpeed() / 50, 20);
+                    CameraShake.makeShake(((Player) entity).getVelocity().magn() / 50, 20);
                     playMuffle(0);
                     playSoundBasedOnDistance(rockSound,
                             entity.getPosition().dst(GameScreen.getPlayer().getPosition()));

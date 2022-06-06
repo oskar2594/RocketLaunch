@@ -38,6 +38,7 @@ public abstract class AbstractEntity {
     protected Vector2 position = Vector2.zero;
     protected Vector2 forceAdded = Vector2.zero;
     protected Texture texture;
+
     /**
      * Führt einen Simulationsschritt für die Entität durch.
      * 
@@ -103,12 +104,6 @@ public abstract class AbstractEntity {
         return alive;
     }
 
-    /**
-     * Wird beim Löschen der Entität aufgerufen, damit diese zum Beispiel Ressourcen freigeben kann.
-     */
-    public void dispose() {
-
-    }
 
     /**
      * Wird aufgerufen, wenn das Entity ein anderes Entity tötet
@@ -131,12 +126,15 @@ public abstract class AbstractEntity {
     public void kill(AbstractEntity killer) {
         alive = false;
         killSelfEvent(killer);
-        killer.killOtherEvent(this);
+        if (killer != null) {
+            killer.killOtherEvent(this);
+        }
     }
 
 
     /**
      * Gibt die Textur der Entität zurück.
+     * 
      * @return Die Textur
      */
     public Texture getTexture() {
