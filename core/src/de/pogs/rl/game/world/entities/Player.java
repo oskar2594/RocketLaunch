@@ -43,7 +43,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-public class Player extends AbstractEntity implements ImpulseEntity {
+public class Player extends AbstractEntity implements CollisionInterface {
     private Sprite sprite;
     private int size = 50;
     private float angle = 0;
@@ -263,22 +263,47 @@ public class Player extends AbstractEntity implements ImpulseEntity {
         }
     }
 
+    /**
+     * Gibt die Lebenspunkt des Spielers zurück.
+     * 
+     * @return Die aktuellen Lebenspunkte.
+     */
     public float getHealth() {
         return health;
     }
 
+    /**
+     * Gibt die Rüstungspunkte des Spielers zurück.
+     * 
+     * @return Die aktuellen Rüstungspunkte.
+     */
     public float getArmor() {
         return armor;
     }
 
+    /**
+     * Gibt die höchstmöglichen Lebenspunkte zurück.
+     * 
+     * @return Die maximalen Lebenspunkte.
+     */
     public float getMaxHealth() {
         return maxHealth;
     }
 
+    /**
+     * Gibt Sprite des Spielers zurück.
+     * 
+     * @return Sprite des Spielers.
+     */
     public Sprite getSprite() {
         return sprite;
     }
 
+    /**
+     * Gibt die höchstmöglichen Rüstungspunte zurück.
+     * 
+     * @return Die maximalen Rüstungspunkte.
+     */
     public float getMaxArmor() {
         return maxArmor;
     }
@@ -297,10 +322,11 @@ public class Player extends AbstractEntity implements ImpulseEntity {
         lastTimeDamaged = TimeUtils.millis();
     }
 
-    public float getSpeed() {
-        return (float) Math.sqrt(Math.pow(velocity.getX(), 2) + Math.pow(velocity.getY(), 2));
-    }
-
+    /**
+     * Gibt die Höchstgeschwindigkeit zurück.
+     * 
+     * @return Die Höchstgeschwindigkeit des Spielers.
+     */
     public float getMaxSpeed() {
         return this.maxSpeed;
     }
@@ -309,6 +335,11 @@ public class Player extends AbstractEntity implements ImpulseEntity {
         return velocity;
     }
 
+    /**
+     * Gibt zurück, ob der Spieler momentan beschleunigt.
+     * 
+     * @return
+     */
     public boolean isAccelerating() {
         return isAccelerating;
     }
@@ -326,6 +357,9 @@ public class Player extends AbstractEntity implements ImpulseEntity {
         this.velocity = velocity;
     }
 
+    /**
+     * Pausiert alle vom Spieler erzeugten Klänge.
+     */
     public void pauseSounds() {
         thrustSound.stop();
         thrustSound.stop(thrustId);
@@ -336,5 +370,8 @@ public class Player extends AbstractEntity implements ImpulseEntity {
 
     public void heal(float amount) {
         health += amount;
+        if (health > maxHealth) {
+            health = maxHealth;
+        }
     }
 }

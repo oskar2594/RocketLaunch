@@ -33,7 +33,7 @@ import java.awt.Color;
 import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
-public class SimpleEnemy extends AbstractEntity implements ImpulseEntity {
+public class SimpleEnemy extends AbstractEntity implements CollisionInterface {
     protected float sightRange = (float) Math.pow(500, 2);
     private float haloRange = (float) Math.pow(200, 2);
 

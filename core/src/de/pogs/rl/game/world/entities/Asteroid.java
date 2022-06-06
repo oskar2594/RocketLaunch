@@ -94,8 +94,8 @@ public class Asteroid extends AbstractEntity {
             // Elastische Kollision mit anderen Entitäten, die ImpulseInterface implementieren.
             // Formel für die Kollision: https://en.wikipedia.org/wiki/Elastic_collision
 
-            if (entity instanceof ImpulseEntity) {
-                ImpulseEntity impulseEntity = (ImpulseEntity) entity;
+            if (entity instanceof CollisionInterface) {
+                CollisionInterface impulseEntity = (CollisionInterface) entity;
                 Vector2 v1 = velocity;
                 Vector2 v2 = impulseEntity.getVelocity();
                 Vector2 x1 = position;
@@ -119,7 +119,7 @@ public class Asteroid extends AbstractEntity {
                 // Geschwindigkeitsänderung durch die Kollision ist.
                 if (entity instanceof Player) {
                     entity.addDamage(v2.sub(v2_new).magn() * damageCoeff, this);
-                    CameraShake.makeShake(((Player) entity).getSpeed() / 50, 20);
+                    CameraShake.makeShake(((Player) entity).getVelocity().magn() / 50, 20);
                     playMuffle(0);
                     playSoundBasedOnDistance(rockSound,
                             entity.getPosition().dst(GameScreen.getPlayer().getPosition()));

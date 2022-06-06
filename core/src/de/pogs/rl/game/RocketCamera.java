@@ -64,7 +64,7 @@ public class RocketCamera extends OrthographicCamera {
 
 
         // Zoom Faktor ermitteln & setzen
-        float playerSpeed = GameScreen.getPlayer().getSpeed();
+        float playerSpeed = GameScreen.getPlayer().getVelocity().magn();
         float maxSpeed = GameScreen.getPlayer().getMaxSpeed();
         float zoom = (float) easeInOut((playerSpeed / maxSpeed)) * 0.18f + 0.9f;
         this.zoom = Math.min(zoom, 1.1f);

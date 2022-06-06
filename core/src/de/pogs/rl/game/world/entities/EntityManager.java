@@ -140,10 +140,12 @@ public class EntityManager {
         entities.stream().filter(e -> e.getPosition().dst2(pos) > range2).forEach(e -> e.kill(null));
     }
 
+    /**
+     * Gibt alle Entitäten, die der EntityManager verwaltet, zurück.
+     * @return Entitäten.
+     */
     public LinkedList<AbstractEntity> getEntities() {
         return new LinkedList<AbstractEntity>(entities);
     }
-
-    public void dispose() {}
 
 }
