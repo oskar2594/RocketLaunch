@@ -3,6 +3,9 @@ package de.pogs.rl.game.world.entities;
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
+/**
+ * Schnellerer Gegner
+ */
 public class SpeedEnemy extends SimpleEnemy {
     public SpeedEnemy(Vector2 position) {
         super(position, RocketLauncher.getAssetHelper().getImage("enemy4"));
