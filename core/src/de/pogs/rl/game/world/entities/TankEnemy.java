@@ -46,6 +46,7 @@ public class TankEnemy extends SimpleEnemy {
         bulletDamage = 25;
         bulletColor = new Color(30, 255, 30, 255);
         aimSprite.setPosition(position.getX(), position.getY());
+        aimSprite.setSize(1500, 10);
         aimSprite.setOrigin(0, 0);
         aimSprite.setAlpha(0);
 
