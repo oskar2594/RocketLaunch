@@ -24,6 +24,7 @@
  */
 package de.pogs.rl.game.world.entities;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -69,19 +70,23 @@ public class SimpleEnemy extends AbstractEntity implements CollisionInterface {
 
     protected float mass = 100;
 
+    private Sound shootSound;
+
     public SimpleEnemy(Vector2 position) {
-        this(position, RocketLauncher.getAssetHelper().getImage("enemy1"));
+        this(position, RocketLauncher.getAssetHelper().getImage("enemy2"));
     }
 
     public SimpleEnemy(Vector2 position, Texture texture) {
         this.radius = 20;
         this.texture = texture;
+        shootSound = RocketLauncher.getAssetHelper().getSound("shoot2");
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
         this.position = position;
         sprite.setPosition(position.getX() - (sprite.getWidth() / 2),
                 position.getY() - sprite.getHeight() / 2);
+
     }
 
     public SimpleEnemy(float posX, float posY) {
@@ -115,6 +120,7 @@ public class SimpleEnemy extends AbstractEntity implements CollisionInterface {
                     .add(GameScreen.getPlayer().getVelocity().mul(flightTime));
             Vector2 bulletVelocity = playerPosPredicted.sub(position).nor().mul(bulletSpeed);
             Bullet.createBullet(position, this, bulletDamage, bulletVelocity, bulletColor, 20000);
+            shootSound.play(.5f);
         }
     }
 

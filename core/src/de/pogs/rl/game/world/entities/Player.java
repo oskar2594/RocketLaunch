@@ -76,8 +76,6 @@ public class Player extends AbstractEntity implements CollisionInterface {
     private long startId;
     private float startVolume = 0.5f;
     private Sound shootSound;
-    private long shootId;
-    private float shootVolume = 0.1f;
     private float bulletDamage = 10;
     private Vector2 velocity = new Vector2(0, 0);
     private ParticleEmitter dust;
@@ -208,8 +206,7 @@ public class Player extends AbstractEntity implements CollisionInterface {
                 Bullet.createBullet(position, this, bulletDamage,
                         velocity.add(SpecialMath.angleToVector(angle).mul(bulletSpeed)),
                         new Color(0xffffff), 20000);
-                shootId = shootSound.play(0f);
-                shootSound.setVolume(shootId, shootVolume);
+                shootSound.play(1f);
                 lastBulletTime = TimeUtils.millis();
             }
         }
