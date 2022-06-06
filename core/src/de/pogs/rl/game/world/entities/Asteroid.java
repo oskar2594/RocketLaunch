@@ -27,6 +27,7 @@ package de.pogs.rl.game.world.entities;
 import java.util.LinkedList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -54,13 +55,21 @@ public class Asteroid extends AbstractEntity {
     private static TextureRegion[][] textureRegion = TextureRegion.split(
             RocketLauncher.getAssetHelper().getImage("asteroids_spritesheet_diffuse"), 75, 75);
 
+    private static Texture orb = RocketLauncher.getAssetHelper().getImage("xporb");
+
     public Asteroid(Vector2 position, float mass, Vector2 velocity) {
         this.position = position;
         this.mass = mass;
-        TextureRegion region = textureRegion[SpecialMath.randint(0, 8)][SpecialMath.randint(0, 1)];
-        this.texture = region.getTexture();
-        sprite = new Sprite(texture);
-        sprite.setRegion(region);
+        if (mass < collectionMass) {
+            sprite = new Sprite(orb);
+            texture = orb;
+        } else {
+            TextureRegion region =
+                    textureRegion[SpecialMath.randint(0, 8)][SpecialMath.randint(0, 1)];
+            this.texture = region.getTexture();
+            sprite = new Sprite(texture);
+            sprite.setRegion(region);
+        }
 
         // Radius einer Kugel mit Masse und Dichte
         radius = (float) Math.pow(mass / density, 1f / 3f);
