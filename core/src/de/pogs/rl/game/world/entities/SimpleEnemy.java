@@ -34,6 +34,9 @@ import java.awt.Color;
 import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
+/**
+ * Einfacher Gegner.
+ */
 public class SimpleEnemy extends AbstractEntity implements CollisionInterface {
     protected float sightRange = (float) Math.pow(500, 2);
     private float haloRange = (float) Math.pow(200, 2);
@@ -52,8 +55,8 @@ public class SimpleEnemy extends AbstractEntity implements CollisionInterface {
 
     private float repulsionRadius = 50;
 
-    private float playerAttraction = 100;
-    private float playerRepulsion = 200;
+    protected float playerAttraction = 100;
+    protected float playerRepulsion = 200;
 
     private float tractionCoeff = 0.1f;
 

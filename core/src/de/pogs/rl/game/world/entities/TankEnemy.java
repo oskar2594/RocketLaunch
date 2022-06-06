@@ -34,6 +34,10 @@ import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.utils.SpecialMath;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
+/**
+ * Gegner mit mehr HP und stärkerem Schuss. Zur Warnung erzeugt er einen harmlosen Strahl in die
+ * Richtung, in die er schießt.
+ */
 public class TankEnemy extends SimpleEnemy {
 
     private Texture aimTexture = RocketLauncher.getAssetHelper().getImage("aimbeam");
@@ -43,7 +47,7 @@ public class TankEnemy extends SimpleEnemy {
     public TankEnemy(Vector2 position) {
         super(position, RocketLauncher.getAssetHelper().getImage("enemy2"));
         hp = 20;
-        shootingCoeff = 0.4f;
+        shootingCoeff = 0.5f;
         bulletSpeed = 1000;
         bulletDamage = 25;
         bulletColor = new Color(30, 255, 30, 255);
@@ -72,7 +76,7 @@ public class TankEnemy extends SimpleEnemy {
             if (Math.random() < shootingCoeff * delta) {
                 shootSound.play(1f);
                 Bullet.createBullet(position, this, bulletDamage,
-                        bulletDirection.mul(bulletSpeed).add(velocity), bulletColor, 10000);
+                        bulletDirection.mul(bulletSpeed), bulletColor, 10000);
             }
         } else {
             aimSprite.setAlpha(0);

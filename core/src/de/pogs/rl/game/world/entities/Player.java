@@ -43,6 +43,9 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+/**
+ * Die Entität des Spielers
+ */
 public class Player extends AbstractEntity implements CollisionInterface {
     private Sprite sprite;
     private int size = 50;
