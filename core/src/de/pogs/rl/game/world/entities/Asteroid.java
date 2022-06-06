@@ -44,6 +44,7 @@ public class Asteroid extends AbstractEntity {
     private Sound rockSound;
     private Sound muffleSound;
 
+    private float currentTexture = 0;
     private float mass = 2;
     private static final float density = 0.01f;
     private static final float damageCoeff = 0.03f;
@@ -52,25 +53,22 @@ public class Asteroid extends AbstractEntity {
     private static float collectionMass = 10;
 
     // Die verschiedenen Texturen für die Asteroiden
-    private static TextureRegion[][] textureRegion = TextureRegion.split(
-            RocketLauncher.getAssetHelper().getImage("asteroids"), 75, 75);
+    private static TextureRegion[][] textureRegion =
+            TextureRegion.split(RocketLauncher.getAssetHelper().getImage("asteroids"), 75, 75);
 
-    private static Texture orb = RocketLauncher.getAssetHelper().getImage("xporb");
+    private static TextureRegion[][] orbRegion =
+            TextureRegion.split(RocketLauncher.getAssetHelper().getImage("healthorb"), 25, 25);;
 
     public Asteroid(Vector2 position, float mass, Vector2 velocity) {
         this.position = position;
         this.mass = mass;
-        if (mass < collectionMass) {
-            sprite = new Sprite(orb);
-            texture = orb;
-        } else {
-            TextureRegion region =
-                    textureRegion[SpecialMath.randint(0, 8)][SpecialMath.randint(0, 1)];
-            this.texture = region.getTexture();
-            sprite = new Sprite(texture);
-            sprite.setRegion(region);
-        }
+        TextureRegion region = (mass < collectionMass) ? orbRegion[0][0]
+                : textureRegion[SpecialMath.randint(0, 8)][SpecialMath.randint(0, 1)];
 
+
+        texture = region.getTexture();
+        sprite = new Sprite(texture);
+        sprite.setRegion(region);
         // Radius einer Kugel mit Masse und Dichte
         radius = (float) Math.pow(mass / density, 1f / 3f);
         hp = 0.1f * mass;
@@ -86,6 +84,13 @@ public class Asteroid extends AbstractEntity {
 
     @Override
     public void update(float delta) {
+        if (mass < collectionMass) {
+            currentTexture += .1;
+            if (currentTexture > 4) {
+                currentTexture = 0;
+            }
+            sprite.setRegion(orbRegion[(int) Math.floor(currentTexture)][0]);
+        }
         velocity = velocity.add(forceAdded);
         forceAdded = Vector2.zero;
         position = position.add(velocity.mul(delta));
@@ -202,18 +207,21 @@ public class Asteroid extends AbstractEntity {
 
     @Override
     public void addDamage(float damage, AbstractEntity sender) {
-        hp -= damage;
-        // Wenn der Asteroid keine Lebenspunkte mehr hat, spaltet er sich in zwei neue mit jeweils
-        // kleinerer Masse auf.
-        if (hp <= 0) {
-            this.alive = false;
-            Vector2 splitVelocity =
-                    new Vector2((float) Math.random() - 0.5f, (float) Math.random() - 0.5f).nor()
-                            .mul(10);
-            GameScreen.getEntityManager()
-                    .addEntity(new Asteroid(position, mass / 2f, velocity.add(splitVelocity)));
-            GameScreen.getEntityManager().addEntity(
-                    new Asteroid(position, mass / 2f, velocity.add(splitVelocity.mul(-1))));
+        if (mass >= collectionMass) {
+            hp -= damage;
+            // Wenn der Asteroid keine Lebenspunkte mehr hat, spaltet er sich in zwei neue mit
+            // jeweils
+            // kleinerer Masse auf.
+            if (hp <= 0) {
+                this.alive = false;
+                Vector2 splitVelocity =
+                        new Vector2((float) Math.random() - 0.5f, (float) Math.random() - 0.5f)
+                                .nor().mul(10);
+                GameScreen.getEntityManager()
+                        .addEntity(new Asteroid(position, mass / 2f, velocity.add(splitVelocity)));
+                GameScreen.getEntityManager().addEntity(
+                        new Asteroid(position, mass / 2f, velocity.add(splitVelocity.mul(-1))));
+            }
         }
     }
 

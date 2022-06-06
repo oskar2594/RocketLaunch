@@ -12,6 +12,7 @@ public class SpeedEnemy extends SimpleEnemy {
         sightRange = (float) Math.pow(1000, 2);
         playerAttraction = 300;
         playerRepulsion = 600;
+        mass = 50;
     }
     public SpeedEnemy(float x, float y) {
         this(new Vector2(x, y));
