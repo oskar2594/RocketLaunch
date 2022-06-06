@@ -76,8 +76,8 @@ public class TankEnemy extends SimpleEnemy {
 
     @Override
     public void render(SpriteBatch batch) {
-        sprite.draw(batch);
         aimSprite.draw(batch);
+        sprite.draw(batch);
     }
 
     @Override
