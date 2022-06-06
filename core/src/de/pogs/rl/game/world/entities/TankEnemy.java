@@ -39,15 +39,15 @@ public class TankEnemy extends SimpleEnemy {
     private Sprite aimSprite = new Sprite(aimTexture);
 
     public TankEnemy(Vector2 position) {
-        super(position, RocketLauncher.getAssetHelper().getImage("monster2"));
+        super(position, RocketLauncher.getAssetHelper().getImage("enemy2"));
         hp = 20;
-        shootingCoeff = 0.1f;
+        shootingCoeff = 0.4f;
         bulletSpeed = 1000;
         bulletDamage = 25;
         bulletColor = new Color(30, 255, 30, 255);
-        aimSprite.setPosition(position.getX(), position.getY());
         aimSprite.setSize(1500, 10);
-        aimSprite.setOrigin(0, 0);
+        aimSprite.setOrigin(0, 5);
+        aimSprite.setPosition(position.getX(), position.getY() - aimSprite.getHeight() / 2);
         aimSprite.setAlpha(0);
 
     }
@@ -83,7 +83,7 @@ public class TankEnemy extends SimpleEnemy {
     @Override
     public void update(float delta) {
         super.update(delta);
-        aimSprite.setPosition(position.getX(), position.getY());
+        aimSprite.setPosition(position.getX(), position.getY() - aimSprite.getHeight() / 2);
     }
 
     @Override

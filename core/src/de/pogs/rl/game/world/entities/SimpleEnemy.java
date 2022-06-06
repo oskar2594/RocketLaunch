@@ -67,7 +67,7 @@ public class SimpleEnemy extends AbstractEntity implements ImpulseEntity {
     protected float mass = 100;
 
     public SimpleEnemy(Vector2 position) {
-        this(position, RocketLauncher.getAssetHelper().getImage("monster1"));
+        this(position, RocketLauncher.getAssetHelper().getImage("enemy1"));
     }
 
     public SimpleEnemy(Vector2 position, Texture texture) {

@@ -52,7 +52,7 @@ public class Asteroid extends AbstractEntity {
 
     // Die verschiedenen Texturen für die Asteroiden
     private static TextureRegion[][] textureRegion = TextureRegion.split(
-            RocketLauncher.getAssetHelper().getImage("asteroids_spritesheet_diffuse"), 75, 75);
+            RocketLauncher.getAssetHelper().getImage("asteroids"), 75, 75);
 
     public Asteroid(Vector2 position, float mass, Vector2 velocity) {
         this.position = position;

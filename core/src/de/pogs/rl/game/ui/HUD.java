@@ -94,7 +94,7 @@ public class HUD {
     }
 
     public void resize(int width, int height) {
-        this.border = (int) (width * 0.03);
+        HUD.border = (int) (width * 0.03);
         HUD.width = width - border * 2;
         HUD.height = height - border * 2;
         components.forEach((name, component) -> {
