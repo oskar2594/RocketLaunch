@@ -34,7 +34,7 @@ public class TankSpawner extends AbstractSpawner {
 
     public LinkedList<AbstractEntity> spawn(Vector2 chunk) {
         LinkedList<AbstractEntity> list = new LinkedList<AbstractEntity>();
-        if (Math.random() < 0.001) {
+        if (Math.random() < 0.002) {
             list.add(new TankEnemy((float) (chunk.getX() + Math.random() * 200),
                     (float) (chunk.getY() + Math.random() * 200)));
         }
