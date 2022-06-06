@@ -165,9 +165,9 @@ public class Player extends AbstractEntity implements ImpulseEntity {
     }
 
     private void updateStats() {
-        acceleration = 200 + (float) Math.log(PlayerStats.getLevel());
-        angleResponse = 5 + (float) Math.log(PlayerStats.getLevel()) / 10;
-        tractionCoeff = baseTractionCoeff / (float) Math.log(PlayerStats.getLevel());
+        acceleration = 200 + (float) Math.log(PlayerStats.getLevel() + 1);
+        angleResponse = 5 + (float) Math.log(PlayerStats.getLevel() + 1) / 10;
+        tractionCoeff = baseTractionCoeff / (float) Math.log(PlayerStats.getLevel() + 2);
     }
 
     private void regenArmor(float delta) {
@@ -189,7 +189,7 @@ public class Player extends AbstractEntity implements ImpulseEntity {
                 startSound.setLooping(startId, false);
             }
         }
-        if(thrustVolume > 0 && !thrustisPlaying && !GameScreen.isPaused()) {
+        if (thrustVolume > 0 && !thrustisPlaying && !GameScreen.isPaused()) {
             thrustisPlaying = true;
             thrustSound.stop(thrustId);
             thrustId = thrustSound.loop(thrustVolume);
@@ -290,7 +290,7 @@ public class Player extends AbstractEntity implements ImpulseEntity {
             health += armor;
             armor = 0;
         }
-        if(health <= 0) {
+        if (health <= 0) {
             health = 0;
             GameScreen.playerDied();
         }

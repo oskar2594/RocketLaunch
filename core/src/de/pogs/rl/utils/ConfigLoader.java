@@ -40,7 +40,7 @@ public class ConfigLoader {
 
     private static JsonReader json = new JsonReader();
     private static FileHandle config = Gdx.files.absolute(OsUtils.getUserConfigDirectory() + "/RocketLauncher/storage.rl");
-    private static FileHandle defaultConfig = Gdx.files.internal("config.json");
+    private static String defaultConfig = "{\"highscore\": \"0\"}}";
     public static JsonValue data;
 
     static {
@@ -48,14 +48,14 @@ public class ConfigLoader {
     }
 
     private static void createDefaultStorage() {
-        config.writeString(encrypt(defaultConfig.readString()), false);
+        config.writeString(encrypt(defaultConfig), false);
         readStorage();
     }
 
     private static void readStorage() {
         try {
             data = json.parse(decrypt(config.readString()));
-            if(data.get("preferences") == null && json.parse(defaultConfig).get("preferences") != null) {
+            if(data.get("highscore") == null && json.parse(defaultConfig).get("highscore") != null) {
                 throw new Exception();
             }
         } catch (Exception e) {

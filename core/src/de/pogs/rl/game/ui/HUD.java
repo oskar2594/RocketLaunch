@@ -48,8 +48,9 @@ public class HUD {
     private PlayerArmor playerArmor;
     private Debug debug;
     private Level level;
+    private Highscore highscore;
 
-    private int border = 30;
+    private static int border = 10;
 
     public HUD() {
         width = Gdx.graphics.getWidth();
@@ -67,6 +68,8 @@ public class HUD {
         components.put("debug", debug);
         level = new Level();
         components.put("level", level);
+        highscore = new Highscore();
+        components.put("highscore", highscore);
     }
 
     public void update(float delta) {
@@ -125,6 +128,8 @@ public class HUD {
         position = p;
     }
 
-
+    public static int getBorder() {
+        return border;
+    }
 
 }
