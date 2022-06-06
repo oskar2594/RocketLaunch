@@ -160,7 +160,9 @@ public class SimpleEnemy extends AbstractEntity implements ImpulseEntity {
 
     @Override
     protected void killSelfEvent(AbstractEntity killer) {
-        GameScreen.getEntityManager().addEntity(new XpOrb(position, 10));
+        if (killer instanceof Player) {
+            GameScreen.getEntityManager().addEntity(new XpOrb(position, 10));
+        }
     }
 
     public void setVelocity(Vector2 velocity) {

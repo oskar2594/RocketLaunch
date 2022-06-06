@@ -87,11 +87,11 @@ public class TankEnemy extends SimpleEnemy {
 
     @Override
     protected void killSelfEvent(AbstractEntity killer) {
-        for (int i = 0; i < 3; i++) {
-            GameScreen.getEntityManager()
-                    .addEntity(new XpOrb(position.add(
-                            new Vector2(Math.random() - 0.5, Math.random() - 0.5).nor().mul(20)),
-                            20));
+        if (killer instanceof Player) {
+            for (int i = 0; i < 3; i++) {
+                GameScreen.getEntityManager().addEntity(new XpOrb(position.add(
+                        new Vector2(Math.random() - 0.5, Math.random() - 0.5).nor().mul(20)), 20));
+            }
         }
     }
 }
