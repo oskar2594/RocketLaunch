@@ -48,7 +48,11 @@ public class ConfigLoader {
     }
 
     private static void createDefaultStorage() {
-        config.writeString(encrypt(defaultConfig), false);
+        try {
+            config.writeString(encrypt(defaultConfig), false);
+        } catch (Exception e) {
+            throw e;
+        }
         readStorage();
     }
 

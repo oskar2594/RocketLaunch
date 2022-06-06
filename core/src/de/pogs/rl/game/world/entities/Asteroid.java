@@ -54,7 +54,7 @@ public class Asteroid extends AbstractEntity {
     public Asteroid(Vector2 position, float mass, Vector2 velocity) {
         this.position = position;
         this.mass = mass;
-        TextureRegion region = textureRegion[SpecialMath.randint(0, 8)][SpecialMath.randint(0, 22)];
+        TextureRegion region = textureRegion[SpecialMath.randint(0, 8)][SpecialMath.randint(0, 1)];
         this.texture = region.getTexture();
         sprite = new Sprite(texture);
         sprite.setRegion(region);
