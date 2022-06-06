@@ -45,12 +45,15 @@ public class Asteroid extends AbstractEntity {
 
     private float mass = 2;
     private static final float density = 0.01f;
-    private static final float damageCoeff = 0.01f;
+    private static final float damageCoeff = 0.03f;
     private LinkedList<Asteroid> collided = new LinkedList<Asteroid>();
     private float hp;
     private static float collectionMass = 10;
 
-    private static TextureRegion[][] textureRegion = TextureRegion.split(RocketLauncher.getAssetHelper().getImage("asteroids_spritesheet_diffuse"), 75, 75); 
+    // Die verschiedenen Texturen für die Asteroiden
+    private static TextureRegion[][] textureRegion = TextureRegion.split(
+            RocketLauncher.getAssetHelper().getImage("asteroids_spritesheet_diffuse"), 75, 75);
+
     public Asteroid(Vector2 position, float mass, Vector2 velocity) {
         this.position = position;
         this.mass = mass;
@@ -58,6 +61,8 @@ public class Asteroid extends AbstractEntity {
         this.texture = region.getTexture();
         sprite = new Sprite(texture);
         sprite.setRegion(region);
+
+        // Radius einer Kugel mit Masse und Dichte
         radius = (float) Math.pow(mass / density, 1f / 3f);
         hp = 0.1f * mass;
         this.velocity = velocity;
@@ -79,10 +84,16 @@ public class Asteroid extends AbstractEntity {
                 position.getY() - sprite.getHeight() / 2);
 
         for (AbstractEntity entity : GameScreen.getEntityManager().getCollidingEntities(this)) {
+            // Bei kleiner Masse werden die Astroiden vom Spieler aufgenommen und heilen diesen
             if (mass < collectionMass && entity instanceof Player) {
                 this.alive = false;
                 GameScreen.getPlayer().heal(mass);
+                break;
             }
+
+            // Elastische Kollision mit anderen Entitäten, die ImpulseInterface implementieren.
+            // Formel für die Kollision: https://en.wikipedia.org/wiki/Elastic_collision
+
             if (entity instanceof ImpulseEntity) {
                 ImpulseEntity impulseEntity = (ImpulseEntity) entity;
                 Vector2 v1 = velocity;
@@ -97,12 +108,17 @@ public class Asteroid extends AbstractEntity {
                         .mul((2 * m1 / (m2 + m1)) * v2.sub(v1).dot(x2.sub(x1)) / x2.dst2(x1)));
                 velocity = v1_new;
                 impulseEntity.setVelocity(v2_new);
-                if (entity instanceof Player) {
-                    entity.addDamage(v2.sub(v2_new).magn() * damageCoeff, this);
-                }
+
+                // Entfernt den Asteroiden so weit von der kollidierten Entität, dass diese im
+                // nächsten Simulationsschritt nicht nah genug für eine erneute Kollision sind, weil
+                // das zu Fehlern führt.
                 position = position
                         .add(position.sub(x2).nor().mul(radius + entity.getRadius() - x1.dst(x2)));
+                // Falls es sich um eine Kollision mit dem Spieler handelt, wird die Kamera
+                // geschüttelt und dem Spieler schaden hinzugefügt, welcher proportional zu seiner
+                // Geschwindigkeitsänderung durch die Kollision ist.
                 if (entity instanceof Player) {
+                    entity.addDamage(v2.sub(v2_new).magn() * damageCoeff, this);
                     CameraShake.makeShake(((Player) entity).getSpeed() / 50, 20);
                     playMuffle(0);
                     playSoundBasedOnDistance(rockSound,
@@ -111,6 +127,10 @@ public class Asteroid extends AbstractEntity {
                     playMuffle(entity.getPosition().dst(GameScreen.getPlayer().getPosition()));
                 }
             }
+
+            // Kollision mit anderen Asteroiden. Diese wird separat gehandhabt, weil eine Kollision
+            // immer nur von einem der Asteroiden durchgeführt werden soll. Das wird durch collided
+            // beziehungsweise addCollided bewerkstelligt.
             if (entity instanceof Asteroid) {
                 Asteroid other = (Asteroid) entity;
                 if (!collided.contains(other)) {
@@ -174,6 +194,8 @@ public class Asteroid extends AbstractEntity {
     @Override
     public void addDamage(float damage, AbstractEntity sender) {
         hp -= damage;
+        // Wenn der Asteroid keine Lebenspunkte mehr hat, spaltet er sich in zwei neue mit jeweils
+        // kleinerer Masse auf.
         if (hp <= 0) {
             this.alive = false;
             Vector2 splitVelocity =
@@ -187,11 +209,11 @@ public class Asteroid extends AbstractEntity {
     }
 
     // private void splashEffectSelf() {
-    //     GameScreen.getParticleManager()
-    //             .createEmitter(new ParticleEmitter((int) position.getX(), (int) position.getY(), 50,
-    //                     5,
-    //                     ParticleUtils.generateParticleTexture(ParticleUtils.averageColor(texture)),
-    //                     -180, 180, 10, 150, 1, 5, 1f, 1f, .5f, .1f, true))
-    //             .updateVelocity(velocity);
+    // GameScreen.getParticleManager()
+    // .createEmitter(new ParticleEmitter((int) position.getX(), (int) position.getY(), 50,
+    // 5,
+    // ParticleUtils.generateParticleTexture(ParticleUtils.averageColor(texture)),
+    // -180, 180, 10, 150, 1, 5, 1f, 1f, .5f, .1f, true))
+    // .updateVelocity(velocity);
     // }
 }

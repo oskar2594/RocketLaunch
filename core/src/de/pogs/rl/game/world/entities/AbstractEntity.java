@@ -135,6 +135,10 @@ public abstract class AbstractEntity {
     }
 
 
+    /**
+     * Gibt die Textur der Entität zurück.
+     * @return Die Textur
+     */
     public Texture getTexture() {
         return texture;
     }
