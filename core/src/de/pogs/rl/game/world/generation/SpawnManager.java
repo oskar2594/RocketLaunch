@@ -89,7 +89,7 @@ public class SpawnManager {
      * @param spawner Der Spawner.
      */
     public void addSpawner(AbstractSpawner spawner) {
-        this.spawners.add(spawner);
+        spawners.add(spawner);
     }
 
 }

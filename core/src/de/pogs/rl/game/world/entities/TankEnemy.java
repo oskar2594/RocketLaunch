@@ -41,7 +41,7 @@ public class TankEnemy extends SimpleEnemy {
     public TankEnemy(Vector2 position) {
         super(position, RocketLauncher.getAssetHelper().getImage("enemy2"));
         hp = 20;
-        shootingCoeff = 0.4f;
+        shootingCoeff = 0.5f;
         bulletSpeed = 1000;
         bulletDamage = 25;
         bulletColor = new Color(30, 255, 30, 255);

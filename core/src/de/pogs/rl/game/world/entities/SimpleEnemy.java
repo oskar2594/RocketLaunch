@@ -51,8 +51,8 @@ public class SimpleEnemy extends AbstractEntity implements CollisionInterface {
 
     private float repulsionRadius = 50;
 
-    private float playerAttraction = 100;
-    private float playerRepulsion = 200;
+    protected float playerAttraction = 100;
+    protected float playerRepulsion = 200;
 
     private float tractionCoeff = 0.1f;
 

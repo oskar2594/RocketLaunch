@@ -41,6 +41,7 @@ import de.pogs.rl.game.world.entities.Player;
 import de.pogs.rl.game.world.generation.SpawnManager;
 import de.pogs.rl.game.world.generation.spawners.AsteroidSpawner;
 import de.pogs.rl.game.world.generation.spawners.SimpleSpawner;
+import de.pogs.rl.game.world.generation.spawners.SpeedSpawner;
 import de.pogs.rl.game.world.generation.spawners.TankSpawner;
 import de.pogs.rl.game.world.particles.ParticleManager;
 import de.pogs.rl.utils.CameraShake;
@@ -90,7 +91,7 @@ public class GameScreen extends ScreenAdapter {
         entityGen.addSpawner(new SimpleSpawner());
         entityGen.addSpawner(new TankSpawner());
         entityGen.addSpawner(new AsteroidSpawner());
-
+        entityGen.addSpawner(new SpeedSpawner());
         paused = false;
         PlayerStats.reset();
     }
