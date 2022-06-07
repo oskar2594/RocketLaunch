@@ -76,6 +76,7 @@ public class Player extends AbstractEntity implements CollisionInterface {
     private long startId;
     private float startVolume = 0.5f;
     private Sound shootSound;
+    private Sound looseSound;
     private float bulletDamage = 10;
     private Vector2 velocity = new Vector2(0, 0);
     private ParticleEmitter dust;
@@ -103,6 +104,7 @@ public class Player extends AbstractEntity implements CollisionInterface {
 
         startSound = RocketLauncher.getAssetHelper().getSound("start");
         shootSound = RocketLauncher.getAssetHelper().getSound("shoot");
+        looseSound = RocketLauncher.getAssetHelper().getSound("loose");
 
         dust = GameScreen.getParticleManager()
                 .createEmitter(new ParticleEmitter(0, 0, -1, 10,
@@ -318,6 +320,7 @@ public class Player extends AbstractEntity implements CollisionInterface {
         if (health <= 0) {
             health = 0;
             GameScreen.playerDied();
+            looseSound.play(1f);
         }
         lastTimeDamaged = TimeUtils.millis();
     }

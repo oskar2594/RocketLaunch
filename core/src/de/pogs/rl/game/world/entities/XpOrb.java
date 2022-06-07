@@ -38,7 +38,6 @@ public class XpOrb extends AbstractEntity {
     private Texture originTexture = RocketLauncher.getAssetHelper().getImage("xporb");
     private TextureRegion[][] textureRegion;
     private float currentTexture = 0;
-    private Texture texture;
     private Sprite sprite;
     private int xpPoints;
     private Vector2 velocity;

@@ -108,9 +108,9 @@ public class GameScreen extends ScreenAdapter {
             particleManager.update(delta);
         }
         if (!BackgroundLayer.getChunkManager().isLoaded() && !paused) {
-            this.setPaused(true);
+            GameScreen.setPaused(true);
         } else if(overlayHandler.getOverlay() == null && paused) {
-            this.setPaused(false);
+            GameScreen.setPaused(false);
         }
         background.update();
         hud.update(delta);

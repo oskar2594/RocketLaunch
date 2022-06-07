@@ -107,9 +107,6 @@ public class Particle {
                 (float) Math.sin(Math.toRadians(angle)));
     }
 
-    public void dispose() {
-    }
-
     private float getAngle(float min, float max) {
         return (float) (Math.random() * (max - min + 1) + min);
     }

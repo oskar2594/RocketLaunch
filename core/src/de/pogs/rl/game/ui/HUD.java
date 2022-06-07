@@ -102,8 +102,6 @@ public class HUD {
         });
     }
 
-    public void dipose() {}
-
     public static float getWidth() {
         return width;
     }
