@@ -73,7 +73,7 @@ public class SimpleEnemy extends AbstractEntity implements CollisionInterface {
     private Sound shootSound;
 
     public SimpleEnemy(Vector2 position) {
-        this(position, RocketLauncher.getAssetHelper().getImage("enemy2"));
+        this(position, RocketLauncher.getAssetHelper().getImage("enemy1"));
     }
 
     public SimpleEnemy(Vector2 position, Texture texture) {

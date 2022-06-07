@@ -29,6 +29,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.TimeUtils;
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.utils.SpecialMath;
@@ -43,6 +44,8 @@ public class TankEnemy extends SimpleEnemy {
     private Texture aimTexture = RocketLauncher.getAssetHelper().getImage("aimbeam");
     private Sprite aimSprite = new Sprite(aimTexture);
     private Sound shootSound;
+    private long lastShoot = -1;
+    private int shootDelay = 3000;
 
     public TankEnemy(Vector2 position) {
         super(position, RocketLauncher.getAssetHelper().getImage("enemy2"));
@@ -50,7 +53,7 @@ public class TankEnemy extends SimpleEnemy {
         shootingCoeff = 0.5f;
         bulletSpeed = 1000;
         bulletDamage = 25;
-        bulletColor = new Color(30, 255, 30, 255);
+        bulletColor = new Color(0x4ff9ffff);
         aimSprite.setSize(1500, 10);
         aimSprite.setOrigin(0, 5);
         aimSprite.setPosition(position.getX(), position.getY() - aimSprite.getHeight() / 2);
@@ -73,10 +76,16 @@ public class TankEnemy extends SimpleEnemy {
             Vector2 bulletDirection = playerPosPredicted.sub(position).nor();
             aimSprite.setRotation(90 - SpecialMath.VectorToAngle(bulletDirection.mul(-1)));
             aimSprite.setAlpha(1);
-            if (Math.random() < shootingCoeff * delta) {
+            if(TimeUtils.millis() - lastShoot > shootDelay) {
+                aimSprite.setAlpha(1);
+            } else {
+                aimSprite.setAlpha(0);
+            }
+            if (Math.random() < shootingCoeff * delta && TimeUtils.millis() - lastShoot > shootDelay ) {
                 shootSound.play(1f);
-                Bullet.createBullet(position, this, bulletDamage,
-                        bulletDirection.mul(bulletSpeed), bulletColor, 10000);
+                Bullet.createBullet(position, this, bulletDamage, bulletDirection.mul(bulletSpeed),
+                        bulletColor, 10000);
+                lastShoot = TimeUtils.millis();
             }
         } else {
             aimSprite.setAlpha(0);
