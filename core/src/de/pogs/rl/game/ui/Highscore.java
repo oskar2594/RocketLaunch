@@ -39,13 +39,9 @@ public class Highscore extends HUDComponent {
     }
 
     @Override
-    public void shapeRender(ShapeRenderer shapeRenderer) {
-
-    }
+    public void shapeRender(ShapeRenderer shapeRenderer) {}
 
     @Override
-    public void dispose() {
-
-    }
+    public void dispose() {}
 
 }

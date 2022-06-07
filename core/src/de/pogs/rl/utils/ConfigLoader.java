@@ -39,7 +39,8 @@ public class ConfigLoader {
     private static double lastSave = TimeUtils.millis();
 
     private static JsonReader json = new JsonReader();
-    private static FileHandle config = Gdx.files.absolute(OsUtils.getUserConfigDirectory() + "/RocketLauncher/storage.rl");
+    private static FileHandle config =
+            Gdx.files.absolute(OsUtils.getUserConfigDirectory() + "/RocketLauncher/storage.rl");
     private static String defaultConfig = "{\"highscore\": 0}";
     public static JsonValue data;
 
@@ -55,7 +56,8 @@ public class ConfigLoader {
     private static void readStorage() {
         try {
             data = json.parse(decrypt(config.readString()));
-            if(data.get("highscore") == null && json.parse(defaultConfig).get("highscore") != null) {
+            if (data.get("highscore") == null
+                    && json.parse(defaultConfig).get("highscore") != null) {
                 throw new Exception();
             }
         } catch (Exception e) {
@@ -79,8 +81,8 @@ public class ConfigLoader {
         if (!loaded)
             return;
         JsonValue value = null;
-        try {
-            for (int i = 0; i < navs.length; i++) {
+        for (int i = 0; i < navs.length; i++) {
+            try {
                 String nav = navs[i];
                 if (i == 0) {
                     data.get(nav).set(newValue);
@@ -91,9 +93,10 @@ public class ConfigLoader {
                 } else {
                     value = value.get(nav);
                 }
+            } catch (Exception e) {
+                System.out.println(e);
+                return;
             }
-        } catch (Exception e) {
-            return;
         }
     }
 
@@ -101,8 +104,8 @@ public class ConfigLoader {
         if (!loaded)
             return;
         JsonValue value = null;
-        try {
-            for (int i = 0; i < navs.length; i++) {
+        for (int i = 0; i < navs.length; i++) {
+            try {
                 String nav = navs[i];
                 if (navs.length == 1) {
                     if (data.get(nav) == null) {
@@ -122,8 +125,9 @@ public class ConfigLoader {
                     }
                     value = value.get(nav);
                 }
+            } catch (Exception e) {
+                System.out.println(e);
             }
-        } catch (Exception e) {
         }
     }
 
@@ -133,8 +137,8 @@ public class ConfigLoader {
             return null;
         JsonValue value = null;
 
-        try {
-            for (int i = 0; i < navs.length; i++) {
+        for (int i = 0; i < navs.length; i++) {
+            try {
                 String nav = navs[i];
                 if (i == 0) {
                     return data.getString(nav);
@@ -144,9 +148,10 @@ public class ConfigLoader {
                 } else {
                     value = value.get(nav);
                 }
+            } catch (Exception e) {
+                System.out.println(e);
+                return null;
             }
-        } catch (Exception e) {
-            return null;
         }
         return null;
     }
@@ -156,8 +161,8 @@ public class ConfigLoader {
         if (!loaded)
             return null;
         JsonValue value = null;
-        try {
-            for (int i = 0; i < navs.length; i++) {
+        for (int i = 0; i < navs.length; i++) {
+            try {
                 String nav = navs[i];
                 if (i == 0) {
                     return data.getInt(nav);
@@ -167,9 +172,10 @@ public class ConfigLoader {
                 } else {
                     value = value.get(nav);
                 }
+            } catch (Exception e) {
+                System.out.println(e);
+                return 0;
             }
-        } catch (Exception e) {
-            return 0;
         }
         return 0;
     }

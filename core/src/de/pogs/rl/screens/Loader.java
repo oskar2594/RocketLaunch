@@ -107,11 +107,6 @@ public class Loader extends ScreenAdapter {
     }
 
     @Override
-    public void hide() {
-
-    }
-
-    @Override
     public void resize(int width, int height) {
         camera.viewportWidth = width;
         camera.viewportHeight = height;

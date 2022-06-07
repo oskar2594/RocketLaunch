@@ -51,7 +51,4 @@ public class ParticleManager {
             particleEmitter.render(batch);
         }
     }
-
-    public void dispose() {}
-
 }
