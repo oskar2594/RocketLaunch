@@ -58,6 +58,7 @@ public class PlayerStats {
 
     public static void reset() {
         exp = 0;
+        PlayerStats.updateLevelData();
     }
 
     public static float getCurrentLevelPercentage() {
@@ -83,7 +84,7 @@ public class PlayerStats {
         exp -= e;
     }
 
-    private static void updateLevelData() {
+    static void updateLevelData() {
         int l = 0;
         int aExp = 0;
         int nExp = expPerLevel;

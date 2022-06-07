@@ -48,10 +48,7 @@ public class CountdownOverlay extends Overlay {
     }
 
     @Override
-    public void clear() {
-        // TODO Auto-generated method stub
-
-    }
+    public void clear() {}
 
     @Override
     public void resize(int width, int height) {
