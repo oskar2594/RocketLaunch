@@ -1,5 +1,5 @@
 /**
- * 
+ *
  * MIT LICENSE
  * 
  * Copyright 2022 Philip Gilde & Oskar Stanschus
