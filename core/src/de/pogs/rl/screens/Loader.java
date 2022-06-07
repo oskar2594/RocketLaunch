@@ -44,7 +44,7 @@ public class Loader extends ScreenAdapter {
     private BitmapFont font;
     private float scaleOne = 0.001f;
 
-    private int minDuration = 1000;
+    private int minDuration = 2500;
     private long start;
 
     private Color white = Color.WHITE;
