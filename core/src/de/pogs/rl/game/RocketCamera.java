@@ -71,7 +71,7 @@ public class RocketCamera extends OrthographicCamera {
 
 
         // Kamera Wackeln aktivieren / deaktivieren
-        if (zoom > .9f && GameScreen.getPlayer().isAccelerating()) {
+        if (zoom > .9f && GameScreen.getPlayer().getAccelerating()) {
             CameraShake.activate((zoom - .95f) * 10);
         } else {
             CameraShake.deactivate();

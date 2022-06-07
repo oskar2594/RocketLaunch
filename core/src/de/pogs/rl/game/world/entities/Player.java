@@ -340,7 +340,7 @@ public class Player extends AbstractEntity implements CollisionInterface {
      * 
      * @return
      */
-    public boolean isAccelerating() {
+    public boolean getAccelerating() {
         return isAccelerating;
     }
 
