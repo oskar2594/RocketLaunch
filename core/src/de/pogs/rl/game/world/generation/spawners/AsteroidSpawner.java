@@ -31,6 +31,9 @@ import de.pogs.rl.game.world.generation.AbstractSpawner;
 import de.pogs.rl.utils.SpecialMath;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
+/**
+ * Erzeugt Asteroiden.
+ */
 public class AsteroidSpawner extends AbstractSpawner {
     public LinkedList<AbstractEntity> spawn(Vector2 chunk) {
         LinkedList<AbstractEntity> result = new LinkedList<AbstractEntity>();

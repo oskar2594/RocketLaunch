@@ -31,6 +31,9 @@ import de.pogs.rl.game.world.entities.TankEnemy;
 import de.pogs.rl.game.world.generation.AbstractSpawner;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
+/**
+ * Erzeugt TankEntities.
+ */
 public class TankSpawner extends AbstractSpawner {
 
     public LinkedList<AbstractEntity> spawn(Vector2 chunk) {

@@ -36,6 +36,10 @@ import de.pogs.rl.utils.CameraShake;
 import de.pogs.rl.utils.SpecialMath;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
+
+/**
+ * Ein Asteroid.
+ */
 public class Asteroid extends AbstractEntity {
     private Vector2 velocity;
     private Sprite sprite;
@@ -172,11 +176,22 @@ public class Asteroid extends AbstractEntity {
         collided.clear();
     }
 
+    /**
+     * Spielt den Kollisionsklang
+     * 
+     * @param distance Die Entfernung vom Spieler.
+     */
     private void playMuffle(float distance) {
         playSoundBasedOnDistance(muffleSound, distance - 200);
     }
 
-    private void playSoundBasedOnDistance(Sound sound, float distance) {
+    /**
+     * Spielt einen Klang in einer bestimmten Entfernung.
+     * 
+     * @param sound Der Klang.
+     * @param distance Die Entfernung vom Spieler der Klangquelle.
+     */
+    private static void playSoundBasedOnDistance(Sound sound, float distance) {
         if (Math.abs(distance) * 3 > Gdx.graphics.getHeight())
             return;
         sound.play(Math.abs(1 - (2 * distance / Gdx.graphics.getWidth())));
@@ -188,18 +203,40 @@ public class Asteroid extends AbstractEntity {
         sprite.draw(batch);
     }
 
+    /**
+     * Setzt die Geschwindigkeit des Asteroiden.
+     * 
+     * @param velocity der Geschwindigkeitsvektor.
+     */
     public void setVelocity(Vector2 velocity) {
         this.velocity = velocity;
     }
 
+    /**
+     * Gibt die Geschwindigkeit zurück.
+     * 
+     * @return Der Geschwindigkeitsvektor.
+     */
     public Vector2 getVelocity() {
         return velocity;
     }
 
+    /**
+     * Gibt die Masse zurück.
+     * 
+     * @return Die Masse.
+     */
     public float getMass() {
         return mass;
     }
 
+    /**
+     * Fügt einen Asteroiden hinzu, welcher mit this kollidiert ist, damit this die Kollisionslogik
+     * nicht erneut durchführt.
+     * 
+     * @param other Der andere Asteroid, welcher schon eine Kollision berechnet hat in diesem
+     *        Simulationszyklus.
+     */
     public void addCollided(Asteroid other) {
         collided.add(other);
     }
@@ -224,12 +261,4 @@ public class Asteroid extends AbstractEntity {
         }
     }
 
-    // private void splashEffectSelf() {
-    // GameScreen.getParticleManager()
-    // .createEmitter(new ParticleEmitter((int) position.getX(), (int) position.getY(), 50,
-    // 5,
-    // ParticleUtils.generateParticleTexture(ParticleUtils.averageColor(texture)),
-    // -180, 180, 10, 150, 1, 5, 1f, 1f, .5f, .1f, true))
-    // .updateVelocity(velocity);
-    // }
 }
