@@ -36,7 +36,9 @@ import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.screens.Menu.Menu;
 import de.pogs.rl.utils.menu.Button;
 
-
+/**
+ * Pausemenü
+ */
 public class PauseOverlay extends Overlay{
     
     private BitmapFont font;

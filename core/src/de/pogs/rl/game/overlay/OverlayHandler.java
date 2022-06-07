@@ -30,16 +30,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import de.pogs.rl.game.GameScreen;
-
+/**
+ * Verwaltung der Overlays
+ */
 public class OverlayHandler {
 
     private Overlay currentOverlay;
     private ShapeRenderer shapeRenderer;
 
-    public OverlayHandler() {
-
-    }
-
+    /**
+     * Aktuelles Overlay (er)setzen
+     * 
+     * @param overlay Overlay
+     */
     public void setOverlay(Overlay overlay) {
         if (currentOverlay != null)
             currentOverlay.clear();
@@ -49,12 +52,22 @@ public class OverlayHandler {
 
     }
 
+    /**
+     * Overlay rendern
+     * 
+     * @param batch SpriteBatch zum Rendern
+     */
     public void render(SpriteBatch batch) {
         if (currentOverlay == null)
             return;
         currentOverlay.render(batch);
     }
 
+    /**
+     * Formen des Overlays rendern
+     * 
+     * @param combined Matrix für shapeRenderer
+     */
     public void shapeRender(Matrix4 combined) {
         if (currentOverlay == null)
             return;
@@ -65,27 +78,43 @@ public class OverlayHandler {
 
     }
 
+    /**
+     * Overlay aktualisieren
+     * 
+     * @param delta Vergangene Zeit seit letztem Frame
+     */
     public void update(float delta) {
-        if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-            if(currentOverlay instanceof PauseOverlay && GameScreen.isPaused()) {
+        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+            if (currentOverlay instanceof PauseOverlay && GameScreen.isPaused()) {
                 ((PauseOverlay) currentOverlay).resume();
-            } else if(currentOverlay == null) {
-                if(!GameScreen.isPaused() && GameScreen.getPlayer().isAlive()) {
+            } else if (currentOverlay == null) {
+                if (!GameScreen.isPaused() && GameScreen.getPlayer().isAlive()) {
                     this.setOverlay(new PauseOverlay());
                     GameScreen.setPaused(true);
                 }
             }
         }
-        if (currentOverlay == null) return;
+        if (currentOverlay == null)
+            return;
         currentOverlay.update(delta);
     }
 
+    /**
+     * Overlay an neue Größe anpassen
+     * @param width
+     * @param height
+     */
     public void resize(int width, int height) {
         if (currentOverlay == null)
             return;
         currentOverlay.resize(width, height);
     }
 
+    /**
+     * Aktuelles Overlay Object erfragen
+     * 
+     * @return Overlay Object
+     */
     public Overlay getOverlay() {
         return currentOverlay;
     }

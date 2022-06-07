@@ -37,7 +37,9 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.screens.Menu.Menu;
-
+/**
+ * Ladebildschirm
+ */
 public class Loader extends ScreenAdapter {
     private SpriteBatch batch;
     private OrthographicCamera camera;

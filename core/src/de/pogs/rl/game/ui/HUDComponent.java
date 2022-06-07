@@ -28,7 +28,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-
+/**
+ * Grundgerüst für HUD Elemente
+ */
 public abstract class HUDComponent {
     protected Sprite sprite;
     protected Vector2 position;

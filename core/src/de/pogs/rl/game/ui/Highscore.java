@@ -8,6 +8,9 @@ import com.badlogic.gdx.utils.Align;
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.PlayerStats;
 
+/**
+ * Highscore Element
+ */
 public class Highscore extends HUDComponent {
 
     private BitmapFont font;

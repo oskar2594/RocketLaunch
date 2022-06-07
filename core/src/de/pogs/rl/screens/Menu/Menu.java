@@ -41,6 +41,9 @@ import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.game.PlayerStats;
 import de.pogs.rl.utils.menu.Button;
 
+/**
+ * Hauptmenü
+ */
 public class Menu extends ScreenAdapter {
 
 	private SpriteBatch batch;

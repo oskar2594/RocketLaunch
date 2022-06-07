@@ -28,6 +28,9 @@
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+/**
+ * Grundgerüst für ein Overlay
+ */
 public abstract class Overlay {
 
 

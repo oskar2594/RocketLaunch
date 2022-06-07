@@ -35,7 +35,9 @@ import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.screens.Menu.Menu;
 import de.pogs.rl.utils.menu.Button;
-
+/**
+ * Todesscreen
+ */
 public class DeathOverlay extends Overlay {
 
     private BitmapFont font;

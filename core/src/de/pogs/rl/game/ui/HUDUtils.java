@@ -26,6 +26,9 @@ package de.pogs.rl.game.ui;
 
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * HUD Hilfen zum berechnen von Positionen
+ */
 public class HUDUtils {
     public static Vector2 getBottomCenter() {
         return new Vector2(HUD.getPosition().x, HUD.getPosition().y - HUD.getHeight() / 2);

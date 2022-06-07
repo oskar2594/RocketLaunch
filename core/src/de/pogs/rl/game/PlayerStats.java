@@ -26,6 +26,9 @@ package de.pogs.rl.game;
 
 import de.pogs.rl.utils.ConfigLoader;
 
+/**
+ * Spieler Level
+ */
 public class PlayerStats {
 
     private static int expPerLevel = 100;
@@ -39,6 +42,9 @@ public class PlayerStats {
 
     private static boolean first = true;
 
+    /**
+     * Highscore aktualisieren
+     */
     public static void update() {
         if (first) {
             first = false;
@@ -49,6 +55,9 @@ public class PlayerStats {
         ConfigLoader.setValue(highscore, "highscore");
     }
 
+    /**
+     * Playerscore speichern, wenn er aktuellen Highscore übertrifft
+     */
     public static void saveHighscore() {
         if (exp > highscore) {
             highscore = exp;
@@ -56,17 +65,28 @@ public class PlayerStats {
         }
     }
 
+    /**
+     * Aktuellen Playerscore zurücksetzen
+     */
     public static void reset() {
         exp = 0;
         PlayerStats.updateLevelData();
     }
 
+    /**
+     * Fortschritt im aktuellen Level in Prozent
+     * @return Fortschritt
+     */
     public static float getCurrentLevelPercentage() {
         if (accessExp == 0 || needExp == 0)
             return 0;
         return (float) accessExp / (float) needExp;
     }
 
+    /**
+     * Exp hinzufügen
+     * @param e Anzahl Exp
+     */
     public static void addExp(int e) {
         if (e < 0)
             return;
@@ -74,6 +94,10 @@ public class PlayerStats {
         saveHighscore();
     }
 
+    /**
+     * Exp abziehen
+     * @param e Anzahl Exp
+     */
     public static void remExp(int e) {
         if (e < 0)
             return;
@@ -84,6 +108,10 @@ public class PlayerStats {
         exp -= e;
     }
 
+    /**
+     * Daten aktualisieren:
+     * Level, Exp Überfluss, Benöitgte Exp
+     */
     static void updateLevelData() {
         int l = 0;
         int aExp = 0;
@@ -103,6 +131,11 @@ public class PlayerStats {
         needExp = nExp;
     }
 
+    /**
+     * Level aus aktuellen Exp Stand generieren
+     * @param exp Exp Stand
+     * @return Level
+     */
     public static int getLevelFromExp(int exp) {
         int l = 0;
         int globalNeed = expPerLevel;
@@ -115,22 +148,42 @@ public class PlayerStats {
         return l;
     }
 
+    /**
+     * Aktuelles Level abfragen
+     * @return Level
+     */
     public static int getLevel() {
         return level;
     }
 
+    /**
+     * Aktuelle Exp abfragen
+     * @return Exp
+     */
     public static int getExp() {
         return exp;
     }
 
+    /**
+     * Exp Überschuss abfragen
+     * @return Exp
+     */
     public static int getAccessExp() {
         return accessExp;
     }
 
+    /**
+     * Benötigte Exp zum nächsten Level
+     * @return Exp
+     */
     public static int getNeedExp() {
         return needExp;
     }
 
+    /**
+     * Aktuellen Highscore
+     * @return Highscore
+     */
     public static int getHighscore() {
         return highscore;
     }

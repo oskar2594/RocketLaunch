@@ -27,7 +27,9 @@ package de.pogs.rl.game.world.particles;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
+/**
+ * Particle Quelle
+ */
 public class ParticleManager {
 
     private LinkedList<ParticleEmitter> emitters;
@@ -36,16 +38,29 @@ public class ParticleManager {
         emitters = new LinkedList<ParticleEmitter>();
     }
 
+    /**
+     * Particle Quelle erstelen
+     * @param emitter Particle Quelle
+     * @return Erstellte Particle Quelle
+     */
     public ParticleEmitter createEmitter(ParticleEmitter emitter) {
         emitters.add(emitter);
         return emitter;
     }
 
+    /**
+     * Particle Emitter aktualisieren
+     * @param delta Vergangene Zeit seit letztem Frame
+     */
     public void update(float delta) {
         emitters.removeIf(e -> e.getDead());
         emitters.stream().forEach(e -> e.update(delta));
     }
 
+    /**
+     * Particle Emitter rendern
+     * @param batch SpriteBatch zum Rendern
+     */
     public void render(SpriteBatch batch) {
         for (ParticleEmitter particleEmitter : emitters) {
             particleEmitter.render(batch);

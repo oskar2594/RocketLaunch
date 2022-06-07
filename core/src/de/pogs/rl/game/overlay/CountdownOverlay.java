@@ -11,6 +11,9 @@ import com.badlogic.gdx.utils.TimeUtils;
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
 
+/**
+ * Countdown
+ */
 public class CountdownOverlay extends Overlay {
     private BitmapFont font;
     private long start;

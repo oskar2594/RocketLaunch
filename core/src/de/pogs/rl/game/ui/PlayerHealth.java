@@ -31,7 +31,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.GameScreen;
-
+/**
+ * Lebensleiste
+ */
 public class PlayerHealth extends HUDComponent {
 
     private float width;

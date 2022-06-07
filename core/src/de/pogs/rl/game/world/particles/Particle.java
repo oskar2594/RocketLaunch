@@ -29,7 +29,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.pogs.rl.utils.SpecialMath.Vector2;
-
+/**
+ * Particle
+ */
 public class Particle {
 
     private boolean dead = false;
@@ -47,6 +49,10 @@ public class Particle {
     private float offsetAngle = 0;
     private float textureCorrectionAngle = 0;
 
+    /**
+     * Generierung eines Particles (nur durch ParticleEmitter)
+     * @see ParticleEmitter
+     */
     public Particle(Texture texture, Vector2 source, Vector2 velocity, float offsetAngle,
             float minAngle, float maxAngle, float minSpeed, float maxSpeed, float minSize,
             float maxSize, float alpha, float duration, float timeAlpha, float timeSize) {

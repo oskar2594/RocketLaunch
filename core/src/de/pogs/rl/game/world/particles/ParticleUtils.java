@@ -29,9 +29,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 
 import java.awt.Color;
-
+/**
+ * Particle Utils
+ */
 public class ParticleUtils {
-
+    /**
+     * 1x1px große Textur in Farbe generieren
+     * 
+     * @param color Farbe der Textur
+     * @return Textur
+     */
     public static Texture generateParticleTexture(Color color) {
         int size = 1;
         int idx = 0;
@@ -45,6 +52,14 @@ public class ParticleUtils {
         return new Texture(pixmap);
     }
 
+    /**
+     * Textur in Farbe generieren
+     * 
+     * @param color Farbe der Textur
+     * @param width Breite der Textur
+     * @param height Höhe der Textur
+     * @return Textur
+     */
     public static Texture generateParticleTexture(Color color, int width, int height) {
         int idx = 0;
         Pixmap pixmap = new Pixmap(width, height, Format.RGBA8888);
@@ -58,14 +73,16 @@ public class ParticleUtils {
     }
 
     /**
-     * Berechnet die Durchschnittsfarbe einer Textur
-     * Source: https://stackoverflow.com/questions/28162488/get-average-color-on-bufferedimage-and-bufferedimage-portion-as-fast-as-possible
+     * Berechnet die Durchschnittsfarbe einer Textur Source:
+     * https://stackoverflow.com/questions/28162488/get-average-color-on-bufferedimage-and-bufferedimage-portion-as-fast-as-possible
      * (Bearbeitet)
+     * 
      * @param t Textur
      * @return Durchschnittsfarbe
      */
     public static Color averageColor(Texture t) {
-        if(!t.getTextureData().isPrepared()) t.getTextureData().prepare();
+        if (!t.getTextureData().isPrepared())
+            t.getTextureData().prepare();
         Pixmap bi = t.getTextureData().consumePixmap();
         int x0 = 0;
         int y0 = 0;
@@ -77,7 +94,8 @@ public class ParticleUtils {
         int count = 0;
         for (int x = x0; x < x1; x++) {
             for (int y = y0; y < y1; y++) {
-                com.badlogic.gdx.graphics.Color pixel = new com.badlogic.gdx.graphics.Color(bi.getPixel(x, y));
+                com.badlogic.gdx.graphics.Color pixel =
+                        new com.badlogic.gdx.graphics.Color(bi.getPixel(x, y));
                 if (pixel.a == 0)
                     continue;
                 count++;

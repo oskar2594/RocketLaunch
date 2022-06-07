@@ -33,7 +33,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 
-
+/**
+ * Head-up-Display Verwaltung
+ */
 public class HUD {
     private static float width;
     private static float height;
@@ -72,18 +74,30 @@ public class HUD {
         components.put("highscore", highscore);
     }
 
+    /**
+     * HUD Elemente aktualisieren
+     * @param delta Vergangene Zeit seit letztem Frame
+     */
     public void update(float delta) {
         components.forEach((name, component) -> {
             component.update(delta);
         });
     }
 
+    /**
+     * HUD Elemente rendern
+     * @param batch SpriteBatch zum Rendern
+     */
     public void render(SpriteBatch batch) {
         components.forEach((name, component) -> {
             component.render(batch);
         });
     }
 
+    /**
+     * Formen der HUD Elemente rendern
+     * @param matrix Matrix der HUDCamera
+     */
     public void shapeRender(Matrix4 matrix) {
         shapeRenderer.setProjectionMatrix(matrix);
         shapeRenderer.begin(ShapeType.Filled);
@@ -93,6 +107,11 @@ public class HUD {
         shapeRenderer.end();
     }
 
+    /**
+     * HUD Elemente an neue Bildschirmgröße anpasen
+     * @param width
+     * @param height
+     */
     public void resize(int width, int height) {
         HUD.border = (int) (width * 0.03);
         HUD.width = width - border * 2;

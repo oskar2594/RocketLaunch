@@ -31,8 +31,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import de.pogs.rl.RocketLauncher;
-import de.pogs.rl.game.GameScreen;
 
+/**
+ * Debug Element (FPS)
+ */
 public class Debug extends HUDComponent {
     private BitmapFont font = RocketLauncher.getAssetHelper().getFont("superstar", 16);
     private String text = "";
@@ -49,9 +51,7 @@ public class Debug extends HUDComponent {
 
     @Override
     public void update(float delta) {
-        text = "X: " + Math.round(GameScreen.getCamera().position.x) + " | Y: "
-                + Math.round(GameScreen.getCamera().position.y) + "\n";
-        text += "FPS: " + Gdx.graphics.getFramesPerSecond();
+        text = "FPS: " + Gdx.graphics.getFramesPerSecond();
     }
 
     @Override

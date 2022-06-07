@@ -32,6 +32,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.pogs.rl.game.world.entities.AbstractEntity;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
+/**
+ * Particle Quelle
+ */
 public class ParticleEmitter {
 
     private LinkedList<Particle> particles;
@@ -52,14 +55,34 @@ public class ParticleEmitter {
     private boolean once = false;
     private AbstractEntity attachedEntity;
 
-    public ParticleEmitter(int x, int y, int count, float perFrame, Texture texture, float minAngle, float maxAngle,
-            float minSpeed, float maxSpeed, float startSize, float size, float alpha, float duration, float timeAlpha,
-            float timeSize, boolean once) {
+    /**
+     * Particle Quelle erstellen
+     * 
+     * @param x X - Koordinate
+     * @param y Y - Koordinate
+     * @param count Maximale Anzahl an Particle. "-1" für unendlich viele
+     * @param perFrame Anzahl an Particle pro Frame. Zahlen kleiner null für Wahrscheinlichkeiten
+     * @param texture Textur des Particles
+     * @param minAngle Minimaler Ausströmwinkel
+     * @param maxAngle Maximaler Ausströmwinkel
+     * @param minSpeed Minmale Ausströmgeschwindigkeit
+     * @param maxSpeed Maximale Ausströmgeschwindigkeit
+     * @param minSize Minimale Größe
+     * @param maxSize Maximale Größe
+     * @param alpha Transparenz
+     * @param duration Dauer bis Löschen
+     * @param timeAlpha Zeit ab der die Transparenz abnehmen soll
+     * @param timeSize Zeit ab der die Größe abnehmen soll
+     * @param once Soll nur einmal die maximale Particlegröße erreicht werden?
+     */
+    public ParticleEmitter(int x, int y, int count, float perFrame, Texture texture, float minAngle,
+            float maxAngle, float minSpeed, float maxSpeed, float minSize, float maxSize,
+            float alpha, float duration, float timeAlpha, float timeSize, boolean once) {
         this.position = new Vector2(x, y);
         this.particles = new LinkedList<Particle>();
         this.texture = texture;
-        this.particleSettings = new float[] { minAngle, maxAngle, minSpeed, maxSpeed, startSize, size, alpha, duration,
-                timeAlpha, timeSize };
+        this.particleSettings = new float[] {minAngle, maxAngle, minSpeed, maxSpeed, minSize,
+                maxSize, alpha, duration, timeAlpha, timeSize};
         this.count = count;
         this.perFrame = perFrame;
         this.once = once;
@@ -68,22 +91,28 @@ public class ParticleEmitter {
     public void update(float delta) {
         LinkedList<Particle> addParticles = new LinkedList<Particle>();
         LinkedList<Particle> remParticles = new LinkedList<Particle>();
+        // Particle Quelle löschen, wenn nicht mehr gebruacht
         if ((willDie && this.particles.size() == 0) || (isAttached && !attachedEntity.isAlive())) {
             isDead = true;
             this.dispose();
             return;
         }
+        // Particle angebrachtes Entitie oder Sprite heften
         if (isAttached) {
             angle = attachedTo.getRotation() - 90;
-            Vector2 relativeOffset = new Vector2((float) (offset * Math.cos(Math.toRadians(angle + offsetAngle))),
-                    (float) (offset * Math.sin(Math.toRadians(angle + offsetAngle))));
+            Vector2 relativeOffset =
+                    new Vector2((float) (offset * Math.cos(Math.toRadians(angle + offsetAngle))),
+                            (float) (offset * Math.sin(Math.toRadians(angle + offsetAngle))));
             if (attachedEntity == null) {
-                position = new Vector2(attachedTo.getX() + relativeOffset.getX(), attachedTo.getY() + relativeOffset.getY());
+                position = new Vector2(attachedTo.getX() + relativeOffset.getX(),
+                        attachedTo.getY() + relativeOffset.getY());
             } else {
                 Vector2 pos = attachedEntity.getPosition();
-                position = new Vector2(pos.getX() + relativeOffset.getX(), pos.getY() + relativeOffset.getY());
+                position = new Vector2(pos.getX() + relativeOffset.getX(),
+                        pos.getY() + relativeOffset.getY());
             }
         }
+        // Bei Bedarf neue Particle generieren
         if (((this.particles.size() < this.count) || (this.count < 0)) && isActive) {
             int genAmount = 0;
             if (this.perFrame < 1) {
@@ -96,16 +125,20 @@ public class ParticleEmitter {
                 genAmount = (int) perFrame;
             }
             for (int i = 0; i < genAmount; i++) {
-                Particle newParticle = new Particle(texture, position, velocity, angle, particleSettings[0],
-                        particleSettings[1],
-                        particleSettings[2], particleSettings[3], particleSettings[4], particleSettings[5],
-                        particleSettings[6], particleSettings[7], particleSettings[8], particleSettings[9]);
+                // texture, position, velocity, angle, minAngle, maxAngle, minSpeed, maxSpeed,
+                // startSize, size, alpha, duration, timeAlpha, timeSize
+                Particle newParticle =
+                        new Particle(texture, position, velocity, angle, particleSettings[0],
+                                particleSettings[1], particleSettings[2], particleSettings[3],
+                                particleSettings[4], particleSettings[5], particleSettings[6],
+                                particleSettings[7], particleSettings[8], particleSettings[9]);
                 addParticles.add(newParticle);
             }
         } else if (this.particles.size() >= this.count && this.once) {
             this.isActive = false;
             this.willDie = true;
         }
+        // Alte Particle löschen
         for (Particle particle : particles) {
             if (particle.isDead()) {
                 remParticles.add(particle);
@@ -128,6 +161,13 @@ public class ParticleEmitter {
         }
     }
 
+    /**
+     * Particle Quelle an Sprite knüpfen
+     * 
+     * @param sprite Sprite, an den geknüpft werden soll
+     * @param offset Abstand
+     * @param angle Winkel des Abstandes
+     */
     public void attach(Sprite sprite, float offset, float angle) {
         isAttached = true;
         attachedTo = sprite;
@@ -135,6 +175,14 @@ public class ParticleEmitter {
         this.offsetAngle = angle;
     }
 
+    /**
+     * Particle Quelle an Sprite & dazugehöriges Entity knüpfen
+     * 
+     * @param sprite Sprite, an den geknüpft werden soll
+     * @param offset Abstand
+     * @param angle Winkel des Abstandes
+     * @param attachedEntity Entity, an das geknüft werden soll
+     */
     public void attach(Sprite sprite, float offset, float angle, AbstractEntity attachedEntity) {
         isAttached = true;
         attachedTo = sprite;
@@ -143,22 +191,36 @@ public class ParticleEmitter {
         this.attachedEntity = attachedEntity;
     }
 
+    /**
+     * Grundbewegung der Particle Quelle anpassen
+     * 
+     * @param vel Bewegung (Velocity)
+     */
     public void updateVelocity(Vector2 vel) {
         this.velocity = vel;
     }
 
+    /**
+     * Particle Quelle (de)aktivieren
+     * 
+     * @param active Aktiv?
+     */
     public void setActive(boolean active) {
         isActive = active;
     }
 
-    public boolean getActive() {
-        return isActive;
+    /**
+     * Particle Quelle töten Keine neue Particle erzeugen
+     */
+    public void setDead() {
+        isDead = true;
     }
 
-    public void setDead(boolean dead) {
-        isDead = dead;
-    }
-
+    /**
+     * Ist Particle Quelle tot?
+     * 
+     * @return Particle Quelle tot: Ja / Nein
+     */
     public boolean getDead() {
         return isDead;
     }

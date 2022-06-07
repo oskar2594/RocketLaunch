@@ -33,7 +33,9 @@ import com.badlogic.gdx.utils.Align;
 
 import de.pogs.rl.RocketLauncher;
 import de.pogs.rl.game.PlayerStats;
-
+/**
+ * Level Anzeige
+ */
 public class Level extends HUDComponent {
 
     private float width;
