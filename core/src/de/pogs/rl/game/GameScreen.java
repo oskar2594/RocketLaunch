@@ -225,6 +225,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public static void reset() {
+        PlayerStats.reset();
         CameraShake.deactivate();
         CameraShake.isActive = false;
         RocketLauncher.getInstance().setScreen(new GameScreen());
