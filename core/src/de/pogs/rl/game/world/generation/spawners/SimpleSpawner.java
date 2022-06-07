@@ -25,6 +25,7 @@
 package de.pogs.rl.game.world.generation.spawners;
 
 import java.util.LinkedList;
+import de.pogs.rl.game.PlayerStats;
 import de.pogs.rl.game.world.entities.AbstractEntity;
 import de.pogs.rl.game.world.entities.SimpleEnemy;
 import de.pogs.rl.game.world.generation.AbstractSpawner;
@@ -38,7 +39,7 @@ public class SimpleSpawner extends AbstractSpawner {
 
     public LinkedList<AbstractEntity> spawn(Vector2 chunk) {
         LinkedList<AbstractEntity> list = new LinkedList<AbstractEntity>();
-        if (Math.random() < 0.005) {
+        if (Math.random() < (0.001 * (PlayerStats.getLevel() + 1))) {
             int count = SpecialMath.randint(1, 4);
             for (int i = 0; i < count; i++) {
                 list.add(new SimpleEnemy((float) (chunk.getX() + Math.random() * 200),
