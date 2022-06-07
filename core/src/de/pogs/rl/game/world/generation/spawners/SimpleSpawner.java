@@ -39,7 +39,7 @@ public class SimpleSpawner extends AbstractSpawner {
 
     public LinkedList<AbstractEntity> spawn(Vector2 chunk) {
         LinkedList<AbstractEntity> list = new LinkedList<AbstractEntity>();
-        if (Math.random() < (0.001 * (PlayerStats.getLevel() + 1))) {
+        if (Math.random() < (0.001 * (PlayerStats.getLevel() * 0.3 + 3))) {
             int count = SpecialMath.randint(1, 4);
             for (int i = 0; i < count; i++) {
                 list.add(new SimpleEnemy((float) (chunk.getX() + Math.random() * 200),
