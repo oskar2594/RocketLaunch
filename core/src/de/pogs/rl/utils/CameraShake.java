@@ -32,29 +32,32 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class CameraShake {
 
-    public static boolean isActive = true;
+    private static boolean active = true;
     private static float strength = 0;
     private static float tempStrength = 0;
     private static int tempDuration = 0;
 
-    /**
-     * Kamerawackeln mit Stärke aktivieren
-     * @param s Stärle
-     */
-    public static void activate(float s) {
-        strength = s;
-        isActive = true; //Wird eigentlich nicht mehr gebraucht
+    public boolean isActive() {
+        return active;
+    }
+
+    public static void setActive(boolean active) {
+        CameraShake.active = active;
     }
 
     /**
-     * Kamerawackeln deaktivieren
+     * Kamerawackeln mit Stärke aktivieren
+     * 
+     * @param s Stärke
      */
-    public static void deactivate() {
-        strength = 0;
+    public static void setStrength(float s) {
+        strength = s;
+        active = true;
     }
 
     /**
      * Temporäres Wackeln
+     * 
      * @param strength Stärke
      * @param duration Länge
      */
@@ -65,6 +68,7 @@ public class CameraShake {
 
     /**
      * Wackeln zum Ausführen berechnen
+     * 
      * @return Vector der Verschiebung
      */
     public static Vector2 getShake() {

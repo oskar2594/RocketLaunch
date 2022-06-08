@@ -251,8 +251,8 @@ public class GameScreen extends ScreenAdapter {
      */
     public static void reset() {
         PlayerStats.reset();
-        CameraShake.deactivate();
-        CameraShake.isActive = false;
+        CameraShake.setStrength(0);
+        CameraShake.setActive(false);
         RocketLauncher.getInstance().setScreen(new GameScreen());
     }
 
@@ -260,7 +260,7 @@ public class GameScreen extends ScreenAdapter {
      * Spieler ist tot "event"
      */
     public static void playerDied() {
-        CameraShake.deactivate();
+        CameraShake.setStrength(0);
         overlayHandler.setOverlay(new DeathOverlay());
         setPaused(true);
     }
