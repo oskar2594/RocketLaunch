@@ -1,0 +1,13 @@
+de.pogs.rl
+de.pogs.rl.game
+de.pogs.rl.game.background
+de.pogs.rl.game.overlay
+de.pogs.rl.game.ui
+de.pogs.rl.game.world.entities
+de.pogs.rl.game.world.generation
+de.pogs.rl.game.world.generation.spawners
+de.pogs.rl.game.world.particles
+de.pogs.rl.screens
+de.pogs.rl.screens.Menu
+de.pogs.rl.utils
+de.pogs.rl.utils.menu
