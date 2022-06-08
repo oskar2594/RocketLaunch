@@ -26,6 +26,14 @@ package de.pogs.rl.utils;
 
 
 public class SpecialMath {
+    /**
+     * Berechnet x mod n. Die Java-Implementierung über den Operator % gibt für negative Werte einen
+     * negativen Modulo, diese Implementierung einen positiven zurück.
+     * 
+     * @param x
+     * @param n
+     * @return
+     */
     public static float modulus(float x, float n) {
         float r = x % n;
         if (r < 0) {
@@ -34,6 +42,14 @@ public class SpecialMath {
         return r;
     }
 
+    /**
+     * Gibt den kleineren Winkel zwischen zwei Winkeln zurück.
+     * 
+     * @param angle1
+     * @param angle2
+     * @param angleBase Die Basis für den Winkel, also zum Beispiel 360 oder 2pi.
+     * @return
+     */
     public static float angleDifferenceSmaller(float angle1, float angle2, float angleBase) {
         angle1 = angle1 + angleBase / 2f;
         angle2 = angle2 + angleBase / 2f;
@@ -52,12 +68,21 @@ public class SpecialMath {
         return diff1;
     }
 
-    public static Vector2 angleToVector(float angle) {
+    /**
+     * Berechnet einen Richtungsvektor aus einem LibGDX Winkel, von zum Beispiel einem Sprite.
+     */
+    public static Vector2 gdxAngleToVector(float angle) {
         return new Vector2(((float) Math.cos((angle + 90) * Math.PI / 180)),
                 ((float) Math.sin((angle + 90) * (Math.PI / 180))));
     }
 
-    public static float VectorToAngle(Vector2 vector) {
+    /**
+     * Macht aus einem Vektor einen LibGDX-Winkel, von zum Beispiel einem Sprite.
+     * 
+     * @param vector
+     * @return
+     */
+    public static float VectorToGdxAngle(Vector2 vector) {
         float angle = (float) Math.toDegrees((float) (Math.atan(vector.x / vector.y)));
         if (vector.x >= 0 && vector.y >= 0) {
             angle = -180 + angle;
@@ -68,6 +93,9 @@ public class SpecialMath {
         return angle;
     }
 
+    /**
+     * Ein 2-Dimensionaler Vektor. Operationen verändern diesen nicht.
+     */
     public static class Vector2 {
         private float x;
         private float y;
@@ -82,38 +110,88 @@ public class SpecialMath {
             this.y = (float) y;
         }
 
+        /**
+         * Nullvektor, damit dieser nicht immer neu initialisiert werden muss.
+         */
         public static final Vector2 zero = new Vector2(0, 0);
+
+        /**
+         * Multipliziert den Vektor mit einem Skalar.
+         * 
+         * @param scalar Skalar
+         * @return Das Produkt, ein Vektor.
+         */
         public Vector2 mul(float scalar) {
             return new Vector2(x * scalar, y * scalar);
         }
 
+        /**
+         * Addiert einen anderen Vektor zu diesem.
+         * 
+         * @param other Der andere Summand.
+         * @return Die Summe der beiden Vektoren, ein Vektor.
+         */
         public Vector2 add(Vector2 other) {
             return new Vector2(x + other.x, y + other.y);
         }
 
+        /**
+         * Subtrahiert einen anderen Vektor von diesem.
+         * 
+         * @param other Der Subtrahend.
+         * @return Die Differenz der beiden Vektoren, ein Vektor.
+         */
         public Vector2 sub(Vector2 other) {
             return new Vector2(x - other.x, y - other.y);
         }
 
+        /**
+         * Das Quadrat der Entfernung zu einem anderen Vektor.
+         * 
+         * @param other Der andere Vektor.
+         * @return Das Quadrat der Entfernung.
+         */
         public float dst2(Vector2 other) {
             return (float) (Math.pow(x - other.x, 2) + Math.pow(y - other.y, 2));
         }
 
-        public Vector2 nor() {
+        /**
+         * Gibt die Richtung des Vektors zurück.
+         * 
+         * @return Ein Vektor mit gleicher Richtung und Länge 1.
+         */
+        public Vector2 dir() {
             return new Vector2(x / magn(), y / magn());
         }
 
+        /**
+         * Berechnet die Länge des Vektors.
+         * 
+         * @return Die Länge.
+         */
         public float magn() {
             return (float) Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
         }
 
+        /**
+         * Berechnet die Entfernung vom anderen Vektor.
+         * 
+         * @param other Anderer Vektor.
+         * @return Entfernung.
+         */
         public float dst(Vector2 other) {
             return this.sub(other).magn();
         }
 
+        /**
+         * Wandelt den Vektor in den Winkel seiner Richtung um.
+         * 
+         * @return Der Winkel der Richtung.
+         */
         public float toAngle() {
-            return (float) Math.acos(nor().x * 180 / Math.PI);
+            return (float) Math.acos(dir().x * 180 / Math.PI);
         }
+
 
         @Override
         public String toString() {
@@ -142,12 +220,25 @@ public class SpecialMath {
             return false;
         }
 
+        /**
+         * Berechnet das Skalarprodukt mit einem anderen Vektor.
+         * 
+         * @param other Anderer Vektor.
+         * @return Skalarprodukt.
+         */
         public float dot(Vector2 other) {
             return x * other.getX() + y * other.getY();
         }
     }
-    
+
+    /**
+     * Eine zufällige natürliche Zahl im Intervall [a; b].
+     * 
+     * @param a Obere Grenze des Intervalls.
+     * @param b Untere Grenze des Intervalls.
+     * @return Die zufällige Zahl.
+     */
     public static int randint(int a, int b) {
-        return (int)(a + Math.random() * (b - a + 1));
+        return (int) (a + Math.random() * (b - a + 1));
     }
 }

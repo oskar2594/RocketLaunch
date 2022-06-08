@@ -28,7 +28,7 @@ import java.util.LinkedList;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 /**
- * Particle Quelle
+ * Verwaltet die Partikel und deren Quellen
  */
 public class ParticleManager {
 
@@ -39,7 +39,7 @@ public class ParticleManager {
     }
 
     /**
-     * Particle Quelle erstelen
+     * Particle Quelle erstellen
      * @param emitter Particle Quelle
      * @return Erstellte Particle Quelle
      */
@@ -49,7 +49,7 @@ public class ParticleManager {
     }
 
     /**
-     * Particle Emitter aktualisieren
+     * Simulationsschritt für Partikelemitter durchführen.
      * @param delta Vergangene Zeit seit letztem Frame
      */
     public void update(float delta) {
@@ -58,8 +58,8 @@ public class ParticleManager {
     }
 
     /**
-     * Particle Emitter rendern
-     * @param batch SpriteBatch zum Rendern
+     * Particle Emitter rendern.
+     * @param batch SpriteBatch zum Rendern.
      */
     public void render(SpriteBatch batch) {
         for (ParticleEmitter particleEmitter : emitters) {

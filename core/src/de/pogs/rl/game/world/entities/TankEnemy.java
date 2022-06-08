@@ -73,8 +73,8 @@ public class TankEnemy extends SimpleEnemy {
             float flightTime = GameScreen.getPlayer().getPosition().dst(position) / bulletSpeed;
             Vector2 playerPosPredicted = GameScreen.getPlayer().getPosition()
                     .add(GameScreen.getPlayer().getVelocity().mul(flightTime));
-            Vector2 bulletDirection = playerPosPredicted.sub(position).nor();
-            aimSprite.setRotation(90 - SpecialMath.VectorToAngle(bulletDirection.mul(-1)));
+            Vector2 bulletDirection = playerPosPredicted.sub(position).dir();
+            aimSprite.setRotation(90 - SpecialMath.VectorToGdxAngle(bulletDirection.mul(-1)));
             aimSprite.setAlpha(1);
             if(TimeUtils.millis() - lastShoot > shootDelay) {
                 aimSprite.setAlpha(1);
@@ -109,7 +109,7 @@ public class TankEnemy extends SimpleEnemy {
         if (killer instanceof Player) {
             for (int i = 0; i < 3; i++) {
                 GameScreen.getEntityManager().addEntity(new XpOrb(position.add(
-                        new Vector2(Math.random() - 0.5, Math.random() - 0.5).nor().mul(20)), 20));
+                        new Vector2(Math.random() - 0.5, Math.random() - 0.5).dir().mul(20)), 20));
             }
         }
     }

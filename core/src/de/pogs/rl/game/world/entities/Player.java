@@ -88,6 +88,7 @@ public class Player extends AbstractEntity implements CollisionInterface {
     private float baseTractionCoeff = 0.5f;
     private float mass = 100;
 
+
     public Player() {
         texture = RocketLauncher.getAssetHelper().getImage("rakete");
         sprite = new Sprite(texture);
@@ -206,7 +207,7 @@ public class Player extends AbstractEntity implements CollisionInterface {
         if (Gdx.input.isButtonPressed(Buttons.LEFT) || Gdx.input.isKeyPressed(Keys.SPACE)) {
             if ((TimeUtils.millis() - lastBulletTime) >= shotCooldown) {
                 Bullet.createBullet(position, this, bulletDamage,
-                        velocity.add(SpecialMath.angleToVector(angle).mul(bulletSpeed)),
+                        velocity.add(SpecialMath.gdxAngleToVector(angle).mul(bulletSpeed)),
                         new Color(0xffffff), 20000);
                 shootSound.play(1f);
                 lastBulletTime = TimeUtils.millis();
@@ -215,7 +216,7 @@ public class Player extends AbstractEntity implements CollisionInterface {
     }
 
     private void updateAimedAngle() {
-        aimedAngle = SpecialMath.VectorToAngle(new Vector2(InteractionUtils.mouseXfromPlayer(),
+        aimedAngle = SpecialMath.VectorToGdxAngle(new Vector2(InteractionUtils.mouseXfromPlayer(),
                 InteractionUtils.mouseYfromPlayer()));
 
     }
@@ -235,7 +236,7 @@ public class Player extends AbstractEntity implements CollisionInterface {
         if (Gdx.input.isButtonPressed(Buttons.RIGHT) || Gdx.input.isKeyPressed(Keys.M)) {
             isAccelerating = true;
             velocity =
-                    velocity.add(SpecialMath.angleToVector(this.angle).mul(delta * acceleration));
+                    velocity.add(SpecialMath.gdxAngleToVector(this.angle).mul(delta * acceleration));
         } else {
             isAccelerating = false;
         }

@@ -49,7 +49,7 @@ public class SimpleEnemy extends AbstractEntity implements CollisionInterface {
     private float scale = 0.1f;
 
     private Vector2 moveDirection =
-            new Vector2((float) Math.random() - 0.5f, (float) Math.random() - 0.5f).nor();
+            new Vector2((float) Math.random() - 0.5f, (float) Math.random() - 0.5f).dir();
 
     protected Vector2 velocity = moveDirection.mul(speed);
 
@@ -61,7 +61,7 @@ public class SimpleEnemy extends AbstractEntity implements CollisionInterface {
     private float tractionCoeff = 0.1f;
 
     private Vector2 constAcceleration =
-            new Vector2((float) Math.random() - 0.5f, (float) Math.random() - 0.5f).nor().mul(10);
+            new Vector2((float) Math.random() - 0.5f, (float) Math.random() - 0.5f).dir().mul(10);
 
     protected float shootingCoeff = 1f;
     protected float bulletDamage = 1;
@@ -118,7 +118,7 @@ public class SimpleEnemy extends AbstractEntity implements CollisionInterface {
             float flightTime = GameScreen.getPlayer().getPosition().dst(position) / bulletSpeed;
             Vector2 playerPosPredicted = GameScreen.getPlayer().getPosition()
                     .add(GameScreen.getPlayer().getVelocity().mul(flightTime));
-            Vector2 bulletVelocity = playerPosPredicted.sub(position).nor().mul(bulletSpeed);
+            Vector2 bulletVelocity = playerPosPredicted.sub(position).dir().mul(bulletSpeed);
             Bullet.createBullet(position, this, bulletDamage, bulletVelocity, bulletColor, 20000);
             shootSound.play(.5f);
         }
@@ -133,10 +133,10 @@ public class SimpleEnemy extends AbstractEntity implements CollisionInterface {
     private void updateVelocity(float delta) {
         Vector2 playerPos = GameScreen.getPlayer().getPosition();
         if ((position.dst2(playerPos) > haloRange) && (position.dst2(playerPos) < sightRange)) {
-            moveDirection = playerPos.sub(position).nor();
+            moveDirection = playerPos.sub(position).dir();
             velocity = velocity.add(moveDirection.mul(playerAttraction * delta));
         } else if (position.dst2(playerPos) < respectDistance) {
-            moveDirection = playerPos.sub(position).nor().mul(-1);
+            moveDirection = playerPos.sub(position).dir().mul(-1);
             velocity = velocity.add(moveDirection.mul(playerRepulsion * delta));
         }
 

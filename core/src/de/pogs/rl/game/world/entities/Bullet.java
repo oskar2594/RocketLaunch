@@ -72,7 +72,7 @@ public class Bullet extends AbstractEntity {
             Color color, long lifeTime) {
         texture = ParticleUtils.generateParticleTexture(color, (int) width, (int) width * 3);
         sprite = new Sprite(texture);
-        this.angle = 180 - SpecialMath.VectorToAngle(velocity);
+        this.angle = 180 - SpecialMath.VectorToGdxAngle(velocity);
         sprite.setSize(texture.getWidth() / texture.getHeight() * width, width);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
         this.position = position;
@@ -134,6 +134,10 @@ public class Bullet extends AbstractEntity {
         this.alive = false;
     }
 
+    /**
+     * Gibt die Geschwindigkeit des Bullet zurück.
+     * @return Geschwindigkeitsvektor des Bullet.
+     */
     public Vector2 getVelocity() {
         return velocity;
     }

@@ -130,7 +130,7 @@ public class Asteroid extends AbstractEntity {
                 // nächsten Simulationsschritt nicht nah genug für eine erneute Kollision sind, weil
                 // das zu Fehlern führt.
                 position = position
-                        .add(position.sub(x2).nor().mul(radius + entity.getRadius() - x1.dst(x2)));
+                        .add(position.sub(x2).dir().mul(radius + entity.getRadius() - x1.dst(x2)));
                 // Falls es sich um eine Kollision mit dem Spieler handelt, wird die Kamera
                 // geschüttelt und dem Spieler schaden hinzugefügt, welcher proportional zu seiner
                 // Geschwindigkeitsänderung durch die Kollision ist.
@@ -166,7 +166,7 @@ public class Asteroid extends AbstractEntity {
                     other.addCollided(this);
 
                     position = position.add(
-                            position.sub(x2).nor().mul(radius + entity.getRadius() - x1.dst(x2)));
+                            position.sub(x2).dir().mul(radius + entity.getRadius() - x1.dst(x2)));
                     if (v2_new.dst(Vector2.zero) > 40 || v1_new.dst(Vector2.zero) > 40) {
                         playMuffle(entity.getPosition().dst(GameScreen.getPlayer().getPosition()));
                     }
@@ -252,7 +252,7 @@ public class Asteroid extends AbstractEntity {
                 this.alive = false;
                 Vector2 splitVelocity =
                         new Vector2((float) Math.random() - 0.5f, (float) Math.random() - 0.5f)
-                                .nor().mul(10);
+                                .dir().mul(10);
                 GameScreen.getEntityManager()
                         .addEntity(new Asteroid(position, mass / 2f, velocity.add(splitVelocity)));
                 GameScreen.getEntityManager().addEntity(
