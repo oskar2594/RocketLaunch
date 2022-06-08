@@ -68,6 +68,11 @@ public abstract class AbstractEntity {
      */
     protected int renderPriority = 0;
 
+    /**
+     * Gibt die Renderpriorität zurück.
+     * 
+     * @return Die Renderpriotität. 
+     */
     public int getRenderPriority() {
         return renderPriority;
     }
