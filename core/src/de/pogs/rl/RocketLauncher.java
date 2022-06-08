@@ -31,7 +31,9 @@ import de.pogs.rl.screens.Loader;
 import de.pogs.rl.utils.AssetHelper;
 import de.pogs.rl.utils.ConfigLoader;
 
-
+/**
+ * Spielinstanz
+ */
 public class RocketLauncher extends Game {
 	private static RocketLauncher instance;
 	private static SpriteBatch batch;

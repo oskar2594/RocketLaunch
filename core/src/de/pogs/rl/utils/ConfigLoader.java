@@ -31,7 +31,9 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.JsonWriter.OutputType;
 
-
+/**
+ * Speicher Verwaltung
+ */
 public class ConfigLoader {
 
     private static boolean loaded = false;
@@ -48,11 +50,17 @@ public class ConfigLoader {
         readStorage();
     }
 
+    /**
+     * Standard Speicher erstellen
+     */
     private static void createDefaultStorage() {
         config.writeString(encrypt(defaultConfig), false);
         readStorage();
     }
 
+    /**
+     * Aktuellen Speiche auslesen
+     */
     private static void readStorage() {
         try {
             data = json.parse(decrypt(config.readString()));
@@ -67,6 +75,9 @@ public class ConfigLoader {
         loaded = true;
     }
 
+    /**
+     * Speicher abspeichern nach Intervall
+     */
     public static void update() {
         if (!loaded)
             return;
@@ -77,6 +88,12 @@ public class ConfigLoader {
     }
 
 
+    /**
+     * String Wert setzen
+     * 
+     * @param newValue Wert
+     * @param navs Pfad zu Feld
+     */
     public static void setValue(String newValue, String... navs) {
         if (!loaded)
             return;
@@ -100,6 +117,12 @@ public class ConfigLoader {
         }
     }
 
+    /**
+     * Integer Wert setzen
+     * 
+     * @param newValue Wert
+     * @param navs Pfad zu Feld
+     */
     public static void setValue(Integer newValue, String... navs) {
         if (!loaded)
             return;
@@ -132,6 +155,12 @@ public class ConfigLoader {
     }
 
 
+    /**
+     * Wert abfragen
+     * 
+     * @param navs Pfad zu Feld
+     * @return Wert
+     */
     public static String getValue(String... navs) {
         if (!loaded)
             return null;
@@ -156,7 +185,12 @@ public class ConfigLoader {
         return null;
     }
 
-
+    /**
+     * Integer Wert abfragen
+     * 
+     * @param navs Pfad zu Feld
+     * @return Wert
+     */
     public static Integer getValueInt(String... navs) {
         if (!loaded)
             return null;
@@ -180,6 +214,9 @@ public class ConfigLoader {
         return 0;
     }
 
+    /**
+     * Speicher abspeichern
+     */
     public static void save() {
         config.writeString(encrypt(data.prettyPrint(OutputType.json, 1)), false);
     }
