@@ -36,7 +36,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
-
+/**
+ * Asset Verwaltung
+ */
 public class AssetHelper {
     private AssetManager assetManager;
 
@@ -47,11 +49,17 @@ public class AssetHelper {
 
     private FileHandle baseDir;
 
+    /**
+     * AssetHelper erstellen
+     */
     public AssetHelper() {
         assetManager = new AssetManager();
         baseDir = Gdx.files.getFileHandle("assets/", FileType.Local);
     }
 
+    /**
+     * Alle Assets im assets Ordner laden
+     */
     public void loadAll() {
         System.out.println(baseDir.list().length);
         for (FileHandle entry : baseDir.list()) {
@@ -85,6 +93,12 @@ public class AssetHelper {
         }
     }
 
+    /**
+     * Schriftart aus Storage abfragen
+     * @param name Name der Schriftart ohne Dateiendung
+     * @param size Größe der Schrift
+     * @return Schrift
+     */
     public BitmapFont getFont(String name, int size) {
         try {
             FreeTypeFontGenerator.FreeTypeFontParameter parameter =
@@ -107,6 +121,11 @@ public class AssetHelper {
         }
     }
 
+    /**
+     * Sound aus Storage abfragen
+     * @param name Name ohne Dateiendung
+     * @return Sound
+     */
     public Sound getSound(String name) {
         try {
             return (Sound) this.assetManager.get(sounds.get(name));
@@ -124,7 +143,11 @@ public class AssetHelper {
             assetManager.load(asset);
         }
     }
-
+    /**
+     * Bild aus Storage abfragen
+     * @param name Name ohne Dateiendung
+     * @return Bild
+     */
     public Texture getImage(String name) {
         try {
             return (Texture) this.assetManager.get(images.get(name));

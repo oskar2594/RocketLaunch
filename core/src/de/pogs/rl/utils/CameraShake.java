@@ -27,27 +27,46 @@ package de.pogs.rl.utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Kamerawackeln
+ */
 public class CameraShake {
 
-    public static boolean isActive = false;
+    public static boolean isActive = true;
     private static float strength = 0;
     private static float tempStrength = 0;
     private static int tempDuration = 0;
 
+    /**
+     * Kamerawackeln mit Stärke aktivieren
+     * @param s Stärle
+     */
     public static void activate(float s) {
         strength = s;
-        isActive = true;
+        isActive = true; //Wird eigentlich nicht mehr gebraucht
     }
 
+    /**
+     * Kamerawackeln deaktivieren
+     */
     public static void deactivate() {
         strength = 0;
     }
 
+    /**
+     * Temporäres Wackeln
+     * @param strength Stärke
+     * @param duration Länge
+     */
     public static void makeShake(float strength, int duration) {
         tempStrength += strength;
         tempDuration += duration;
     }
 
+    /**
+     * Wackeln zum Ausführen berechnen
+     * @return Vector der Verschiebung
+     */
     public static Vector2 getShake() {
         Vector2 move = new Vector2(0, 0);
         tempDuration -= 1;
