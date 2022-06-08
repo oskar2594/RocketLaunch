@@ -33,6 +33,9 @@ import de.pogs.rl.game.GameScreen;
 import de.pogs.rl.game.PlayerStats;
 import de.pogs.rl.utils.SpecialMath.Vector2;
 
+/**
+ * Ein Orb, welches dem Spieler Punkte gibt.
+ */
 public class XpOrb extends AbstractEntity {
 
     private Texture originTexture = RocketLauncher.getAssetHelper().getImage("xporb");
@@ -70,7 +73,7 @@ public class XpOrb extends AbstractEntity {
                 position.getY() - sprite.getHeight() / 2);
         position = position.add(velocity.mul(delta));
         if (GameScreen.getPlayer().getPosition().dst(position) < attractionRange) {
-            velocity = velocity.add(position.sub(GameScreen.getPlayer().getPosition()).nor()
+            velocity = velocity.add(position.sub(GameScreen.getPlayer().getPosition()).dir()
                     .mul(-attractionForce * delta));
         }
         if (velocity.magn() > maxVelocity) {
