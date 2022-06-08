@@ -46,6 +46,9 @@ import de.pogs.rl.game.world.generation.spawners.TankSpawner;
 import de.pogs.rl.game.world.particles.ParticleManager;
 import de.pogs.rl.utils.CameraShake;
 
+/**
+ * Spielbildschirm
+ */
 public class GameScreen extends ScreenAdapter {
     private SpriteBatch batch;
 
@@ -73,6 +76,9 @@ public class GameScreen extends ScreenAdapter {
 
     private static int spawnProtectionRange = 400;
 
+    /**
+     * Erzeugt ein neues Spiel
+     */
     public GameScreen() {
         batch = RocketLauncher.getSpriteBatch();
         entityManager = new EntityManager();
@@ -96,20 +102,27 @@ public class GameScreen extends ScreenAdapter {
         PlayerStats.reset();
     }
 
+    /**
+     * Zeichnet alle Elemente des Spieles
+     * 
+     * @param delta Vergangene Zeit seit letztem Frame
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0.0f, 1.0f, 0.0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT
                 | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV
                         : 0));
+        // Elemente nur aktualisieren, wenn Spiel nicht pausiert ist
         if (!GameScreen.paused) {
-            entityGen.update(player.getPosition(), renderDistance2, removeDistance2, spawnProtectionRange);
+            entityGen.update(player.getPosition(), renderDistance2, removeDistance2,
+                    spawnProtectionRange);
             entityManager.update(delta, player.getPosition(), updateDistance2, removeDistance2);
             particleManager.update(delta);
         }
         if (!BackgroundLayer.getChunkManager().isLoaded() && !paused) {
             GameScreen.setPaused(true);
-        } else if(overlayHandler.getOverlay() == null && paused) {
+        } else if (overlayHandler.getOverlay() == null && paused) {
             GameScreen.setPaused(false);
         }
         background.update();
@@ -118,7 +131,7 @@ public class GameScreen extends ScreenAdapter {
         hudCamera.update();
         camera.refresh(delta);
 
-        // DRAW
+        // Hauptelemente zeichnen
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         background.render(delta, batch);
@@ -126,27 +139,27 @@ public class GameScreen extends ScreenAdapter {
         entityManager.render(batch, player.getPosition(), renderDistance2);
         batch.end();
 
-        // HUD SHAPES
+        // Formenelemente des HUDs Zeichnen
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         hud.shapeRender(hudCamera.combined);
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
-        // HUD SPRITES
+        // Elemente des HUDs Zeichnen
         batch.setProjectionMatrix(hudCamera.combined);
         batch.begin();
         hud.render(batch);
         batch.end();
 
-        // UPDATE OVERLAY
+        // eventuelles Overlay aktualisieren
         overlayHandler.update(delta);
-        // OVERLAY SHAPES
+        // Formenelemente des eventuellen Overlays zeichenn
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         overlayHandler.shapeRender(hudCamera.combined);
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
-        // OVERLAY SPRITES
+        // Elemente des HUDs Zeichnen
         batch.setProjectionMatrix(hudCamera.combined);
         batch.begin();
         overlayHandler.render(batch);
@@ -174,12 +187,20 @@ public class GameScreen extends ScreenAdapter {
         resizeDistance();
     }
 
+    /**
+     * Wird aufgerufen, wenn der Zoom der Kamera angepasst wird
+     * @param width Breite des tatsächlichen Bildschirm mit Zoom
+     * @param height Höhe des tatsächlichen Bildschirm mit Zoom
+     */
     public static void resizeZoom(int width, int height) {
         camera.resize(width, height);
         background.resize(width, height);
         resizeDistance();
     }
 
+    /**
+     * Distanzen für Entity Generierung anpassen
+     */
     private static void resizeDistance() {
         renderDistance2 = (int) Math.pow(renderDistanceBase * camera.zoom, 2);
         updateDistance2 = (int) Math.pow(updateDistanceBase * camera.zoom, 2);
@@ -191,7 +212,8 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public static void setPaused(boolean p) {
-        if (p) player.pauseSounds();
+        if (p)
+            player.pauseSounds();
         paused = p;
     }
 
@@ -224,6 +246,9 @@ public class GameScreen extends ScreenAdapter {
         return overlayHandler;
     }
 
+    /**
+     * Spiel zurücksetzen (Static Elemente zurücksetzen und dannnneuen GameScreen erstellen)
+     */
     public static void reset() {
         PlayerStats.reset();
         CameraShake.deactivate();
@@ -231,6 +256,9 @@ public class GameScreen extends ScreenAdapter {
         RocketLauncher.getInstance().setScreen(new GameScreen());
     }
 
+    /**
+     * Spieler ist tot "event"
+     */
     public static void playerDied() {
         CameraShake.deactivate();
         overlayHandler.setOverlay(new DeathOverlay());
